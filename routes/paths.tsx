@@ -5,7 +5,6 @@ interface Path {
 
 interface ApplicationPath {
   dashboard: Path;
-  campaigns: Path;
   items: Path;
   itemCategories: Path;
   users: Path;
@@ -16,10 +15,6 @@ interface ApplicationPath {
 export const paths: ApplicationPath = {
   dashboard: {
     root: "/dashboard",
-    isProtected: true,
-  },
-  campaigns: {
-    root: "/campaigns",
     isProtected: true,
   },
   items: {

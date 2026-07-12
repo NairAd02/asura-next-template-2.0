@@ -38,11 +38,6 @@ export function useGroupRoutes(): { routes: GroupRoute[]; isLoading: boolean } {
           icon: <LayoutDashboard className="text-accent" />,
           path: paths.dashboard.root,
         },
-        {
-          title: tNav("campaigns"),
-          icon: <Megaphone className="text-accent" />,
-          path: paths.campaigns.root,
-        },
       ],
     },
     {
