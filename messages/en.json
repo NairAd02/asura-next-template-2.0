@@ -1,0 +1,1210 @@
+{
+  "metadata": {
+    "title": "NDLR Administration Portal",
+    "description": "Secure administration portal for Donate Life America. Manage donor registrations, campaigns, users, and analytics across all states."
+  },
+  "sidebar": {
+    "groups": {
+      "metrics": "METRICS",
+      "catalog": "CATALOG",
+      "admin": "MANAGE"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "campaigns": "Campaigns",
+      "items": "Items",
+      "itemCategories": "Item Categories",
+      "users": "Users"
+    }
+  },
+  "languageToggle": {
+    "label": "Language",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "common": {
+    "error": "An error occurred",
+    "notFound": "Page not found",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "back": "Back",
+    "events": "Events",
+    "incidents": "Incidents",
+    "overrides": "Overrides",
+    "corrections": "Corrections",
+    "transactions": "Transactions",
+    "date": "Date",
+    "users": "Users",
+    "type": "Type",
+    "category": "Category",
+    "role": "Role",
+    "status": "Status",
+    "idType": "ID Type",
+    "filters": "Filters",
+    "actions": "Actions",
+    "columns": "Columns",
+    "noData": "No data",
+    "selectDate": "Select a date",
+    "print": "Print",
+    "printing": "Printing...",
+    "copyZpl": "Copy ZPL",
+    "zplCode": "ZPL Code",
+    "zplCopied": "ZPL copied to clipboard",
+    "zplCopyFailed": "Failed to copy ZPL",
+    "printError": "Print error: {message}",
+    "qrCodeDescription": "QR code contains item barcode for quick lookup. Printed on physical label."
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "description": "Create, govern, and publish campaign registration pages.",
+    "create": "New campaign",
+    "createTitle": "Create campaign",
+    "createDescription": "Configure a draft campaign from an approved template.",
+    "empty": "No campaigns found.",
+    "national": "National",
+    "updated": "Updated",
+    "columns": {
+      "campaign": "Campaign",
+      "status": "Status",
+      "template": "Template",
+      "scope": "Scope",
+      "window": "Window",
+      "organization": "Organization"
+    },
+    "form": {
+      "startDate": "Start date",
+      "endDate": "End date",
+      "createdBy": "Created by"
+    },
+    "filters": {
+      "search": "Search name, slug, organization",
+      "status": "Status",
+      "state": "State",
+      "organization": "Organization",
+      "searchLabel": "Search",
+      "stateLabel": "State",
+      "organizationLabel": "Organization",
+      "active": "{count} active filter{count, plural, one{} other{s}}",
+      "clearOne": "Clear filter",
+      "clearAll": "Clear all"
+    },
+    "status": {
+      "Draft": "Draft",
+      "PendingApproval": "Pending approval",
+      "Active": "Active",
+      "Archived": "Archived",
+      "Deleted": "Deleted"
+    },
+    "actions": {
+      "open": "Open"
+    },
+    "badges": {
+      "migrated": "Migrated",
+      "leaderboard": "Leaderboard",
+      "noLeaderboard": "No leaderboard"
+    },
+    "workspace": {
+      "title": "Campaign workspace",
+      "description": "Manage campaign configuration",
+      "tabs": {
+        "overview": "Overview",
+        "edit": "Edit",
+        "subgroups": "Subgroups",
+        "templates": "Templates",
+        "review": "Review",
+        "danger": "Danger"
+      }
+    },
+    "review": {
+      "latestComment": "Latest review comment"
+    },
+    "migration": {
+      "warnings": "Migration warnings"
+    },
+    "overview": {
+      "publicRoute": "Public route",
+      "lineage": "Migration lineage"
+    },
+    "pagination": {
+      "page": "Page {page}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "subgroups": {
+      "title": "Campaign subgroups",
+      "description": "Manage campaign-scoped cohorts for attribution and leaderboard links.",
+      "new": "New subgroup",
+      "loading": "Loading subgroups...",
+      "empty": "No subgroups configured.",
+      "name": "Name",
+      "slug": "Slug",
+      "displayOrder": "Display order",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "copy": "Copy link",
+      "edit": "Edit",
+      "disable": "Disable",
+      "createTitle": "Create subgroup",
+      "editTitle": "Edit subgroup",
+      "created": "Subgroup created",
+      "updated": "Subgroup updated",
+      "disabled": "Subgroup disabled",
+      "cancel": "Cancel",
+      "create": "Create",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "templates": {
+      "title": "Template catalog",
+      "description": "Manage approved base templates available to campaign managers.",
+      "new": "New template",
+      "name": "Name",
+      "description": "Description",
+      "previewUrl": "Preview URL",
+      "createdBy": "Created by",
+      "advanced": "Advanced",
+      "advancedDescription": "Allows subgroup and public leaderboard configuration.",
+      "active": "Active",
+      "inactive": "Inactive",
+      "activeDescription": "Inactive templates remain available for existing active campaigns.",
+      "edit": "Edit",
+      "createTitle": "Create template",
+      "editTitle": "Edit template",
+      "created": "Template created",
+      "updated": "Template updated",
+      "noDescription": "No description",
+      "cancel": "Cancel",
+      "create": "Create",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "lifecycle": {
+      "submit": "Submit",
+      "submitDescription": "Move this draft campaign to pending approval.",
+      "approve": "Approve",
+      "approveDescription": "Publish this campaign and make its slug publicly resolvable.",
+      "reject": "Reject",
+      "rejectDescription": "Return this pending campaign to draft with reviewer comments.",
+      "comments": "Reviewer comments",
+      "archive": "Archive",
+      "archiveDescription": "Remove this active campaign from public access while retaining history.",
+      "delete": "Delete",
+      "deleteDescription": "Soft-delete this campaign after explicit confirmation.",
+      "irreversibleTitle": "Deletion confirmation",
+      "irreversibleDescription": "Registration history remains preserved by the API audit model.",
+      "rejectUnavailable": "Reject is only available for pending approval campaigns.",
+      "rejectUnavailableDescription": "Draft campaigns can be approved directly or submitted for review.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "reset": "Reset",
+      "working": "Working...",
+      "saved": "Campaign updated"
+    },
+    "errors": {
+      "NDLR_API_BASE_URL_MISSING": "NDLR_API_BASE_URL is not configured.",
+      "NDLR_API_TIMEOUT": "The NDLR API timed out.",
+      "NDLR_API_NETWORK_ERROR": "The NDLR API could not be reached.",
+      "NDLR_API_ERROR": "The NDLR API returned an error.",
+      "VALIDATION_ERROR": "Some fields are invalid.",
+      "BUSINESS_VALIDATION_ERROR": "The campaign violates a business rule.",
+      "CONFLICT": "The campaign cannot be changed in its current state.",
+      "NOT_FOUND": "The requested campaign resource was not found.",
+      "FORBIDDEN": "You do not have permission for this action."
+    }
+  },
+  "campaignForm": {
+    "lockedTitle": "Campaign is locked",
+    "lockedDescription": "Archived and deleted campaigns cannot be edited.",
+    "tabs": {
+      "overview": "Overview",
+      "english": "English",
+      "spanish": "Spanish",
+      "advanced": "Advanced JSON"
+    },
+    "name": "Name",
+    "namePlaceholder": "Save Florida Lives",
+    "slug": "Slug",
+    "slugPlaceholder": "save-florida",
+    "slugLocked": "The slug is immutable once a campaign is active.",
+    "organization": "Organization",
+    "organizationPlaceholder": "Donate Life Florida",
+    "stateScope": "State scope",
+    "stateScopePlaceholder": "FL",
+    "language": "Language",
+    "languages": {
+      "EN": "English",
+      "ES": "Spanish",
+      "Bilingual": "Bilingual"
+    },
+    "template": "Template",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "showPublicLeaderboard": "Show public leaderboard",
+    "showPublicLeaderboardDescription": "Displays aggregate subgroup counts on the public campaign page when enabled.",
+    "heroHeadline": "Hero headline",
+    "heroCta": "Primary CTA label",
+    "heroSubheadline": "Hero subheadline",
+    "heroImage": "Hero image URL",
+    "sectionFieldsJson": "Section fields JSON",
+    "customConfigJson": "Custom config JSON",
+    "cancel": "Cancel",
+    "create": "Create campaign",
+    "save": "Save campaign",
+    "creating": "Creating...",
+    "saving": "Saving..."
+  },
+  "timeAgo": {
+    "justNow": "just now",
+    "minutes": "{count} minute{count, plural, one{} other{s}} ago",
+    "hours": "{count} hour{count, plural, one{} other{s}} ago",
+    "days": "{count} day{count, plural, one{} other{s}} ago",
+    "months": "{count} month{count, plural, one{} other{s}} ago",
+    "years": "{count} year{count, plural, one{} other{s}} ago"
+  },
+  "app": {
+    "name": "NDLR Admin Portal",
+    "version": "v1.0",
+    "subtitle": "National Donate Life Registry"
+  },
+  "user": {
+    "admin": "Administrator",
+    "editor": "Editor",
+    "viewer": "Viewer",
+    "signOut": "Sign Out",
+    "signingOut": "Signing out...",
+    "role": "Role"
+  },
+  "users": {
+    "title": "User Management",
+    "loadingUsers": "Loading users...",
+    "fetchingUsersData": "Fetching user data",
+    "description": "Manage user accounts, roles and access.",
+    "roleValues": {
+      "admin": "Administrator",
+      "editor": "Editor",
+      "viewer": "Viewer"
+    },
+    "statusValues": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "filters": {
+      "active": "active",
+      "filter": "filter",
+      "filters": "filters",
+      "search": "Search",
+      "role": "Role",
+      "status": "Status",
+      "clearAll": "Clear all"
+    },
+    "create": {
+      "trigger": "Invite User",
+      "modalTitle": "Invite New User",
+      "modalDescription": "Send an invitation email to a new user",
+      "successToast": "User invited successfully"
+    },
+    "resendInvitation": {
+      "successToast": "Invitation resent successfully"
+    },
+    "report": {
+      "generating": "Generating...",
+      "export": "Export",
+      "retry": "Retry"
+    },
+    "errors": {
+      "USER_NOT_FOUND": "User not found.",
+      "EMAIL_ALREADY_EXISTS": "A user with this email address already exists.",
+      "CANNOT_DEACTIVATE_SELF": "You cannot deactivate your own account.",
+      "CANNOT_DEACTIVATE_LAST_MANAGER": "Cannot deactivate the last active administrator.",
+      "INVALID_CURRENT_PASSWORD": "The current password you entered is incorrect.",
+      "INVALID_PASSWORD_RESET_TOKEN": "The password reset link is invalid or has expired.",
+      "INVITATION_FAILED": "Failed to send the invitation. Please try again.",
+      "UPDATE_ERROR": "Failed to update the user. Please try again.",
+      "INTERNAL_ERROR": "An unexpected error occurred. Please try again.",
+      "AUTH_ERROR": "You must be logged in to perform this action."
+    }
+  },
+  "userForm": {
+    "userInformation": "User Information",
+    "email": "Email",
+    "emailPlaceholder": "user@example.com",
+    "fullName": "Full Name (optional)",
+    "fullNamePlaceholder": "John Doe",
+    "access": "Access",
+    "role": "Role",
+    "rolePlaceholder": "Select role",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "cancel": "Cancel",
+    "saving": "Saving",
+    "save": "Save",
+    "sendingInvite": "Sending Invite",
+    "sendInvite": "Send Invite",
+    "user": "User",
+    "fullNameLabel": "Full name"
+  },
+  "itemCategories": {
+    "title": "Item Categories Management",
+    "loadingCategories": "Loading item categories...",
+    "fetchingCategoriesData": "Fetching item category data",
+    "description": "Manage item categories for the nomenclator system.",
+    "pricingTypeValues": {
+      "size_based": "Size Based",
+      "flat_rate": "Flat Rate",
+      "unit_based": "Unit Based"
+    },
+    "create": {
+      "trigger": "Create Category",
+      "sheetTitle": "Create Item Category",
+      "sheetDescription": "Create a new item category"
+    },
+    "delete": {
+      "title": "Delete Item Category",
+      "description": "Are you sure you want to delete this item category? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel",
+      "successToast": "Item category deleted successfully"
+    },
+    "toggleActive": {
+      "activateTitle": "Activate Item Category",
+      "activateDescription": "Are you sure you want to activate this item category?",
+      "activateConfirm": "Activate",
+      "activateSuccessToast": "Item category activated successfully",
+      "deactivateTitle": "Deactivate Item Category",
+      "deactivateDescription": "Are you sure you want to deactivate this item category?",
+      "deactivateConfirm": "Deactivate",
+      "deactivateSuccessToast": "Item category deactivated successfully",
+      "cancel": "Cancel"
+    },
+    "bulkToggleActive": {
+      "activateTitle": "Activate Item Categories",
+      "activateDescription": "Are you sure you want to activate the selected item categories?",
+      "activateConfirm": "Activate",
+      "activateSuccessToast": "{count} item categories activated successfully",
+      "deactivateTitle": "Deactivate Item Categories",
+      "deactivateDescription": "Are you sure you want to deactivate the selected item categories?",
+      "deactivateConfirm": "Deactivate",
+      "deactivateSuccessToast": "{count} item categories deactivated successfully",
+      "successToast": "{count} item categories updated successfully",
+      "cancel": "Cancel"
+    },
+    "bulkDelete": {
+      "label": "Delete",
+      "title": "Delete Item Categories",
+      "description": "The selected item categories will be permanently deleted. This action cannot be undone.",
+      "confirm": "Delete",
+      "entitySingular": "item category",
+      "entityPlural": "item categories",
+      "successToast": "{count} item categories deleted successfully"
+    },
+    "report": {
+      "generating": "Generating...",
+      "export": "Export",
+      "retry": "Retry"
+    },
+    "errors": {
+      "DUPLICATE_NAME": "An active category with this name already exists.",
+      "HAS_RELATED_RECORDS": "This category cannot be deleted because it has associated items or pricing rules.",
+      "CREATE_ERROR": "Failed to create the item category. Please try again.",
+      "UPDATE_ERROR": "Failed to update the item category. Please try again.",
+      "DELETE_ERROR": "Failed to delete the item category. Please try again.",
+      "INTERNAL_ERROR": "An unexpected error occurred. Please try again.",
+      "AUTH_ERROR": "You must be logged in to perform this action."
+    },
+    "filters": {
+      "active": "active",
+      "inactive": "inactive",
+      "filter": "filter",
+      "filters": "filters",
+      "search": "Search",
+      "status": "Status",
+      "clearAll": "Clear all"
+    }
+  },
+  "itemCategoryDetails": {
+    "title": "Item Category Details",
+    "detailsDescription": "View complete item category information.",
+    "editItemCategory": "Edit Category",
+    "editItemCategoryDescription": "Update item category information.",
+    "generalInfo": "General Information",
+    "categoryName": "Name",
+    "categoryDescription": "Description",
+    "pricingType": "Pricing Type",
+    "icon": "Icon",
+    "iconImage": "Icon Image",
+    "noIcon": "No icon",
+    "status": "Status",
+    "isActive": "Active Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "system": "System",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "noValue": "—"
+  },
+  "itemCategoryCard": {
+    "pricingType": "Pricing Type",
+    "description": "Description",
+    "iconCode": "Icon",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "created": "Created",
+    "viewDetails": "View details",
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "delete": "Delete"
+  },
+  "itemCategoryForm": {
+    "basicInfo": "Basic Information",
+    "name": "Name",
+    "namePlaceholder": "Enter name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description",
+    "iconCode": "Icon",
+    "iconCodePlaceholder": "Enter icon URL",
+    "isActive": "Active",
+    "isActiveDescription": "Mark as active to show in the system",
+    "pricingConfiguration": "Pricing configuration",
+    "pricingType": "Pricing type",
+    "pricingTypePlaceholder": "Select pricing type",
+    "flatRatePrice": "Flat rate price",
+    "flatRateDescription": "A single price applies to all items in this category regardless of size.",
+    "unitBasedPrice": "Unit based price",
+    "unitBasedDescription": "Price per unit for items in this category.",
+    "price": "Price",
+    "currency": "Currency",
+    "associatedSizes": "Associated sizes",
+    "selected": "selected",
+    "associatedSizesDescription": "Select the sizes available for this category and optionally set a price for each.",
+    "loadingSizes": "Loading sizes...",
+    "noActiveSizes": "No active sizes found. Add sizes in the Nomenclators → Item Sizes section first.",
+    "cancel": "Cancel",
+    "createItemCategory": "Create Category",
+    "editItemCategory": "Edit Category",
+    "creating": "Creating",
+    "editing": "Editing"
+  },
+  "items": {
+    "title": "Items",
+    "description": "View and manage all items registered in the system.",
+    "loadingItems": "Loading items...",
+    "fetchingItemsData": "Fetching item data",
+    "statusValues": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived"
+    },
+    "errors": {
+      "INVALID_STATUS_TRANSITION": "This status change is not allowed at this stage.",
+      "UPDATE_ERROR": "Failed to update the item. Please try again.",
+      "INTERNAL_ERROR": "An unexpected error occurred. Please try again.",
+      "AUTH_ERROR": "You must be logged in to perform this action."
+    },
+    "filters": {
+      "active": "active",
+      "filter": "filter",
+      "filters": "filters",
+      "search": "Search",
+      "status": "Status",
+      "category": "Category",
+      "size": "Size",
+      "clearAll": "Clear all"
+    }
+  },
+  "itemStats": {
+    "totalItems": "Total Items",
+    "active": "Active",
+    "inactive": "Inactive",
+    "archived": "Archived"
+  },
+  "itemDetails": {
+    "title": "Item Details",
+    "detailsDescription": "View complete item information.",
+    "editItem": "Edit Item",
+    "editItemDescription": "Correct item properties.",
+    "name": "Name",
+    "status": "Status",
+    "description": "Description",
+    "category": "Category",
+    "timeline": "Timeline",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "imagesMetadata": "Images",
+    "noImages": "No images attached",
+    "noValue": "—"
+  },
+  "itemCard": {
+    "name": "Name",
+    "status": "Status",
+    "category": "Category",
+    "description": "Description",
+    "created": "Created",
+    "noImages": "No images",
+    "actions": "Actions",
+    "viewDetails": "View details",
+    "edit": "Edit",
+    "changeStatus": "Change status",
+    "statusValues": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived"
+    }
+  },
+  "itemForm": {
+    "itemInfo": "Item Information",
+    "name": "Name",
+    "namePlaceholder": "Enter name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description",
+    "category": "Category",
+    "categoryPlaceholder": "Select category",
+    "addImages": "Add New Images",
+    "imagesLabel": "Upload images",
+    "existingImages": "Existing Images",
+    "existingImagesNote": "Existing images cannot be removed.",
+    "imagesNote": "New images will be appended to existing ones.",
+    "photosOptional": "Photos (optional)",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "saving": "Saving..."
+  },
+  "itemStatus": {
+    "title": "Change Item Status",
+    "description": "Select a new status for item",
+    "currentStatus": "Current Status",
+    "newStatus": "New Status",
+    "selectStatus": "Select status",
+    "confirm": "Confirm Change",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "successToast": "Item status updated successfully"
+  },
+  "imageUpload": {
+    "avatarPreview": "Avatar preview",
+    "dropImageHere": "Drop the image here",
+    "processingImage": "Processing image...",
+    "optimizingImage": "Optimizing image...",
+    "clickToChangePhoto": "Click to change photo",
+    "waitForProcessing": "Wait while the image is being processed...",
+    "dragAndDropOrClick": "Drag and drop an image, or click to select",
+    "fileFormats": "PNG, JPG, GIF up to {maxSize}MB",
+    "willConvertToWebP": "(will be converted to WebP)",
+    "preview": "Preview"
+  },
+  "multiFileUpload": {
+    "uploadFiles": "Upload files",
+    "dropFilesHere": "Drop the files here",
+    "processingFiles": "Processing files...",
+    "dragAndDropOrClick": "Drag and drop files, or click to select",
+    "maxFilesReached": "Maximum {maxFiles} files reached",
+    "fileSizeInfo": "Up to {maxSize}MB per file • {remaining} remaining",
+    "uploadedFiles": "Uploaded files ({count}/{max})",
+    "clearAll": "Clear all",
+    "processing": "Processing...",
+    "maxFilesAllowed": "Maximum {maxFiles} files allowed"
+  },
+  "filters": {
+    "searchByNumber": "Search by number...",
+    "searchByName": "Search by name...",
+    "status": "Status",
+    "sortBy": "Sort by",
+    "sortByStatus": "Status",
+    "sortByCreated": "Created",
+    "sortAscending": "Sort ascending",
+    "sortDescending": "Sort descending",
+    "searchByNameOrEmail": "Search by name or email...",
+    "searchByUser": "Search by user...",
+    "eventType": "Event type",
+    "user": "User",
+    "sortByUser": "User",
+    "sortByCategory": "Sort by Category",
+    "sortByName": "Name",
+    "sortBySortOrder": "Sort Order",
+    "sortByEmail": "Email",
+    "sortByPhone": "Phone",
+    "sortByRole": "Role",
+    "searchByNameEmailPhone": "Search by name, email or phone...",
+    "category": "Category",
+    "size": "Size",
+    "searchByNameDescription": "Search by name or description...",
+    "active": "Active",
+    "inactive": "Inactive",
+    "electronics": "Electronics",
+    "jewelry": "Jewelry",
+    "watches": "Watches",
+    "tools": "Tools",
+    "instruments": "Instruments",
+    "firearms": "Firearms",
+    "other": "Other"
+  },
+  "stats": {
+    "totalUsers": "Total Users",
+    "admins": "Admins",
+    "active": "Active",
+    "inactive": "Inactive",
+    "totalItems": "Total Items"
+  },
+  "table": {
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "idType": "ID Type",
+    "idIssuer": "ID Issuer",
+    "idExpiry": "ID Expiry",
+    "dateOfBirth": "Date of Birth",
+    "address": "Address",
+    "created": "Created",
+    "id": "ID",
+    "location": "Location",
+    "price": "Price",
+    "actions": "Actions",
+    "viewDetails": "View details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cannotEditYourself": "Cannot edit yourself",
+    "cannotDeactivateYourself": "Cannot deactivate yourself",
+    "deactivateUsers": "Deactivate users",
+    "deactivateUsersDescription": "The selected users will be marked as inactive and lose access. This action can be reversed by editing each user.",
+    "confirmDeactivate": "Deactivate",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "deleteItemCategories": "Delete item categories",
+    "deleteItemCategoriesDescription": "The selected item categories will be permanently deleted. This action cannot be undone.",
+    "user": "user",
+    "users": "users",
+    "noUsersFound": "No users found",
+    "itemCategories": "Item Categories",
+    "noItemCategoriesFound": "No item categories found",
+    "itemCategory": "item category",
+    "activateItemCategories": "Activate Item Categories",
+    "activateItemCategoriesDescription": "Are you sure you want to activate the selected item categories?",
+    "deactivateItemCategories": "Deactivate Item Categories",
+    "deactivateItemCategoriesDescription": "Are you sure you want to deactivate the selected item categories?",
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "customer": "Customer",
+    "items": "Items",
+    "noName": "No name",
+    "resendInvitation": "Resend invitation",
+    "confirmDelete": "Delete"
+  },
+  "userDetails": {
+    "title": "User details",
+    "description": "Account information and timestamps.",
+    "editUser": "Edit user",
+    "editUserDescription": "Update the user's role and status."
+  },
+  "userDetailsSection": {
+    "account": "Account",
+    "timestamps": "Timestamps",
+    "lastUpdated": "Last updated",
+    "unknownUser": "Unknown user"
+  },
+  "refresh": {
+    "dataRefreshed": "Data refreshed",
+    "refreshData": "Refresh Data",
+    "refreshDataAria": "Refresh data"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of",
+    "rows": "Rows",
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
+  },
+  "loginForm": {
+    "credentials": "Credentials",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signingIn": "Signing in...",
+    "signIn": "Sign In",
+    "dontHaveAccount": "Don't have an account?. Contact an administrator to request the creation of your account.",
+    "signUp": "Sign Up",
+    "forgotPassword": "Forgot password?"
+  },
+  "loginContent": {
+    "title": "Sign In",
+    "description": "Enter your credentials to access your account"
+  },
+  "loginErrors": {
+    "invalidCredentials": "Invalid email or password.",
+    "loginFailed": "Login failed. Please try again.",
+    "missing_code": "The link is incomplete. Please request a new one.",
+    "invalid_code": "The link has expired or has already been used. Please request a new one.",
+    "legacy_link": "This link format is no longer supported. Please request a new one."
+  },
+  "activateAccount": {
+    "title": "Complete Your Profile",
+    "description": "Please provide your information to activate your account",
+    "userInformation": "User Information",
+    "security": "Security",
+    "email": "Email",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "John Doe",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "cancel": "Cancel",
+    "activating": "Activating...",
+    "activate": "Activate Account"
+  },
+  "landing": {
+    "nav": {
+      "overview": "Overview",
+      "interfaces": "Interfaces",
+      "flow": "Flow",
+      "principles": "Principles",
+      "catalog": "Demo Data",
+      "roles": "Roles",
+      "getStarted": "Get Started",
+      "docs": "Docs"
+    },
+    "hero": {
+      "badge": "Open Source Template",
+      "title": "Build",
+      "titleHighlight": "faster",
+      "titleEnd": "with a solid Next.js foundation.",
+      "description": "Authentication, i18n, role-based access, CRUD modules, and a dashboard — all wired up and ready to extend.",
+      "getStarted": "Browse the Demo",
+      "seeFlow": "See How It Works",
+      "readTime": "5 min read",
+      "itemRecord": "Item Record",
+      "idLabel": "ID",
+      "nameLabel": "Name",
+      "categoryLabel": "Category",
+      "statusLabel": "Status",
+      "statusActive": "Active",
+      "updatedLabel": "Updated",
+      "updatedValue": "2 min ago",
+      "demoNote": "demo data"
+    },
+    "overview": {
+      "sectionNumber": "01",
+      "title": "A full-stack template for real apps",
+      "description": "Not a component library. Not a starter kit full of TODOs. A working application — with auth, data, roles, and UI — ready to fork and extend.",
+      "notCrm": "Not just boilerplate",
+      "itemCentric": {
+        "label": "Module-first",
+        "desc": "Three CRUD modules (Items, Categories, Users) with real in-memory mock data. Add your own in minutes."
+      },
+      "fullyAuditable": {
+        "label": "Role-based access",
+        "desc": "Three roles (admin, editor, viewer) protect every page and action. Swap in your own authorization logic."
+      },
+      "scanDriven": {
+        "label": "i18n built-in",
+        "desc": "English and Spanish out of the box. next-intl with per-page namespaces and automatic locale routing."
+      },
+      "sameDayBeyond": {
+        "label": "Dashboard included",
+        "desc": "An operational dashboard with stat cards, charts, and activity feeds — all connected to the live mock data."
+      }
+    },
+    "interfaces": {
+      "sectionNumber": "02",
+      "title": "Two ways to",
+      "titleHighlight": "use",
+      "titleEnd": "the app.",
+      "description": "The template ships with two user contexts built on the same codebase. Management users own the data; read-only users explore it.",
+      "whatYouDoHere": "What you do here",
+      "management": {
+        "title": "Management",
+        "subtitle": "Full control.",
+        "description": "Admin and Editor users access every module, create and edit records, manage user accounts, and view the full dashboard.",
+        "badge": "admin · editor",
+        "steps": {
+          "1": "Browse and filter all items",
+          "2": "Create, edit, and archive items",
+          "3": "Manage categories",
+          "4": "Invite and manage users",
+          "5": "View operational dashboard"
+        }
+      },
+      "readonly": {
+        "title": "Read-only",
+        "subtitle": "Browse and view.",
+        "description": "Viewer users can explore the full item catalog, see categories, and read the dashboard — but cannot modify any data.",
+        "badge": "viewer",
+        "steps": {
+          "1": "Browse and filter items",
+          "2": "View item details and images",
+          "3": "See category information",
+          "4": "Read dashboard metrics"
+        }
+      }
+    },
+    "flow": {
+      "sectionNumber": "03",
+      "title": "Item lifecycle — three stages.",
+      "resultingState": "Resulting state",
+      "note": "Status transitions are validated server-side. <strong>Reactivation</strong> from archived requires admin or editor access.",
+      "create": {
+        "title": "Create",
+        "where": "Items module",
+        "duration": "< 1 min",
+        "summary": "A new item is registered with a name, optional description, category, and images.",
+        "bullets": {
+          "0": "Fill in name and optional description",
+          "1": "Assign to an existing category",
+          "2": "Upload one or more images",
+          "3": "Item is saved as Active by default"
+        },
+        "state": "active"
+      },
+      "manage": {
+        "title": "Manage",
+        "where": "Items module",
+        "duration": "ongoing",
+        "summary": "Items can be edited, recategorized, or deactivated at any time by users with editor or admin role.",
+        "bullets": {
+          "0": "Edit name, description, or category",
+          "1": "Add or update images",
+          "2": "Change status to inactive",
+          "3": "Filter and search the full catalog"
+        },
+        "state": "active · inactive"
+      },
+      "archive": {
+        "title": "Archive",
+        "where": "Items module",
+        "duration": "permanent",
+        "summary": "Archived items are retained in the system for historical reference but removed from the active catalog.",
+        "bullets": {
+          "0": "Item marked as archived",
+          "1": "Still visible with archived filter",
+          "2": "Can be reactivated by admin",
+          "3": "Full edit history preserved"
+        },
+        "state": "archived"
+      }
+    },
+    "principles": {
+      "sectionNumber": "04",
+      "title": "Design choices",
+      "description": "Four decisions that shape how the template is built — and how you should extend it.",
+      "principle1": {
+        "n": "i.",
+        "title": "In-memory first, database-ready",
+        "body": "All data lives in a shared in-memory store on the server. Replace the store calls with Prisma, Drizzle, or any ORM — no other files need to change."
+      },
+      "principle2": {
+        "n": "ii.",
+        "title": "Server actions, not API routes",
+        "body": "Every mutation goes through a typed Next.js Server Action. No REST boilerplate to maintain — just call the action from your form or hook."
+      },
+      "principle3": {
+        "n": "iii.",
+        "title": "Namespace-scoped translations",
+        "body": "Each page and module loads only its own translation keys. Adding a new language means adding one JSON file — no code changes."
+      },
+      "principle4": {
+        "n": "iv.",
+        "title": "Roles enforced at the layout level",
+        "body": "Access control lives in a single middleware and per-layout guard. Changing a role's permissions is a one-line edit in the route definition."
+      }
+    },
+    "lifecycle": {
+      "sectionNumber": "05",
+      "title": "Status vocabulary",
+      "description": "Items and users each carry a small set of well-defined statuses. Everything in the UI derives from these values.",
+      "transactionLifecycle": "User roles",
+      "oneVisitFourStates": "Three roles, one rule set.",
+      "txDescription": "Every action in the app is gated by role. Roles are assigned at invite time and can be updated by an admin.",
+      "itemStatuses": {
+        "active": {
+          "label": "Active",
+          "desc": "The item is visible in the catalog and fully operational."
+        },
+        "inactive": {
+          "label": "Inactive",
+          "desc": "The item is hidden from the default view but retained in the system."
+        },
+        "archived": {
+          "label": "Archived",
+          "desc": "The item is closed and kept for historical reference only."
+        }
+      },
+      "txStatuses": {
+        "admin": {
+          "label": "Admin",
+          "desc": "Full access. Can create, edit, delete items and categories, manage users, and view the dashboard."
+        },
+        "editor": {
+          "label": "Editor",
+          "desc": "Can create and edit items and categories. Cannot manage users or delete records."
+        },
+        "viewer": {
+          "label": "Viewer",
+          "desc": "Read-only. Can browse items and view the dashboard but cannot modify any data."
+        }
+      }
+    },
+    "catalog": {
+      "sectionNumber": "06",
+      "title": "Demo data",
+      "description": "The template ships with 20 pre-seeded items across these categories. All editable in the Items and Categories modules.",
+      "examplesLabel": "Examples",
+      "pricingTypeLabel": "Pricing type",
+      "flatRate": "Flat rate",
+      "sizeBased": "Size-based",
+      "categories": {
+        "electronics": {
+          "name": "Electronics",
+          "desc": "Laptops, phones, tablets, and accessories.",
+          "examples": "MacBook Pro, iPhone 15, iPad Air"
+        },
+        "clothing": {
+          "name": "Clothing",
+          "desc": "Apparel and footwear of all kinds.",
+          "examples": "Winter jacket, running shoes, formal suit"
+        },
+        "accessories": {
+          "name": "Accessories",
+          "desc": "Bags, watches, jewelry, and personal items.",
+          "examples": "Leather wallet, mechanical watch, sunglasses"
+        },
+        "sports": {
+          "name": "Sports",
+          "desc": "Sports gear, outdoor, and fitness items.",
+          "examples": "Mountain bike, yoga mat, climbing harness"
+        },
+        "documents": {
+          "name": "Documents",
+          "desc": "Folders, notebooks, and important papers.",
+          "examples": "Project binder, passport folder, notebooks"
+        },
+        "other": {
+          "name": "Other",
+          "desc": "Anything that doesn't fit the above.",
+          "examples": "Umbrella, travel pillow, reusable tote"
+        }
+      }
+    },
+    "roles": {
+      "sectionNumber": "07",
+      "title": "Who can do what",
+      "description": "Three roles ship with the template. Each role has a clear, non-overlapping set of permissions enforced at every layer.",
+      "canDo": "Can do",
+      "admin": {
+        "name": "Admin",
+        "summary": "Full system access. Manages everything including users.",
+        "can": {
+          "0": "Create, edit, and delete items",
+          "1": "Manage item categories",
+          "2": "Invite, edit, and deactivate users",
+          "3": "View and export dashboard data",
+          "4": "Change any item's status"
+        }
+      },
+      "editor": {
+        "name": "Editor",
+        "summary": "Content management. Creates and edits data but cannot manage users.",
+        "can": {
+          "0": "Create and edit items",
+          "1": "Create and edit item categories",
+          "2": "View dashboard metrics",
+          "3": "Change item status (active ↔ inactive)"
+        }
+      },
+      "viewer": {
+        "name": "Viewer",
+        "summary": "Read-only access. Browses the catalog and monitors the dashboard.",
+        "can": {
+          "0": "Browse and search all items",
+          "1": "View item details and images",
+          "2": "See item categories",
+          "3": "Read dashboard metrics and charts"
+        }
+      }
+    },
+    "closing": {
+      "beforeFirstShift": "Before you deploy",
+      "title": "Four things to",
+      "titleHighlight": "customize",
+      "titleEnd": "first.",
+      "description": "The template works out of the box. These four steps will make it yours.",
+      "footerNote": "All changes are isolated in well-marked files. The template is designed to be forked, not fought.",
+      "internalDocumentation": "README",
+      "tip1": {
+        "n": "01",
+        "title": "Replace the mock store",
+        "body": "Swap lib/mock/in-memory-store.ts with your database adapter. All service functions call the same interface — no other files need to change."
+      },
+      "tip2": {
+        "n": "02",
+        "title": "Configure authentication",
+        "body": "Auth.js is pre-configured with a Credentials provider. Add OAuth providers, a database session store, or a custom JWT strategy in auth.config.ts."
+      },
+      "tip3": {
+        "n": "03",
+        "title": "Update metadata and branding",
+        "body": "Replace 'App Name' in messages/en.json and messages/es.json. Update the logo in public/. Change the primary color in tailwind.config.ts."
+      },
+      "tip4": {
+        "n": "04",
+        "title": "Add your own modules",
+        "body": "Copy the modules/items directory as a starting point. Define your types, write a service, add Server Actions, and drop the module into the sidebar routes."
+      }
+    },
+    "footer": {
+      "description": "A production-ready Next.js starter template with auth, i18n, CRUD modules, and dashboard.",
+      "onThisPage": "On This Page",
+      "reference": "Reference",
+      "catalogAndRates": "Demo Data",
+      "roles": "Roles",
+      "copyright": "© {year} App Name. Open source under the MIT License.",
+      "tagline": "Fork it. Extend it. Ship it."
+    }
+  },
+  "operationalDashboard": {
+    "title": "Operations Dashboard",
+    "description": "Key metrics from the live data store",
+    "lastUpdated": "Last updated",
+    "period": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "custom": "Custom",
+      "cancel": "Cancel",
+      "apply": "Apply"
+    },
+    "metrics": {
+      "totalItems": "Total Items",
+      "totalItemsDescription": "All items in the system",
+      "activeItems": "Active",
+      "activeItemsDescription": "Items currently active",
+      "inactiveItems": "Inactive",
+      "inactiveItemsDescription": "Items currently inactive",
+      "archivedItems": "Archived",
+      "archivedItemsDescription": "Items that have been archived",
+      "totalCategories": "Categories",
+      "totalCategoriesDescription": "Total item categories",
+      "totalUsers": "Users",
+      "totalUsersDescription": "Total registered users",
+      "totalEventsToday": "{count} events today"
+    },
+    "sections": {
+      "volumeTrend": "Daily Activity (Last 7 Days)",
+      "categoryBreakdown": "Items by Category",
+      "staffActivity": "User Activity Today"
+    },
+    "chart": {
+      "intake": "Created",
+      "release": "Archived"
+    },
+    "category": {
+      "electronics": "Electronics",
+      "clothing": "Clothing",
+      "accessories": "Accessories",
+      "sports": "Sports",
+      "documents": "Documents",
+      "other": "Other"
+    },
+    "noStaffActivity": "No user activity recorded today",
+    "noIncidents": "No category data available",
+    "loadError": "Could not load dashboard data. Please refresh the page."
+  },
+  "userProfile": {
+    "menuItem": "View Profile",
+    "modalTitle": "My Profile",
+    "modalDescription": "View and edit your account information",
+    "noName": "No name",
+    "editName": "Edit",
+    "loading": "Loading profile",
+    "loadingSubtitle": "Please wait a moment",
+    "error": "Error loading profile",
+    "notFound": "Profile not found",
+    "sections": {
+      "personalInfo": "Personal Information",
+      "systemInfo": "System Information",
+      "security": "Account Security"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "createdAt": "Member Since",
+      "updatedAt": "Last Updated"
+    },
+    "form": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Your full name",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "successToast": "Profile updated successfully"
+    },
+    "security": {
+      "changePassword": "Change Password",
+      "forgotPassword": "Forgot Password",
+      "changeTitle": "Change your password",
+      "forgotTitle": "Password Reset",
+      "forgotDescription": "To reset your password, contact your administrator or use the login page.",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "savePassword": "Update Password",
+      "back": "Back",
+      "changing": "Changing...",
+      "comingSoon": "Coming soon",
+      "forgotSent": "Check your email",
+      "forgotSentDescription": "A password reset link was sent to {email}.",
+      "forgotEmail": "Email"
+    }
+  },
+  "forgotPassword": {
+    "pageTitle": "Forgot Password",
+    "pageDescription": "Enter your email address and we will send you a reset link",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "submit": "Send Reset Link",
+    "submitting": "Sending...",
+    "successTitle": "Check your email",
+    "successDescription": "If an account exists for {email}, a password reset link has been sent.",
+    "cancel": "Back",
+    "backToLogin": "Back to Login"
+  },
+  "resetPassword": {
+    "pageTitle": "Reset Your Password",
+    "pageDescription": "Enter your new password below",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Reset Password",
+    "submitting": "Resetting...",
+    "successTitle": "Password reset successfully",
+    "successDescription": "Your password has been updated. Please sign in with your new password.",
+    "backToLogin": "Back to Login"
+  },
+  "error403": {
+    "title": "Access Denied",
+    "description": "You don't have permission to access this page",
+    "message": "Please contact your administrator if you believe this is an error.",
+    "goHome": "Go Home",
+    "goDashboard": "Go to Dashboard"
+  },
+  "detailsContainer": {
+    "loading": "Loading",
+    "loadingSubtitle": "Please wait a moment",
+    "error": "Error loading",
+    "notFound": "not found",
+    "item": "item",
+    "user": "user",
+    "itemCategory": "item category"
+  }
+}

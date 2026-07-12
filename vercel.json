@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/cron/release-sessions-timeout",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/holdover-fee-enforcement",
+      "schedule": "30 20 * * *"
+    }
+  ]
+}

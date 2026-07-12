@@ -1,0 +1,116 @@
+import type { Metadata, Viewport } from 'next'
+import { Public_Sans, Source_Serif_4, Geist_Mono } from 'next/font/google'
+import { notFound } from 'next/navigation'
+import { hasLocale, NextIntlClientProvider } from 'next-intl'
+import { getMessages, getTranslations } from 'next-intl/server'
+import { Analytics } from '@vercel/analytics/next'
+import { routing } from '@/i18n/routing'
+import ProgressBar from '@/components/progress-bar/progress-bar'
+import { ThemeProvider } from '@/components/theme-provider'
+import '../globals.css'
+
+const publicSans = Public_Sans({
+  variable: '--font-public-sans',
+  subsets: ['latin'],
+  display: 'swap',
+})
+const sourceSerif = Source_Serif_4({
+  variable: '--font-source-serif',
+  subsets: ['latin'],
+  display: 'swap',
+})
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#242423' },
+  ],
+  colorScheme: 'light dark',
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'metadata' })
+
+  return {
+    title: {
+      default: t('title'),
+      template: `%s — ${t('title')}`,
+    },
+    description: t('description'),
+    applicationName: t('title'),
+    generator: 'Next.js',
+    icons: {
+      icon: '/favicon.ico',
+    },
+    openGraph: {
+      type: 'website',
+      siteName: t('title'),
+      title: t('title'),
+      description: t('description'),
+      locale,
+      images: {
+        url: '/og-image.jpeg',
+        width: 1200,
+        height: 630,
+        alt: t('title'),
+      },
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'),
+      description: t('description'),
+      images: {
+        url: '/og-image.jpeg',
+        width: 1200,
+        height: 630,
+        alt: t('title'),
+      },
+    },
+    robots: {
+      index: false,
+      follow: false,
+    },
+  }
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: Readonly<{
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}>) {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  const messages = await getMessages()
+
+  return (
+    <html lang={locale} className={`${publicSans.variable} ${sourceSerif.variable} ${geistMono.variable} bg-background`} suppressHydrationWarning>
+      <body className="min-h-screen font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NextIntlClientProvider messages={messages} locale={locale}>
+            <ProgressBar>{children}</ProgressBar>
+          </NextIntlClientProvider>
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}

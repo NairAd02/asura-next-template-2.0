@@ -1,0 +1,218 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0.015 155);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.015 155);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.015 155);
+  --primary: oklch(0.80 0.15 120);
+  --primary-foreground: oklch(0.15 0.015 155);
+  --secondary: oklch(0.97 0.015 120);
+  --secondary-foreground: oklch(0.15 0.015 155);
+  --muted: oklch(0.97 0.010 230);
+  --muted-foreground: oklch(0.54 0.010 155);
+  --accent: oklch(0.44 0.11 240);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.94 0.006 135);
+  --input: oklch(0.94 0.006 135);
+  --ring: oklch(0.80 0.15 120);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.97 0.015 120 / 0.3);
+  --sidebar-foreground: oklch(0.15 0.015 155);
+  --sidebar-primary: oklch(0.15 0.015 155);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0.015 120);
+  --sidebar-accent-foreground: oklch(0.15 0.015 155);
+  --sidebar-border: oklch(0.94 0.006 135);
+  --sidebar-ring: oklch(0.80 0.15 120);
+  --text-inverted: oklch(0.985 0 0);
+  /* Donate Life brand tokens */
+  --brand-cream: #F4F8EC;
+  --brand-subtle: #EEF4FB;
+  --brand-green: #AFD369;
+  --brand-green-dark: #4A7A1F;
+  --brand-blue: #2E5F9E;
+  --brand-blue-light: #89B7EE;
+  --brand-dark: #16201C;
+  --brand-mid: #3A453F;
+  --brand-muted: #6B7670;
+  --brand-border: #ECEFEA;
+}
+
+.dark {
+  --background: oklch(0.15 0.012 155);
+  --foreground: oklch(0.93 0.008 130);
+  --card: oklch(0.18 0.012 155);
+  --card-foreground: oklch(0.93 0.008 130);
+  --popover: oklch(0.18 0.012 155);
+  --popover-foreground: oklch(0.93 0.008 130);
+  --primary: oklch(0.80 0.15 120);
+  --primary-foreground: oklch(0.15 0.015 155);
+  --secondary: oklch(0.22 0.012 155);
+  --secondary-foreground: oklch(0.93 0.008 130);
+  --muted: oklch(0.22 0.012 155);
+  --muted-foreground: oklch(0.65 0.008 155);
+  --accent: oklch(0.60 0.11 230);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.25 0.010 155);
+  --input: oklch(0.25 0.010 155);
+  --ring: oklch(0.80 0.15 120);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.445);
+  --sidebar: oklch(0.18 0.012 155);
+  --sidebar-foreground: oklch(0.93 0.008 130);
+  --sidebar-primary: oklch(0.80 0.15 120);
+  --sidebar-primary-foreground: oklch(0.15 0.015 155);
+  --sidebar-accent: oklch(0.22 0.012 155);
+  --sidebar-accent-foreground: oklch(0.93 0.008 130);
+  --sidebar-border: oklch(0.25 0.010 155);
+  --sidebar-ring: oklch(0.80 0.15 120);
+  --text-inverted: oklch(0.15 0.015 155);
+  /* Donate Life brand tokens */
+  --brand-cream: #F4F8EC;
+  --brand-subtle: #EEF4FB;
+  --brand-green: #AFD369;
+  --brand-green-dark: #4A7A1F;
+  --brand-blue: #2E5F9E;
+  --brand-blue-light: #89B7EE;
+  --brand-dark: #16201C;
+  --brand-mid: #3A453F;
+  --brand-muted: #6B7670;
+  --brand-border: #ECEFEA;
+}
+
+@theme inline {
+  --font-sans: var(--font-public-sans), 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --font-serif: var(--font-source-serif), Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-text-inverted: var(--text-inverted);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-dark: var(--brand-green-dark);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-light: var(--brand-blue-light);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-mid: var(--brand-mid);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-border: var(--brand-border);
+  --breakpoint-ultra-xs: 380px;
+  --breakpoint-2ultra-xs: 410px;
+  --breakpoint-xs: 460px;
+  --breakpoint-2md: 960px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Header checkbox styling */
+.header-checkbox-cell [data-slot="checkbox"] {
+  background-color: white !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.header-checkbox-cell [data-slot="checkbox"][data-state="checked"] {
+  background-color: white !important;
+  border-color: hsl(var(--border)) !important;
+  color: #242423 !important;
+}
+
+.header-checkbox-cell [data-slot="checkbox"][data-state="checked"] [data-slot="checkbox-indicator"] {
+  color: #242423 !important;
+}
+
+/* Dark mode header checkbox styling */
+.dark .header-checkbox-cell [data-slot="checkbox"] {
+  background-color: white !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .header-checkbox-cell [data-slot="checkbox"][data-state="checked"] {
+  background-color: #242423 !important;
+  border-color: #242423 !important;
+  color: white !important;
+}
+
+.dark .header-checkbox-cell [data-slot="checkbox"][data-state="checked"] [data-slot="checkbox-indicator"] {
+  color: white !important;
+}
+
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}

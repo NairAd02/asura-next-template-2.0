@@ -1,0 +1,1210 @@
+{
+  "metadata": {
+    "title": "Portal de Administración NDLR",
+    "description": "Portal de administración seguro para Donate Life America. Gestione registros de donantes, campañas, usuarios y análisis en todos los estados."
+  },
+  "sidebar": {
+    "groups": {
+      "metrics": "MÉTRICAS",
+      "catalog": "CATÁLOGO",
+      "admin": "ADMINISTRAR"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "campaigns": "Campañas",
+      "items": "Artículos",
+      "itemCategories": "Categorías de Artículos",
+      "users": "Usuarios"
+    }
+  },
+  "languageToggle": {
+    "label": "Idioma",
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "common": {
+    "error": "Ocurrió un error",
+    "notFound": "Página no encontrada",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "search": "Buscar",
+    "loading": "Cargando...",
+    "submit": "Enviar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "events": "Eventos",
+    "incidents": "Incidentes",
+    "overrides": "Anulaciones",
+    "corrections": "Correcciones",
+    "transactions": "Transacciones",
+    "date": "Fecha",
+    "users": "Usuarios",
+    "type": "Tipo",
+    "category": "Categoría",
+    "role": "Rol",
+    "status": "Estado",
+    "idType": "Tipo de ID",
+    "filters": "Filtros",
+    "actions": "Acciones",
+    "columns": "Columnas",
+    "noData": "Sin datos",
+    "selectDate": "Selecciona una fecha",
+    "print": "Imprimir",
+    "printing": "Imprimiendo...",
+    "copyZpl": "Copiar ZPL",
+    "zplCode": "Código ZPL",
+    "zplCopied": "ZPL copiado al portapapeles",
+    "zplCopyFailed": "Error al copiar ZPL",
+    "printError": "Error de impresión: {message}",
+    "qrCodeDescription": "El código QR contiene el código de barras del artículo para búsqueda rápida. Impreso en la etiqueta física."
+  },
+  "campaigns": {
+    "title": "Campañas",
+    "description": "Crea, gobierna y publica paginas de registro por campaña.",
+    "create": "Nueva campaña",
+    "createTitle": "Crear campaña",
+    "createDescription": "Configura una campaña en borrador desde un template aprobado.",
+    "empty": "No se encontraron campañas.",
+    "national": "Nacional",
+    "updated": "Actualizado",
+    "columns": {
+      "campaign": "Campaña",
+      "status": "Estado",
+      "template": "Template",
+      "scope": "Alcance",
+      "window": "Vigencia",
+      "organization": "Organizacion"
+    },
+    "form": {
+      "startDate": "Fecha inicial",
+      "endDate": "Fecha final",
+      "createdBy": "Creado por"
+    },
+    "filters": {
+      "search": "Buscar nombre, slug u organizacion",
+      "status": "Estado",
+      "state": "Estado",
+      "organization": "Organizacion",
+      "searchLabel": "Busqueda",
+      "stateLabel": "Estado",
+      "organizationLabel": "Organizacion",
+      "active": "{count} filtro{count, plural, one{} other{s}} activo{count, plural, one{} other{s}}",
+      "clearOne": "Limpiar filtro",
+      "clearAll": "Limpiar todo"
+    },
+    "status": {
+      "Draft": "Borrador",
+      "PendingApproval": "Pendiente de aprobacion",
+      "Active": "Activa",
+      "Archived": "Archivada",
+      "Deleted": "Eliminada"
+    },
+    "actions": {
+      "open": "Abrir"
+    },
+    "badges": {
+      "migrated": "Migrada",
+      "leaderboard": "Leaderboard",
+      "noLeaderboard": "Sin leaderboard"
+    },
+    "workspace": {
+      "title": "Workspace de campaña",
+      "description": "Gestiona la configuracion de la campaña",
+      "tabs": {
+        "overview": "Resumen",
+        "edit": "Editar",
+        "subgroups": "Subgrupos",
+        "templates": "Templates",
+        "review": "Revision",
+        "danger": "Riesgo"
+      }
+    },
+    "review": {
+      "latestComment": "Ultimo comentario de revision"
+    },
+    "migration": {
+      "warnings": "Advertencias de migracion"
+    },
+    "overview": {
+      "publicRoute": "Ruta publica",
+      "lineage": "Linaje de migracion"
+    },
+    "pagination": {
+      "page": "Pagina {page}",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "subgroups": {
+      "title": "Subgrupos de campaña",
+      "description": "Gestiona cohortes de la campaña para atribucion y enlaces de leaderboard.",
+      "new": "Nuevo subgrupo",
+      "loading": "Cargando subgrupos...",
+      "empty": "No hay subgrupos configurados.",
+      "name": "Nombre",
+      "slug": "Slug",
+      "displayOrder": "Orden",
+      "status": "Estado",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "copy": "Copiar enlace",
+      "edit": "Editar",
+      "disable": "Desactivar",
+      "createTitle": "Crear subgrupo",
+      "editTitle": "Editar subgrupo",
+      "created": "Subgrupo creado",
+      "updated": "Subgrupo actualizado",
+      "disabled": "Subgrupo desactivado",
+      "cancel": "Cancelar",
+      "create": "Crear",
+      "save": "Guardar",
+      "saving": "Guardando..."
+    },
+    "templates": {
+      "title": "Catalogo de templates",
+      "description": "Gestiona los templates base aprobados para campañas.",
+      "new": "Nuevo template",
+      "name": "Nombre",
+      "description": "Descripcion",
+      "previewUrl": "URL de vista previa",
+      "createdBy": "Creado por",
+      "advanced": "Avanzado",
+      "advancedDescription": "Permite configuracion de subgrupos y leaderboard publico.",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "activeDescription": "Los templates inactivos siguen disponibles para campañas activas existentes.",
+      "edit": "Editar",
+      "createTitle": "Crear template",
+      "editTitle": "Editar template",
+      "created": "Template creado",
+      "updated": "Template actualizado",
+      "noDescription": "Sin descripcion",
+      "cancel": "Cancelar",
+      "create": "Crear",
+      "save": "Guardar",
+      "saving": "Guardando..."
+    },
+    "lifecycle": {
+      "submit": "Enviar",
+      "submitDescription": "Mueve esta campaña en borrador a pendiente de aprobacion.",
+      "approve": "Aprobar",
+      "approveDescription": "Publica esta campaña y activa su slug publicamente.",
+      "reject": "Rechazar",
+      "rejectDescription": "Devuelve esta campaña pendiente a borrador con comentarios.",
+      "comments": "Comentarios del revisor",
+      "archive": "Archivar",
+      "archiveDescription": "Quita esta campaña activa del acceso publico y conserva el historial.",
+      "delete": "Eliminar",
+      "deleteDescription": "Elimina logicamente esta campaña tras confirmacion explicita.",
+      "irreversibleTitle": "Confirmacion de eliminacion",
+      "irreversibleDescription": "El historial de registros permanece preservado por el modelo de auditoria de la API.",
+      "rejectUnavailable": "Rechazar solo esta disponible para campañas pendientes.",
+      "rejectUnavailableDescription": "Las campañas en borrador pueden aprobarse directamente o enviarse a revision.",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "reset": "Reiniciar",
+      "working": "Procesando...",
+      "saved": "Campaña actualizada"
+    },
+    "errors": {
+      "NDLR_API_BASE_URL_MISSING": "NDLR_API_BASE_URL no esta configurada.",
+      "NDLR_API_TIMEOUT": "La API NDLR agoto el tiempo de espera.",
+      "NDLR_API_NETWORK_ERROR": "No se pudo contactar la API NDLR.",
+      "NDLR_API_ERROR": "La API NDLR devolvio un error.",
+      "VALIDATION_ERROR": "Algunos campos no son validos.",
+      "BUSINESS_VALIDATION_ERROR": "La campaña incumple una regla de negocio.",
+      "CONFLICT": "La campaña no puede cambiarse en su estado actual.",
+      "NOT_FOUND": "El recurso solicitado no fue encontrado.",
+      "FORBIDDEN": "No tienes permiso para esta accion."
+    }
+  },
+  "campaignForm": {
+    "lockedTitle": "La campaña esta bloqueada",
+    "lockedDescription": "Las campañas archivadas o eliminadas no pueden editarse.",
+    "tabs": {
+      "overview": "Resumen",
+      "english": "Ingles",
+      "spanish": "Español",
+      "advanced": "JSON avanzado"
+    },
+    "name": "Nombre",
+    "namePlaceholder": "Save Florida Lives",
+    "slug": "Slug",
+    "slugPlaceholder": "save-florida",
+    "slugLocked": "El slug no cambia una vez que la campaña esta activa.",
+    "organization": "Organizacion",
+    "organizationPlaceholder": "Donate Life Florida",
+    "stateScope": "Estado",
+    "stateScopePlaceholder": "FL",
+    "language": "Idioma",
+    "languages": {
+      "EN": "Ingles",
+      "ES": "Español",
+      "Bilingual": "Bilingue"
+    },
+    "template": "Template",
+    "startDate": "Fecha inicial",
+    "endDate": "Fecha final",
+    "showPublicLeaderboard": "Mostrar leaderboard publico",
+    "showPublicLeaderboardDescription": "Muestra conteos agregados por subgrupo en la pagina publica cuando esta activo.",
+    "heroHeadline": "Titular del hero",
+    "heroCta": "Texto del CTA primario",
+    "heroSubheadline": "Subtitulo del hero",
+    "heroImage": "URL de imagen del hero",
+    "sectionFieldsJson": "JSON de secciones",
+    "customConfigJson": "JSON de configuracion avanzada",
+    "cancel": "Cancelar",
+    "create": "Crear campaña",
+    "save": "Guardar campaña",
+    "creating": "Creando...",
+    "saving": "Guardando..."
+  },
+  "timeAgo": {
+    "justNow": "ahora mismo",
+    "minutes": "hace {count} minuto{count, plural, one{} other{s}}",
+    "hours": "hace {count} hora{count, plural, one{} other{s}}",
+    "days": "hace {count} día{count, plural, one{} other{s}}",
+    "months": "hace {count} mes{count, plural, one{} other{es}}",
+    "years": "hace {count} año{count, plural, one{} other{s}}"
+  },
+  "app": {
+    "name": "Portal de Administración NDLR",
+    "version": "v1.0",
+    "subtitle": "Registro Nacional de Donantes"
+  },
+  "user": {
+    "admin": "Administrador",
+    "editor": "Editor",
+    "viewer": "Visor",
+    "signOut": "Cerrar sesión",
+    "signingOut": "Cerrando sesión...",
+    "role": "Rol"
+  },
+  "users": {
+    "title": "Gestión de Usuarios",
+    "loadingUsers": "Cargando usuarios...",
+    "fetchingUsersData": "Obteniendo datos de usuarios",
+    "description": "Gestionar cuentas de usuarios, roles y acceso.",
+    "roleValues": {
+      "admin": "Administrador",
+      "editor": "Editor",
+      "viewer": "Visor"
+    },
+    "statusValues": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "filters": {
+      "active": "activo",
+      "filter": "filtro",
+      "filters": "filtros",
+      "search": "Buscar",
+      "role": "Rol",
+      "status": "Estado",
+      "clearAll": "Limpiar todo"
+    },
+    "resendInvitation": {
+      "successToast": "Invitación reenviada exitosamente"
+    },
+    "create": {
+      "trigger": "Invitar Usuario",
+      "modalTitle": "Invitar Nuevo Usuario",
+      "modalDescription": "Enviar un correo de invitación a un nuevo usuario",
+      "successToast": "Usuario invitado exitosamente"
+    },
+    "report": {
+      "generating": "Generando...",
+      "export": "Exportar",
+      "retry": "Reintentar"
+    },
+    "errors": {
+      "USER_NOT_FOUND": "Usuario no encontrado.",
+      "EMAIL_ALREADY_EXISTS": "Ya existe un usuario con esta dirección de correo electrónico.",
+      "CANNOT_DEACTIVATE_SELF": "No puedes desactivar tu propia cuenta.",
+      "CANNOT_DEACTIVATE_LAST_MANAGER": "No se puede desactivar al último administrador activo.",
+      "INVALID_CURRENT_PASSWORD": "La contraseña actual que ingresaste es incorrecta.",
+      "INVALID_PASSWORD_RESET_TOKEN": "El enlace de restablecimiento de contraseña es inválido o ha expirado.",
+      "INVITATION_FAILED": "Error al enviar la invitación. Por favor intenta de nuevo.",
+      "UPDATE_ERROR": "Error al actualizar el usuario. Por favor intenta de nuevo.",
+      "INTERNAL_ERROR": "Ocurrió un error inesperado. Por favor intenta de nuevo.",
+      "AUTH_ERROR": "Debes estar autenticado para realizar esta acción."
+    }
+  },
+  "userForm": {
+    "userInformation": "Información de Usuario",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "usuario@ejemplo.com",
+    "fullName": "Nombre Completo (opcional)",
+    "fullNamePlaceholder": "Juan Pérez",
+    "access": "Acceso",
+    "role": "Rol",
+    "rolePlaceholder": "Seleccionar rol",
+    "status": "Estado",
+    "statusPlaceholder": "Seleccionar estado",
+    "cancel": "Cancelar",
+    "saving": "Guardando",
+    "save": "Guardar",
+    "sendingInvite": "Enviando Invitación",
+    "sendInvite": "Enviar Invitación",
+    "user": "Usuario",
+    "fullNameLabel": "Nombre completo"
+  },
+  "itemCategories": {
+    "title": "Gestión de Categorías de Items",
+    "loadingCategories": "Cargando categorías de items...",
+    "fetchingCategoriesData": "Obteniendo datos de categorías de items",
+    "description": "Gestionar las categorías de items para el sistema de nomencladores.",
+    "pricingTypeValues": {
+      "size_based": "Basado en Tamaño",
+      "flat_rate": "Tarifa Plana",
+      "unit_based": "Basado en Unidad"
+    },
+    "filters": {
+      "active": "activo",
+      "inactive": "inactivo",
+      "filter": "filtro",
+      "filters": "filtros",
+      "search": "Buscar",
+      "status": "Estado",
+      "clearAll": "Limpiar todo"
+    },
+    "create": {
+      "trigger": "Crear Categoría",
+      "sheetTitle": "Crear Categoría de Item",
+      "sheetDescription": "Crear una nueva categoría de item"
+    },
+    "delete": {
+      "title": "Eliminar Categoría de Item",
+      "description": "¿Estás seguro de que quieres eliminar esta categoría de item? Esta acción no se puede deshacer.",
+      "confirm": "Eliminar",
+      "cancel": "Cancelar",
+      "successToast": "Categoría de item eliminada exitosamente"
+    },
+    "toggleActive": {
+      "activateTitle": "Activar Categoría de Item",
+      "activateDescription": "¿Estás seguro de que quieres activar esta categoría de item?",
+      "activateConfirm": "Activar",
+      "activateSuccessToast": "Categoría de item activada exitosamente",
+      "deactivateTitle": "Desactivar Categoría de Item",
+      "deactivateDescription": "¿Estás seguro de que quieres desactivar esta categoría de item?",
+      "deactivateConfirm": "Desactivar",
+      "deactivateSuccessToast": "Categoría de item desactivada exitosamente",
+      "cancel": "Cancelar"
+    },
+    "bulkToggleActive": {
+      "activateTitle": "Activar Categorías de Items",
+      "activateDescription": "¿Estás seguro de que quieres activar las categorías de items seleccionadas?",
+      "activateConfirm": "Activar",
+      "activateSuccessToast": "{count} categorías de items activadas exitosamente",
+      "deactivateTitle": "Desactivar Categorías de Items",
+      "deactivateDescription": "¿Estás seguro de que quieres desactivar las categorías de items seleccionadas?",
+      "deactivateConfirm": "Desactivar",
+      "deactivateSuccessToast": "{count} categorías de items desactivadas exitosamente",
+      "successToast": "{count} categorías de items actualizadas exitosamente",
+      "cancel": "Cancelar"
+    },
+    "bulkDelete": {
+      "label": "Eliminar",
+      "title": "Eliminar Categorías de Items",
+      "description": "Las categorías de items seleccionadas serán eliminadas permanentemente. Esta acción no se puede deshacer.",
+      "confirm": "Eliminar",
+      "entitySingular": "categoría de item",
+      "entityPlural": "categorías de items",
+      "successToast": "{count} categorías de items eliminadas exitosamente"
+    },
+    "report": {
+      "generating": "Generando...",
+      "export": "Exportar",
+      "retry": "Reintentar"
+    },
+    "errors": {
+      "DUPLICATE_NAME": "Ya existe una categoría activa con ese nombre.",
+      "HAS_RELATED_RECORDS": "Esta categoría no puede eliminarse porque tiene ítems o reglas de precio asociados.",
+      "CREATE_ERROR": "Error al crear la categoría de item. Por favor intenta de nuevo.",
+      "UPDATE_ERROR": "Error al actualizar la categoría de item. Por favor intenta de nuevo.",
+      "DELETE_ERROR": "Error al eliminar la categoría de item. Por favor intenta de nuevo.",
+      "INTERNAL_ERROR": "Ocurrió un error inesperado. Por favor intenta de nuevo.",
+      "AUTH_ERROR": "Debes estar autenticado para realizar esta acción."
+    }
+  },
+  "itemCategoryDetails": {
+    "title": "Detalles de Categoría de Item",
+    "detailsDescription": "Ver información completa de la categoría de item.",
+    "editItemCategory": "Editar Categoría",
+    "editItemCategoryDescription": "Actualizar la información de la categoría de item.",
+    "generalInfo": "Información General",
+    "categoryName": "Nombre",
+    "categoryDescription": "Descripción",
+    "pricingType": "Tipo de Precio",
+    "icon": "Icono",
+    "iconImage": "Imagen del Icono",
+    "noIcon": "Sin icono",
+    "status": "Estado",
+    "isActive": "Estado Activo",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "system": "Sistema",
+    "createdAt": "Creado",
+    "updatedAt": "Actualizado",
+    "noValue": "—"
+  },
+  "itemCategoryCard": {
+    "pricingType": "Tipo de Precio",
+    "description": "Descripción",
+    "iconCode": "Icono",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "created": "Creado",
+    "viewDetails": "Ver detalles",
+    "edit": "Editar",
+    "activate": "Activar",
+    "deactivate": "Desactivar",
+    "delete": "Eliminar"
+  },
+  "itemCategoryForm": {
+    "basicInfo": "Información Básica",
+    "name": "Nombre",
+    "namePlaceholder": "Ingrese nombre",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Ingrese descripción",
+    "iconCode": "Icono",
+    "iconCodePlaceholder": "Ingrese URL del icono",
+    "isActive": "Activo",
+    "isActiveDescription": "Marcar como activo para mostrar en el sistema",
+    "pricingConfiguration": "Configuración de precios",
+    "pricingType": "Tipo de precio",
+    "pricingTypePlaceholder": "Seleccionar tipo de precio",
+    "flatRatePrice": "Precio tarifa plana",
+    "flatRateDescription": "Un solo precio aplica a todos los artículos de esta categoría independientemente del tamaño.",
+    "unitBasedPrice": "Precio basado en unidad",
+    "unitBasedDescription": "Precio por unidad para artículos de esta categoría.",
+    "price": "Precio",
+    "currency": "Moneda",
+    "associatedSizes": "Tamaños asociados",
+    "selected": "seleccionados",
+    "associatedSizesDescription": "Selecciona los tamaños disponibles para esta categoría y opcionalmente establece un precio para cada uno.",
+    "loadingSizes": "Cargando tamaños...",
+    "noActiveSizes": "No se encontraron tamaños activos. Agrega tamaños en la sección Nomencladores → Tamaños de Artículos primero.",
+    "cancel": "Cancelar",
+    "createItemCategory": "Crear Categoría",
+    "editItemCategory": "Editar Categoría",
+    "creating": "Creando",
+    "editing": "Editando"
+  },
+  "items": {
+    "title": "Artículos",
+    "description": "Ver y gestionar todos los artículos registrados en el sistema.",
+    "loadingItems": "Cargando artículos...",
+    "fetchingItemsData": "Obteniendo datos de artículos",
+    "statusValues": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "archived": "Archivado"
+    },
+    "filters": {
+      "active": "activo",
+      "filter": "filtro",
+      "filters": "filtros",
+      "search": "Buscar",
+      "status": "Estado",
+      "category": "Categoría",
+      "size": "Tamaño",
+      "clearAll": "Limpiar todo"
+    },
+    "errors": {
+      "INVALID_STATUS_TRANSITION": "Este cambio de estado no está permitido en esta etapa.",
+      "UPDATE_ERROR": "Failed to update the item. Please try again.",
+      "INTERNAL_ERROR": "An unexpected error occurred. Please try again.",
+      "AUTH_ERROR": "You must be logged in to perform this action."
+    }
+  },
+  "itemStats": {
+    "totalItems": "Total de artículos",
+    "active": "Activos",
+    "inactive": "Inactivos",
+    "archived": "Archivados"
+  },
+  "itemDetails": {
+    "title": "Detalles del Artículo",
+    "detailsDescription": "Ver información completa del artículo.",
+    "editItem": "Editar Artículo",
+    "editItemDescription": "Corregir propiedades del artículo.",
+    "name": "Nombre",
+    "status": "Estado",
+    "description": "Descripción",
+    "category": "Categoría",
+    "timeline": "Historial",
+    "createdAt": "Creado",
+    "updatedAt": "Actualizado",
+    "imagesMetadata": "Imágenes",
+    "noImages": "Sin imágenes",
+    "noValue": "—"
+  },
+  "itemCard": {
+    "name": "Nombre",
+    "status": "Estado",
+    "category": "Categoría",
+    "description": "Descripción",
+    "created": "Creado",
+    "noImages": "Sin imágenes",
+    "actions": "Acciones",
+    "viewDetails": "Ver detalles",
+    "edit": "Editar",
+    "changeStatus": "Cambiar estado",
+    "statusValues": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "archived": "Archivado"
+    }
+  },
+  "itemForm": {
+    "itemInfo": "Información del Artículo",
+    "name": "Nombre",
+    "namePlaceholder": "Ingresa el nombre",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Ingresa una descripción",
+    "category": "Categoría",
+    "categoryPlaceholder": "Seleccionar categoría",
+    "addImages": "Agregar Nuevas Imágenes",
+    "imagesLabel": "Subir imágenes",
+    "existingImages": "Imágenes Existentes",
+    "existingImagesNote": "Las imágenes existentes no se pueden eliminar.",
+    "imagesNote": "Las nuevas imágenes se agregarán a las existentes.",
+    "photosOptional": "Fotos (opcional)",
+    "cancel": "Cancelar",
+    "saveChanges": "Guardar cambios",
+    "saving": "Guardando..."
+  },
+  "itemStatus": {
+    "title": "Cambiar Estado del Artículo",
+    "description": "Selecciona un nuevo estado para el artículo",
+    "currentStatus": "Estado Actual",
+    "newStatus": "Nuevo Estado",
+    "selectStatus": "Seleccionar estado",
+    "confirm": "Confirmar Cambio",
+    "cancel": "Cancelar",
+    "saving": "Guardando...",
+    "successToast": "Estado del artículo actualizado exitosamente"
+  },
+  "imageUpload": {
+    "avatarPreview": "Vista previa del avatar",
+    "dropImageHere": "Suelta la imagen aquí",
+    "processingImage": "Procesando imagen...",
+    "optimizingImage": "Optimizando imagen...",
+    "clickToChangePhoto": "Haz clic para cambiar la foto",
+    "waitForProcessing": "Espera mientras se procesa la imagen...",
+    "dragAndDropOrClick": "Arrastra y suelta una imagen, o haz clic para seleccionar",
+    "fileFormats": "PNG, JPG, GIF hasta {maxSize}MB",
+    "willConvertToWebP": "(se convertirá a WebP)",
+    "preview": "Vista previa"
+  },
+  "multiFileUpload": {
+    "uploadFiles": "Subir archivos",
+    "dropFilesHere": "Suelta los archivos aquí",
+    "processingFiles": "Procesando archivos...",
+    "dragAndDropOrClick": "Arrastra y suelta archivos, o haz clic para seleccionar",
+    "maxFilesReached": "Máximo {maxFiles} archivos alcanzado",
+    "fileSizeInfo": "Hasta {maxSize}MB por archivo • {remaining} restantes",
+    "uploadedFiles": "Archivos subidos ({count}/{max})",
+    "clearAll": "Limpiar todo",
+    "processing": "Procesando...",
+    "maxFilesAllowed": "Máximo {maxFiles} archivos permitidos"
+  },
+  "filters": {
+    "searchByNumber": "Buscar por número...",
+    "searchByName": "Buscar por nombre...",
+    "status": "Estado",
+    "sortBy": "Ordenar por",
+    "sortByStatus": "Estado",
+    "sortByCreated": "Fecha de Creación",
+    "sortAscending": "Ordenar ascendente",
+    "sortDescending": "Ordenar descendente",
+    "category": "Categoría",
+    "size": "Tamaño",
+    "searchByNameOrEmail": "Buscar por nombre o correo electrónico...",
+    "searchByUser": "Buscar por usuario...",
+    "eventType": "Tipo de Evento",
+    "user": "Usuario",
+    "sortByUser": "Usuario",
+    "sortByCategory": "Ordenar por Categoría",
+    "sortByName": "Nombre",
+    "sortBySortOrder": "Orden",
+    "sortByEmail": "Correo",
+    "sortByPhone": "Teléfono",
+    "sortByRole": "Rol",
+    "searchByNameEmailPhone": "Buscar por nombre, correo o teléfono...",
+    "searchByNameDescription": "Buscar por nombre o descripción...",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "electronics": "Electrónicos",
+    "jewelry": "Joyería",
+    "watches": "Relojes",
+    "tools": "Herramientas",
+    "instruments": "Instrumentos",
+    "firearms": "Armas de Fuego",
+    "other": "Otro"
+  },
+  "stats": {
+    "totalUsers": "Total de usuarios",
+    "admins": "Administradores",
+    "active": "Activos",
+    "inactive": "Inactivos",
+    "totalItems": "Total de artículos"
+  },
+  "table": {
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Correo",
+    "role": "Rol",
+    "status": "Estado",
+    "idType": "Tipo de ID",
+    "idIssuer": "Emisor de ID",
+    "idExpiry": "Vencimiento del ID",
+    "dateOfBirth": "Fecha de Nacimiento",
+    "address": "Dirección",
+    "created": "Creado",
+    "id": "ID",
+    "location": "Ubicación",
+    "price": "Precio",
+    "actions": "Acciones",
+    "viewDetails": "Ver detalles",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "cannotEditYourself": "No puedes editarte a ti mismo",
+    "cannotDeactivateYourself": "No puedes desactivarte a ti mismo",
+    "deactivateUsers": "Desactivar usuarios",
+    "deactivateUsersDescription": "Los usuarios seleccionados serán marcados como inactivos y perderán acceso. Esta acción puede revertirse editando cada usuario.",
+    "confirmDeactivate": "Desactivar",
+    "deactivate": "Desactivar",
+    "activate": "Activar",
+    "deleteItemCategories": "Eliminar categorías de items",
+    "deleteItemCategoriesDescription": "Las categorías de items seleccionadas serán eliminadas permanentemente. Esta acción no se puede deshacer.",
+    "user": "usuario",
+    "users": "usuarios",
+    "noUsersFound": "No se encontraron usuarios",
+    "itemCategories": "Categorías de Items",
+    "noItemCategoriesFound": "No se encontraron categorías de items",
+    "itemCategory": "categoría de item",
+    "activateItemCategories": "Activar Categorías de Items",
+    "activateItemCategoriesDescription": "¿Estás seguro de que quieres activar las categorías de items seleccionadas?",
+    "deactivateItemCategories": "Desactivar Categorías de Items",
+    "deactivateItemCategoriesDescription": "¿Estás seguro de que quieres desactivar las categorías de items seleccionadas?",
+    "selectAll": "Seleccionar todo",
+    "selectRow": "Seleccionar fila",
+    "customer": "Cliente",
+    "items": "Artículos",
+    "noName": "Sin nombre",
+    "resendInvitation": "Reenviar invitación",
+    "confirmDelete": "Eliminar"
+  },
+  "userDetails": {
+    "title": "Detalles de Usuario",
+    "description": "Información de cuenta y marcas de tiempo.",
+    "editUser": "Editar usuario",
+    "editUserDescription": "Actualizar el rol y estado del usuario."
+  },
+  "userDetailsSection": {
+    "account": "Cuenta",
+    "timestamps": "Marcas de Tiempo",
+    "lastUpdated": "Última Actualización",
+    "unknownUser": "Usuario Desconocido"
+  },
+  "refresh": {
+    "dataRefreshed": "Datos actualizados",
+    "refreshData": "Actualizar Datos",
+    "refreshDataAria": "Actualizar datos"
+  },
+  "pagination": {
+    "showing": "Mostrando",
+    "of": "de",
+    "rows": "Filas",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente"
+  },
+  "loginForm": {
+    "credentials": "Credenciales",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "Ingrese su correo electrónico",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingrese su contraseña",
+    "signingIn": "Iniciando sesión...",
+    "signIn": "Iniciar Sesión",
+    "dontHaveAccount": "¿No tienes una cuenta?. Contacta con un administrador, para solicitar la creación de tu cuenta",
+    "signUp": "Registrarse",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "loginContent": {
+    "title": "Iniciar Sesión",
+    "description": "Ingrese sus credenciales para acceder a su cuenta"
+  },
+  "loginErrors": {
+    "invalidCredentials": "Correo electrónico o contraseña inválidos.",
+    "loginFailed": "Error al iniciar sesión. Por favor inténtelo de nuevo.",
+    "missing_code": "El enlace está incompleto. Por favor solicite uno nuevo.",
+    "invalid_code": "El enlace ha expirado o ya fue utilizado. Por favor solicite uno nuevo.",
+    "legacy_link": "Este formato de enlace ya no está soportado. Por favor solicite uno nuevo."
+  },
+  "activateAccount": {
+    "title": "Completa tu Perfil",
+    "description": "Por favor proporciona tu información para activar tu cuenta",
+    "userInformation": "Información del Usuario",
+    "security": "Seguridad",
+    "email": "Correo Electrónico",
+    "fullName": "Nombre Completo",
+    "fullNamePlaceholder": "Juan Pérez",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "cancel": "Cancelar",
+    "activating": "Activando...",
+    "activate": "Activar Cuenta"
+  },
+  "detailsContainer": {
+    "loading": "Cargando",
+    "loadingSubtitle": "Por favor espera un momento",
+    "error": "Error al cargar",
+    "notFound": "no encontrado",
+    "item": "artículo",
+    "user": "usuario",
+    "itemCategory": "categoría de item"
+  },
+  "landing": {
+    "nav": {
+      "overview": "Descripción",
+      "interfaces": "Interfaces",
+      "flow": "Flujo",
+      "principles": "Principios",
+      "catalog": "Demo",
+      "roles": "Roles",
+      "getStarted": "Ver Demo",
+      "docs": "Documentación"
+    },
+    "hero": {
+      "badge": "Plantilla de Código Abierto",
+      "title": "Construye",
+      "titleHighlight": "más rápido",
+      "titleEnd": "con una base sólida en Next.js.",
+      "description": "Autenticación, i18n, control de acceso por roles, módulos CRUD y un dashboard — todo conectado y listo para extender.",
+      "getStarted": "Ver la Demo",
+      "seeFlow": "Cómo Funciona",
+      "readTime": "5 min de lectura",
+      "itemRecord": "Registro de Artículo",
+      "idLabel": "ID",
+      "nameLabel": "Nombre",
+      "categoryLabel": "Categoría",
+      "statusLabel": "Estado",
+      "statusActive": "Activo",
+      "updatedLabel": "Actualizado",
+      "updatedValue": "hace 2 min",
+      "demoNote": "datos de demo"
+    },
+    "overview": {
+      "sectionNumber": "01",
+      "title": "Una plantilla full-stack para apps reales",
+      "description": "No es una librería de componentes. No es un starter lleno de TODOs. Es una aplicación funcional — con auth, datos, roles y UI — lista para bifurcar y extender.",
+      "notCrm": "No es solo boilerplate",
+      "itemCentric": {
+        "label": "Módulos primero",
+        "desc": "Tres módulos CRUD (Artículos, Categorías, Usuarios) con datos de prueba en memoria. Agrega los tuyos en minutos."
+      },
+      "fullyAuditable": {
+        "label": "Control de acceso",
+        "desc": "Tres roles (admin, editor, visor) protegen cada página y acción. Reemplaza la lógica de autorización con la tuya."
+      },
+      "scanDriven": {
+        "label": "i18n integrado",
+        "desc": "Inglés y español de serie. next-intl con namespaces por página y enrutamiento automático de idioma."
+      },
+      "sameDayBeyond": {
+        "label": "Dashboard incluido",
+        "desc": "Un dashboard operativo con tarjetas de métricas, gráficos y feeds de actividad — todo conectado a los datos en vivo."
+      }
+    },
+    "interfaces": {
+      "sectionNumber": "02",
+      "title": "Dos formas de",
+      "titleHighlight": "usar",
+      "titleEnd": "la app.",
+      "description": "La plantilla incluye dos contextos de usuario sobre la misma base de código. Los usuarios de gestión poseen los datos; los de solo lectura los exploran.",
+      "whatYouDoHere": "Qué haces aquí",
+      "management": {
+        "title": "Gestión",
+        "subtitle": "Control total.",
+        "description": "Los usuarios Admin y Editor acceden a todos los módulos, crean y editan registros, gestionan cuentas de usuario y ven el dashboard completo.",
+        "badge": "admin · editor",
+        "steps": {
+          "1": "Navegar y filtrar todos los artículos",
+          "2": "Crear, editar y archivar artículos",
+          "3": "Gestionar categorías",
+          "4": "Invitar y gestionar usuarios",
+          "5": "Ver el dashboard operativo"
+        }
+      },
+      "readonly": {
+        "title": "Solo lectura",
+        "subtitle": "Navegar y ver.",
+        "description": "Los usuarios Visor pueden explorar el catálogo completo, ver categorías y leer el dashboard — pero no pueden modificar datos.",
+        "badge": "visor",
+        "steps": {
+          "1": "Navegar y filtrar artículos",
+          "2": "Ver detalles e imágenes de artículos",
+          "3": "Ver información de categorías",
+          "4": "Leer métricas del dashboard"
+        }
+      }
+    },
+    "flow": {
+      "sectionNumber": "03",
+      "title": "Ciclo de vida del artículo — tres etapas.",
+      "resultingState": "Estado resultante",
+      "note": "Las transiciones de estado se validan en el servidor. La <strong>reactivación</strong> desde archivado requiere acceso de admin o editor.",
+      "create": {
+        "title": "Crear",
+        "where": "Módulo de Artículos",
+        "duration": "< 1 min",
+        "summary": "Se registra un nuevo artículo con nombre, descripción opcional, categoría e imágenes.",
+        "bullets": {
+          "0": "Completar nombre y descripción opcional",
+          "1": "Asignar a una categoría existente",
+          "2": "Subir una o más imágenes",
+          "3": "El artículo se guarda como Activo por defecto"
+        },
+        "state": "activo"
+      },
+      "manage": {
+        "title": "Gestionar",
+        "where": "Módulo de Artículos",
+        "duration": "continuo",
+        "summary": "Los artículos pueden editarse, recategorizarse o desactivarse en cualquier momento por usuarios con rol editor o admin.",
+        "bullets": {
+          "0": "Editar nombre, descripción o categoría",
+          "1": "Agregar o actualizar imágenes",
+          "2": "Cambiar estado a inactivo",
+          "3": "Filtrar y buscar en el catálogo"
+        },
+        "state": "activo · inactivo"
+      },
+      "archive": {
+        "title": "Archivar",
+        "where": "Módulo de Artículos",
+        "duration": "permanente",
+        "summary": "Los artículos archivados se conservan en el sistema como referencia histórica pero se eliminan del catálogo activo.",
+        "bullets": {
+          "0": "Artículo marcado como archivado",
+          "1": "Visible con el filtro de archivados",
+          "2": "Puede reactivarse por un admin",
+          "3": "Historial de edición conservado"
+        },
+        "state": "archivado"
+      }
+    },
+    "principles": {
+      "sectionNumber": "04",
+      "title": "Decisiones de diseño",
+      "description": "Cuatro decisiones que dan forma a cómo está construida la plantilla — y cómo deberías extenderla.",
+      "principle1": {
+        "n": "i.",
+        "title": "En memoria primero, listo para base de datos",
+        "body": "Todos los datos viven en un almacén en memoria en el servidor. Reemplaza las llamadas al almacén con Prisma, Drizzle o cualquier ORM — sin cambiar otros archivos."
+      },
+      "principle2": {
+        "n": "ii.",
+        "title": "Server Actions, no rutas API",
+        "body": "Cada mutación pasa por un Server Action de Next.js tipado. Sin boilerplate REST que mantener — solo llama la acción desde tu formulario o hook."
+      },
+      "principle3": {
+        "n": "iii.",
+        "title": "Traducciones con namespace por módulo",
+        "body": "Cada página y módulo carga solo sus propias claves de traducción. Agregar un nuevo idioma significa agregar un archivo JSON — sin cambios en el código."
+      },
+      "principle4": {
+        "n": "iv.",
+        "title": "Roles aplicados en el nivel de layout",
+        "body": "El control de acceso vive en un middleware único y un guard por layout. Cambiar los permisos de un rol es una edición de una línea en la definición de rutas."
+      }
+    },
+    "lifecycle": {
+      "sectionNumber": "05",
+      "title": "Vocabulario de estados",
+      "description": "Los artículos y usuarios tienen un conjunto pequeño de estados bien definidos. Todo en la interfaz deriva de estos valores.",
+      "transactionLifecycle": "Roles de usuario",
+      "oneVisitFourStates": "Tres roles, un conjunto de reglas.",
+      "txDescription": "Cada acción en la app está controlada por rol. Los roles se asignan al invitar y pueden actualizarse por un admin.",
+      "itemStatuses": {
+        "active": {
+          "label": "Activo",
+          "desc": "El artículo es visible en el catálogo y está completamente operativo."
+        },
+        "inactive": {
+          "label": "Inactivo",
+          "desc": "El artículo está oculto de la vista predeterminada pero se conserva en el sistema."
+        },
+        "archived": {
+          "label": "Archivado",
+          "desc": "El artículo está cerrado y se conserva solo como referencia histórica."
+        }
+      },
+      "txStatuses": {
+        "admin": {
+          "label": "Admin",
+          "desc": "Acceso completo. Puede crear, editar, eliminar artículos y categorías, gestionar usuarios y ver el dashboard."
+        },
+        "editor": {
+          "label": "Editor",
+          "desc": "Puede crear y editar artículos y categorías. No puede gestionar usuarios ni eliminar registros."
+        },
+        "viewer": {
+          "label": "Visor",
+          "desc": "Solo lectura. Puede explorar artículos y ver el dashboard pero no puede modificar datos."
+        }
+      }
+    },
+    "catalog": {
+      "sectionNumber": "06",
+      "title": "Datos de demo",
+      "description": "La plantilla incluye 20 artículos precargados en estas categorías. Todo editable en los módulos de Artículos y Categorías.",
+      "examplesLabel": "Ejemplos",
+      "pricingTypeLabel": "Tipo de precio",
+      "flatRate": "Tarifa fija",
+      "sizeBased": "Por talla",
+      "categories": {
+        "electronics": {
+          "name": "Electrónica",
+          "desc": "Laptops, teléfonos, tablets y accesorios.",
+          "examples": "MacBook Pro, iPhone 15, iPad Air"
+        },
+        "clothing": {
+          "name": "Ropa",
+          "desc": "Prendas y calzado de todo tipo.",
+          "examples": "Chaqueta de invierno, tenis, traje formal"
+        },
+        "accessories": {
+          "name": "Accesorios",
+          "desc": "Bolsos, relojes, joyería y artículos personales.",
+          "examples": "Cartera de piel, reloj mecánico, gafas de sol"
+        },
+        "sports": {
+          "name": "Deportes",
+          "desc": "Equipo deportivo, outdoor y de fitness.",
+          "examples": "Bicicleta de montaña, tapete de yoga, arnés"
+        },
+        "documents": {
+          "name": "Documentos",
+          "desc": "Carpetas, libretas y papeles importantes.",
+          "examples": "Carpeta de proyecto, portafolio, libretas"
+        },
+        "other": {
+          "name": "Otros",
+          "desc": "Todo lo que no encaja en las categorías anteriores.",
+          "examples": "Paraguas, almohada de viaje, bolsa reutilizable"
+        }
+      }
+    },
+    "roles": {
+      "sectionNumber": "07",
+      "title": "Quién puede hacer qué",
+      "description": "La plantilla incluye tres roles. Cada rol tiene un conjunto claro y no superpuesto de permisos aplicados en cada capa.",
+      "canDo": "Puede hacer",
+      "admin": {
+        "name": "Admin",
+        "summary": "Acceso completo al sistema. Gestiona todo, incluidos los usuarios.",
+        "can": {
+          "0": "Crear, editar y eliminar artículos",
+          "1": "Gestionar categorías de artículos",
+          "2": "Invitar, editar y desactivar usuarios",
+          "3": "Ver y exportar datos del dashboard",
+          "4": "Cambiar el estado de cualquier artículo"
+        }
+      },
+      "editor": {
+        "name": "Editor",
+        "summary": "Gestión de contenido. Crea y edita datos pero no puede gestionar usuarios.",
+        "can": {
+          "0": "Crear y editar artículos",
+          "1": "Crear y editar categorías de artículos",
+          "2": "Ver métricas del dashboard",
+          "3": "Cambiar estado del artículo (activo ↔ inactivo)"
+        }
+      },
+      "viewer": {
+        "name": "Visor",
+        "summary": "Acceso de solo lectura. Explora el catálogo y monitorea el dashboard.",
+        "can": {
+          "0": "Navegar y buscar todos los artículos",
+          "1": "Ver detalles e imágenes de artículos",
+          "2": "Ver categorías de artículos",
+          "3": "Leer métricas y gráficos del dashboard"
+        }
+      }
+    },
+    "closing": {
+      "beforeFirstShift": "Antes de desplegar",
+      "title": "Cuatro cosas que",
+      "titleHighlight": "personalizar",
+      "titleEnd": "primero.",
+      "description": "La plantilla funciona de inmediato. Estos cuatro pasos la harán tuya.",
+      "footerNote": "Todos los cambios están aislados en archivos bien marcados. La plantilla está diseñada para bifurcarse, no para pelearse con ella.",
+      "internalDocumentation": "README",
+      "tip1": {
+        "n": "01",
+        "title": "Reemplaza el almacén en memoria",
+        "body": "Intercambia lib/mock/in-memory-store.ts con tu adaptador de base de datos. Todas las funciones de servicio llaman la misma interfaz — no es necesario cambiar otros archivos."
+      },
+      "tip2": {
+        "n": "02",
+        "title": "Configura la autenticación",
+        "body": "Auth.js está preconfigurado con un proveedor de Credenciales. Agrega proveedores OAuth, un almacén de sesiones en base de datos o una estrategia JWT personalizada en auth.config.ts."
+      },
+      "tip3": {
+        "n": "03",
+        "title": "Actualiza metadatos y marca",
+        "body": "Reemplaza 'App Name' en messages/en.json y messages/es.json. Actualiza el logo en public/. Cambia el color primario en tailwind.config.ts."
+      },
+      "tip4": {
+        "n": "04",
+        "title": "Agrega tus propios módulos",
+        "body": "Copia el directorio modules/items como punto de partida. Define tus tipos, escribe un servicio, agrega Server Actions y añade el módulo a las rutas del sidebar."
+      }
+    },
+    "footer": {
+      "description": "Una plantilla de Next.js lista para producción con auth, i18n, módulos CRUD y dashboard.",
+      "onThisPage": "En Esta Página",
+      "reference": "Referencia",
+      "catalogAndRates": "Demo",
+      "roles": "Roles",
+      "copyright": "© {year} App Name. Código abierto bajo la Licencia MIT.",
+      "tagline": "Bifúrcala. Extiéndela. Despliégala."
+    }
+  },
+  "operationalDashboard": {
+    "title": "Dashboard Operativo",
+    "description": "Métricas clave del almacén de datos en vivo",
+    "lastUpdated": "Última actualización",
+    "period": {
+      "daily": "Diario",
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "custom": "Personalizado",
+      "cancel": "Cancelar",
+      "apply": "Aplicar"
+    },
+    "metrics": {
+      "totalItems": "Total de artículos",
+      "totalItemsDescription": "Todos los artículos en el sistema",
+      "activeItems": "Activos",
+      "activeItemsDescription": "Artículos actualmente activos",
+      "inactiveItems": "Inactivos",
+      "inactiveItemsDescription": "Artículos actualmente inactivos",
+      "archivedItems": "Archivados",
+      "archivedItemsDescription": "Artículos que han sido archivados",
+      "totalCategories": "Categorías",
+      "totalCategoriesDescription": "Total de categorías de artículos",
+      "totalUsers": "Usuarios",
+      "totalUsersDescription": "Total de usuarios registrados",
+      "totalEventsToday": "{count} eventos hoy"
+    },
+    "sections": {
+      "volumeTrend": "Actividad diaria (últimos 7 días)",
+      "categoryBreakdown": "Artículos por categoría",
+      "staffActivity": "Actividad de usuarios hoy"
+    },
+    "chart": {
+      "intake": "Creados",
+      "release": "Archivados"
+    },
+    "category": {
+      "electronics": "Electrónica",
+      "clothing": "Ropa",
+      "accessories": "Accesorios",
+      "sports": "Deportes",
+      "documents": "Documentos",
+      "other": "Otros"
+    },
+    "noStaffActivity": "Sin actividad de usuarios registrada hoy",
+    "noIncidents": "Sin datos de categorías disponibles",
+    "loadError": "No se pudieron cargar los datos del dashboard. Recarga la página."
+  },
+  "userProfile": {
+    "menuItem": "Ver Perfil",
+    "modalTitle": "Mi Perfil",
+    "modalDescription": "Ver y editar la información de tu cuenta",
+    "noName": "Sin nombre",
+    "editName": "Editar",
+    "loading": "Cargando perfil",
+    "loadingSubtitle": "Por favor espera un momento",
+    "error": "Error al cargar el perfil",
+    "notFound": "Perfil no encontrado",
+    "sections": {
+      "personalInfo": "Información Personal",
+      "systemInfo": "Información del Sistema",
+      "security": "Seguridad de la Cuenta"
+    },
+    "fields": {
+      "fullName": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "role": "Rol",
+      "status": "Estado",
+      "createdAt": "Miembro Desde",
+      "updatedAt": "Última Actualización"
+    },
+    "form": {
+      "fullName": "Nombre Completo",
+      "fullNamePlaceholder": "Tu nombre completo",
+      "save": "Guardar Cambios",
+      "saving": "Guardando...",
+      "cancel": "Cancelar",
+      "successToast": "Perfil actualizado correctamente"
+    },
+    "security": {
+      "changePassword": "Cambiar Contraseña",
+      "forgotPassword": "Olvidé mi Contraseña",
+      "changeTitle": "Cambia tu contraseña",
+      "forgotTitle": "Recuperación de Contraseña",
+      "forgotDescription": "Para restablecer tu contraseña, contacta a tu administrador o usa la página de inicio de sesión.",
+      "currentPassword": "Contraseña Actual",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Nueva Contraseña",
+      "savePassword": "Actualizar Contraseña",
+      "back": "Volver",
+      "changing": "Cambiando...",
+      "comingSoon": "Próximamente",
+      "forgotSent": "Revisa tu correo electrónico",
+      "forgotSentDescription": "Se ha enviado un enlace de restablecimiento a {email}.",
+      "forgotEmail": "Correo Electrónico"
+    }
+  },
+  "forgotPassword": {
+    "pageTitle": "Olvidé mi Contraseña",
+    "pageDescription": "Ingresa tu correo electrónico y te enviaremos un enlace de restablecimiento",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "submit": "Enviar Enlace",
+    "submitting": "Enviando...",
+    "successTitle": "Revisa tu correo electrónico",
+    "successDescription": "Si existe una cuenta para {email}, se ha enviado un enlace de restablecimiento.",
+    "cancel": "Volver",
+    "backToLogin": "Volver al Inicio de Sesión"
+  },
+  "resetPassword": {
+    "pageTitle": "Restablecer Contraseña",
+    "pageDescription": "Ingresa tu nueva contraseña a continuación",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "submit": "Restablecer Contraseña",
+    "submitting": "Restableciendo...",
+    "successTitle": "Contraseña restablecida correctamente",
+    "successDescription": "Tu contraseña ha sido actualizada. Por favor inicia sesión con tu nueva contraseña.",
+    "backToLogin": "Volver al Inicio de Sesión"
+  },
+  "error403": {
+    "title": "Acceso Denegado",
+    "description": "No tienes permiso para acceder a esta página",
+    "message": "Por favor contacta a tu administrador si crees que esto es un error.",
+    "goHome": "Ir al Inicio",
+    "goDashboard": "Ir al Dashboard"
+  }
+}
