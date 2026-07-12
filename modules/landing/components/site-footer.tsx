@@ -3,11 +3,11 @@ import { Logo } from './logo'
 const columns = [
   {
     title: 'Platform',
-    links: ['Campaign CMS', 'Reporting & analytics', 'Heat maps', 'API & integrations'],
+    links: ['Catalog management', 'Reporting & analytics', 'Dashboards', 'API & integrations'],
   },
   {
-    title: 'For states',
-    links: ['Why migrate', 'Onboarding', 'Security & compliance', 'Pricing'],
+    title: 'For teams',
+    links: ['Why switch', 'Onboarding', 'Security & compliance', 'Pricing'],
   },
   {
     title: 'Resources',
@@ -30,8 +30,8 @@ export function SiteFooter() {
             <div className="col-span-2 lg:col-span-2">
               <Logo />
               <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-mid">
-                The National Donate Life Registry — the official organ, eye, and tissue donor
-                registration platform operated by Donate Life America.
+                Core Admin — the secure, multi-tenant admin platform for managing your catalog,
+                users, and analytics.
               </p>
             </div>
 
@@ -59,7 +59,7 @@ export function SiteFooter() {
       <div className="bg-brand-dark">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-6 sm:px-8">
           <p className="text-xs text-[#7e8a7e]">
-            © {new Date().getFullYear()} Donate Life America. All rights reserved.
+            © {new Date().getFullYear()} Core Admin. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-[#9fab9f]">
             <a href="#" className="underline underline-offset-2 hover:text-white">

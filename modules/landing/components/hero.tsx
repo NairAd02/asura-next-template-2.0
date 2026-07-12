@@ -23,17 +23,16 @@ export function Hero() {
           <div className="text-center lg:text-left">
             <span className="inline-flex items-center gap-2 rounded-full border border-[#E2E9D8] bg-white px-3.5 py-1.5 text-[13px] font-semibold text-brand-green-dark shadow-sm">
               <span className="size-[7px] rounded-full bg-brand-green" />
-              Operated by Donate Life America · RegisterMe.org
+              Trusted by growing teams · Core Admin
             </span>
 
             <h1 className="mt-6 text-balance font-heading text-4xl font-semibold tracking-tight text-brand-dark sm:text-5xl lg:text-6xl">
-              The donor registry your state was meant to run on
+              The admin portal your team was meant to run on
             </h1>
 
             <p className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-brand-mid sm:text-lg lg:mx-0">
-              The National Donate Life Registry Administration Portal is a secure, multi-tenant command
-              center for donor records, recruitment campaigns, and real-time analytics — purpose-built
-              for state programs, OPOs, and DMV partners.
+              Core Admin is a secure, multi-tenant command center for your catalog, workflows, and
+              real-time analytics — purpose-built for growing teams and integration partners.
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
@@ -42,7 +41,7 @@ export function Hero() {
                   size="lg"
                   className="h-11 bg-brand-green px-5 text-sm font-bold text-brand-dark shadow-[0_4px_14px_rgba(74,122,31,0.22)] transition-colors hover:bg-brand-green-dark hover:text-white"
                 >
-                  Request a state demo
+                  Request a demo
                   <ArrowRight className="size-4" />
                 </Button>
               </NavigationComponent>
@@ -52,14 +51,14 @@ export function Hero() {
                   size="lg"
                   className="h-11 border-brand-blue px-5 text-sm font-semibold text-brand-blue"
                 >
-                  See the 90-day onboarding
+                  See how onboarding works
                 </Button>
               </NavigationComponent>
             </div>
 
             <p className="mt-5 flex items-center justify-center gap-2 text-xs text-brand-muted lg:justify-start">
               <ShieldCheck className="size-4 text-brand-green-dark" />
-              HIPAA &amp; NIST-aligned · MFA enforced · Full audit trail
+              Secure by design · MFA enforced · Full audit trail
             </p>
           </div>
 

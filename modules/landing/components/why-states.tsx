@@ -3,29 +3,29 @@ import { Building2, HeartHandshake, IdCard, Check } from 'lucide-react'
 const audiences = [
   {
     icon: Building2,
-    role: 'State Donate Life program directors',
+    role: 'Operations & IT leads',
     points: [
-      'Own your data and your jurisdiction — fully isolated, fully exportable',
-      'Real-time visibility into registrations, demographics, and campaign ROI',
+      'Own your data and your tenant — fully isolated, fully exportable',
+      'Real-time visibility into activity, categories, and campaign ROI',
       'Replace aging vendor systems without a multi-year rebuild',
     ],
   },
   {
     icon: HeartHandshake,
-    role: 'OPO leadership',
+    role: 'Team & department managers',
     points: [
-      'Cross-state donor lookup for authorized coordinators, fully logged',
+      'Cross-team record lookup for authorized coordinators, fully logged',
       'De-identified analytics for staff who need trends, not PII',
       'Confidence in legal accountability with an immutable audit trail',
     ],
   },
   {
     icon: IdCard,
-    role: 'DMV & integration partners',
+    role: 'Integration partners',
     points: [
       'Real-time and batch sync through a documented, versioned API',
-      'Automatic source attribution on every registration',
-      'Deduplication that guarantees one citizen, one profile',
+      'Automatic source attribution on every record',
+      'Deduplication that guarantees one record, one profile',
     ],
   },
 ]
@@ -39,7 +39,7 @@ export function WhyStates() {
             For decision makers
           </span>
           <h2 className="mt-3 text-balance font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Compelling reasons to make NDLR your official registry
+            Compelling reasons to make Core Admin your system of record
           </h2>
           <p className="mt-4 text-pretty text-base leading-relaxed text-muted-foreground">
             The portal is designed around the people who decide — and the outcomes they&apos;re

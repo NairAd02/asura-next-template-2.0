@@ -43,10 +43,10 @@ export function Security() {
               Security &amp; compliance
             </span>
             <h2 className="mt-3 text-balance font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-              Trusted with the nation&apos;s most sensitive registry
+              Trusted with your most sensitive data
             </h2>
             <p className="mt-4 text-pretty text-base leading-relaxed text-muted-foreground">
-              Donor data is a legal responsibility. The NDLR is engineered so that states, OPOs, and
+              Your data is a legal responsibility. Core Admin is engineered so that teams and
               partners can meet their obligations with confidence — and prove it.
             </p>
           </div>

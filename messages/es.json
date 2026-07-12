@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Portal de Administración NDLR",
-    "description": "Portal de administración seguro para Donate Life America. Gestione registros de donantes, campañas, usuarios y análisis en todos los estados."
+    "title": "Core Admin",
+    "description": "Portal de administración seguro para gestionar tu catálogo, usuarios y análisis."
   },
   "sidebar": {
     "groups": {
@@ -11,7 +11,6 @@
     },
     "navigation": {
       "dashboard": "Dashboard",
-      "campaigns": "Campañas",
       "items": "Artículos",
       "itemCategories": "Categorías de Artículos",
       "users": "Usuarios"
@@ -61,206 +60,6 @@
     "printError": "Error de impresión: {message}",
     "qrCodeDescription": "El código QR contiene el código de barras del artículo para búsqueda rápida. Impreso en la etiqueta física."
   },
-  "campaigns": {
-    "title": "Campañas",
-    "description": "Crea, gobierna y publica paginas de registro por campaña.",
-    "create": "Nueva campaña",
-    "createTitle": "Crear campaña",
-    "createDescription": "Configura una campaña en borrador desde un template aprobado.",
-    "empty": "No se encontraron campañas.",
-    "national": "Nacional",
-    "updated": "Actualizado",
-    "columns": {
-      "campaign": "Campaña",
-      "status": "Estado",
-      "template": "Template",
-      "scope": "Alcance",
-      "window": "Vigencia",
-      "organization": "Organizacion"
-    },
-    "form": {
-      "startDate": "Fecha inicial",
-      "endDate": "Fecha final",
-      "createdBy": "Creado por"
-    },
-    "filters": {
-      "search": "Buscar nombre, slug u organizacion",
-      "status": "Estado",
-      "state": "Estado",
-      "organization": "Organizacion",
-      "searchLabel": "Busqueda",
-      "stateLabel": "Estado",
-      "organizationLabel": "Organizacion",
-      "active": "{count} filtro{count, plural, one{} other{s}} activo{count, plural, one{} other{s}}",
-      "clearOne": "Limpiar filtro",
-      "clearAll": "Limpiar todo"
-    },
-    "status": {
-      "Draft": "Borrador",
-      "PendingApproval": "Pendiente de aprobacion",
-      "Active": "Activa",
-      "Archived": "Archivada",
-      "Deleted": "Eliminada"
-    },
-    "actions": {
-      "open": "Abrir"
-    },
-    "badges": {
-      "migrated": "Migrada",
-      "leaderboard": "Leaderboard",
-      "noLeaderboard": "Sin leaderboard"
-    },
-    "workspace": {
-      "title": "Workspace de campaña",
-      "description": "Gestiona la configuracion de la campaña",
-      "tabs": {
-        "overview": "Resumen",
-        "edit": "Editar",
-        "subgroups": "Subgrupos",
-        "templates": "Templates",
-        "review": "Revision",
-        "danger": "Riesgo"
-      }
-    },
-    "review": {
-      "latestComment": "Ultimo comentario de revision"
-    },
-    "migration": {
-      "warnings": "Advertencias de migracion"
-    },
-    "overview": {
-      "publicRoute": "Ruta publica",
-      "lineage": "Linaje de migracion"
-    },
-    "pagination": {
-      "page": "Pagina {page}",
-      "previous": "Anterior",
-      "next": "Siguiente"
-    },
-    "subgroups": {
-      "title": "Subgrupos de campaña",
-      "description": "Gestiona cohortes de la campaña para atribucion y enlaces de leaderboard.",
-      "new": "Nuevo subgrupo",
-      "loading": "Cargando subgrupos...",
-      "empty": "No hay subgrupos configurados.",
-      "name": "Nombre",
-      "slug": "Slug",
-      "displayOrder": "Orden",
-      "status": "Estado",
-      "active": "Activo",
-      "inactive": "Inactivo",
-      "copy": "Copiar enlace",
-      "edit": "Editar",
-      "disable": "Desactivar",
-      "createTitle": "Crear subgrupo",
-      "editTitle": "Editar subgrupo",
-      "created": "Subgrupo creado",
-      "updated": "Subgrupo actualizado",
-      "disabled": "Subgrupo desactivado",
-      "cancel": "Cancelar",
-      "create": "Crear",
-      "save": "Guardar",
-      "saving": "Guardando..."
-    },
-    "templates": {
-      "title": "Catalogo de templates",
-      "description": "Gestiona los templates base aprobados para campañas.",
-      "new": "Nuevo template",
-      "name": "Nombre",
-      "description": "Descripcion",
-      "previewUrl": "URL de vista previa",
-      "createdBy": "Creado por",
-      "advanced": "Avanzado",
-      "advancedDescription": "Permite configuracion de subgrupos y leaderboard publico.",
-      "active": "Activo",
-      "inactive": "Inactivo",
-      "activeDescription": "Los templates inactivos siguen disponibles para campañas activas existentes.",
-      "edit": "Editar",
-      "createTitle": "Crear template",
-      "editTitle": "Editar template",
-      "created": "Template creado",
-      "updated": "Template actualizado",
-      "noDescription": "Sin descripcion",
-      "cancel": "Cancelar",
-      "create": "Crear",
-      "save": "Guardar",
-      "saving": "Guardando..."
-    },
-    "lifecycle": {
-      "submit": "Enviar",
-      "submitDescription": "Mueve esta campaña en borrador a pendiente de aprobacion.",
-      "approve": "Aprobar",
-      "approveDescription": "Publica esta campaña y activa su slug publicamente.",
-      "reject": "Rechazar",
-      "rejectDescription": "Devuelve esta campaña pendiente a borrador con comentarios.",
-      "comments": "Comentarios del revisor",
-      "archive": "Archivar",
-      "archiveDescription": "Quita esta campaña activa del acceso publico y conserva el historial.",
-      "delete": "Eliminar",
-      "deleteDescription": "Elimina logicamente esta campaña tras confirmacion explicita.",
-      "irreversibleTitle": "Confirmacion de eliminacion",
-      "irreversibleDescription": "El historial de registros permanece preservado por el modelo de auditoria de la API.",
-      "rejectUnavailable": "Rechazar solo esta disponible para campañas pendientes.",
-      "rejectUnavailableDescription": "Las campañas en borrador pueden aprobarse directamente o enviarse a revision.",
-      "cancel": "Cancelar",
-      "confirm": "Confirmar",
-      "reset": "Reiniciar",
-      "working": "Procesando...",
-      "saved": "Campaña actualizada"
-    },
-    "errors": {
-      "NDLR_API_BASE_URL_MISSING": "NDLR_API_BASE_URL no esta configurada.",
-      "NDLR_API_TIMEOUT": "La API NDLR agoto el tiempo de espera.",
-      "NDLR_API_NETWORK_ERROR": "No se pudo contactar la API NDLR.",
-      "NDLR_API_ERROR": "La API NDLR devolvio un error.",
-      "VALIDATION_ERROR": "Algunos campos no son validos.",
-      "BUSINESS_VALIDATION_ERROR": "La campaña incumple una regla de negocio.",
-      "CONFLICT": "La campaña no puede cambiarse en su estado actual.",
-      "NOT_FOUND": "El recurso solicitado no fue encontrado.",
-      "FORBIDDEN": "No tienes permiso para esta accion."
-    }
-  },
-  "campaignForm": {
-    "lockedTitle": "La campaña esta bloqueada",
-    "lockedDescription": "Las campañas archivadas o eliminadas no pueden editarse.",
-    "tabs": {
-      "overview": "Resumen",
-      "english": "Ingles",
-      "spanish": "Español",
-      "advanced": "JSON avanzado"
-    },
-    "name": "Nombre",
-    "namePlaceholder": "Save Florida Lives",
-    "slug": "Slug",
-    "slugPlaceholder": "save-florida",
-    "slugLocked": "El slug no cambia una vez que la campaña esta activa.",
-    "organization": "Organizacion",
-    "organizationPlaceholder": "Donate Life Florida",
-    "stateScope": "Estado",
-    "stateScopePlaceholder": "FL",
-    "language": "Idioma",
-    "languages": {
-      "EN": "Ingles",
-      "ES": "Español",
-      "Bilingual": "Bilingue"
-    },
-    "template": "Template",
-    "startDate": "Fecha inicial",
-    "endDate": "Fecha final",
-    "showPublicLeaderboard": "Mostrar leaderboard publico",
-    "showPublicLeaderboardDescription": "Muestra conteos agregados por subgrupo en la pagina publica cuando esta activo.",
-    "heroHeadline": "Titular del hero",
-    "heroCta": "Texto del CTA primario",
-    "heroSubheadline": "Subtitulo del hero",
-    "heroImage": "URL de imagen del hero",
-    "sectionFieldsJson": "JSON de secciones",
-    "customConfigJson": "JSON de configuracion avanzada",
-    "cancel": "Cancelar",
-    "create": "Crear campaña",
-    "save": "Guardar campaña",
-    "creating": "Creando...",
-    "saving": "Guardando..."
-  },
   "timeAgo": {
     "justNow": "ahora mismo",
     "minutes": "hace {count} minuto{count, plural, one{} other{s}}",
@@ -270,9 +69,9 @@
     "years": "hace {count} año{count, plural, one{} other{s}}"
   },
   "app": {
-    "name": "Portal de Administración NDLR",
+    "name": "Core Admin",
     "version": "v1.0",
-    "subtitle": "Registro Nacional de Donantes"
+    "subtitle": "Portal de Administración y Operaciones"
   },
   "user": {
     "admin": "Administrador",

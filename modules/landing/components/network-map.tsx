@@ -1,41 +1,32 @@
 "use client"
 
 import { useMemo } from "react"
-import { geoAlbersUsa, geoPath, geoCentroid } from "d3-geo"
-import { feature } from "topojson-client"
-import statesTopo from "us-atlas/states-10m.json"
 
-const W = 980
-const H = 600
+const W = 700
+const H = 560
+const CORE: [number, number] = [W / 2, H / 2 + 10]
 
-// Geographic "national core" of the lower 48 (near Lebanon, Kansas).
-const CORE: [number, number] = [-98.3, 39.6]
+type Status = "connected" | "onboarding"
 
-type Status = "live" | "onboarding"
-
-// States that tell the adoption story. "live" = official registry migrated,
-// "onboarding" = currently in the 60–90 day implementation window.
+// Abstract network of integrations/teams around a central hub. "connected" =
+// live and syncing, "onboarding" = currently being set up.
 const NODES: { name: string; status: Status }[] = [
-  { name: "California", status: "live" },
-  { name: "Washington", status: "live" },
-  { name: "Oregon", status: "onboarding" },
-  { name: "Arizona", status: "onboarding" },
-  { name: "Colorado", status: "live" },
-  { name: "Texas", status: "live" },
-  { name: "Minnesota", status: "onboarding" },
-  { name: "Illinois", status: "live" },
-  { name: "Michigan", status: "onboarding" },
-  { name: "Tennessee", status: "onboarding" },
-  { name: "Georgia", status: "live" },
-  { name: "Florida", status: "live" },
-  { name: "North Carolina", status: "onboarding" },
-  { name: "Pennsylvania", status: "live" },
-  { name: "New York", status: "live" },
-  { name: "Massachusetts", status: "onboarding" },
+  { name: "Team A", status: "connected" },
+  { name: "Team B", status: "connected" },
+  { name: "Integration A", status: "onboarding" },
+  { name: "Integration B", status: "onboarding" },
+  { name: "Team C", status: "connected" },
+  { name: "Partner A", status: "connected" },
+  { name: "Team D", status: "onboarding" },
+  { name: "Integration C", status: "connected" },
+  { name: "Team E", status: "onboarding" },
+  { name: "Partner B", status: "onboarding" },
+  { name: "Team F", status: "connected" },
+  { name: "Integration D", status: "connected" },
 ]
 
 const COLORS = {
-  live: "#afd369",
+  connected: "#afd369",
   onboarding: "#89b7ee",
 }
 
@@ -56,52 +47,27 @@ function arcPath(a: [number, number], b: [number, number], bend: number) {
 }
 
 export function NetworkMap() {
-  const { statePaths, nodes, core, arcs } = useMemo(() => {
-    const fc = feature(statesTopo as never, (statesTopo as never as { objects: { states: never } }).objects.states) as unknown as {
-      features: Array<{ id: string; properties: { name: string }; geometry: unknown }>
-    }
-    const features = fc.features
+  const { nodes, arcs } = useMemo(() => {
+    const radius = Math.min(W, H) / 2 - 60
 
-    const projection = geoAlbersUsa().fitExtent(
-      [
-        [24, 28],
-        [W - 24, H - 24],
-      ],
-      fc as never,
-    )
-    const pathGen = geoPath(projection)
-
-    const statePaths = features.map((f) => ({
-      id: f.id,
-      name: f.properties.name,
-      d: pathGen(f as never) ?? "",
-    }))
-
-    const centroidByName = new Map<string, [number, number]>()
-    for (const f of features) {
-      const c = geoCentroid(f as never)
-      const p = projection(c)
-      if (p) centroidByName.set(f.properties.name, [p[0], p[1]])
-    }
-
-    const core = projection(CORE) as [number, number]
-
-    const nodes = NODES.map((n) => {
-      const pos = centroidByName.get(n.name)
-      return pos ? { ...n, x: Math.round(pos[0] * 100) / 100, y: Math.round(pos[1] * 100) / 100 } : null
-    }).filter(Boolean) as Array<{ name: string; status: Status; x: number; y: number }>
+    const nodes = NODES.map((n, i) => {
+      const angle = (i / NODES.length) * Math.PI * 2 - Math.PI / 2
+      const x = Math.round((CORE[0] + radius * Math.cos(angle)) * 100) / 100
+      const y = Math.round((CORE[1] + radius * Math.sin(angle)) * 100) / 100
+      return { ...n, x, y }
+    })
 
     const arcs = nodes.map((n, i) => {
       const bend = (i % 2 === 0 ? 1 : -1) * (0.16 + (i % 3) * 0.05)
       return {
-        d: arcPath(core, [n.x, n.y], bend),
+        d: arcPath(CORE, [n.x, n.y], bend),
         color: COLORS[n.status],
         dur: Math.round((2.6 + (i % 5) * 0.45) * 100) / 100,
         delay: Math.round((i % 8) * 0.4 * 100) / 100,
       }
     })
 
-    return { statePaths, nodes, core, arcs }
+    return { nodes, arcs }
   }, [])
 
   return (
@@ -123,12 +89,12 @@ export function NetworkMap() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#afd369] opacity-75" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#afd369]" />
           </span>
-          <span className="text-sm font-medium text-white/90">National registry network</span>
+          <span className="text-sm font-medium text-white/90">Live network</span>
         </div>
         <div className="flex items-center gap-4 text-xs text-white/70">
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.live }} />
-            Live registry
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.connected }} />
+            Connected
           </span>
           <span className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.onboarding }} />
@@ -141,7 +107,7 @@ export function NetworkMap() {
         viewBox={`0 0 ${W} ${H}`}
         className="relative z-10 h-auto w-full"
         role="img"
-        aria-label="Map of the United States with beams of light connecting states to a shared national donor registry core"
+        aria-label="Abstract network diagram with beams of light connecting teams and integrations to a shared central hub"
       >
         <defs>
           <filter id="nm-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -157,19 +123,6 @@ export function NetworkMap() {
             <stop offset="100%" stopColor="#4a7a1f" stopOpacity="0" />
           </radialGradient>
         </defs>
-
-        {/* State shapes */}
-        <g>
-          {statePaths.map((s) => (
-            <path
-              key={s.id}
-              d={s.d}
-              fill="rgba(255,255,255,0.025)"
-              stroke="rgba(137,183,238,0.28)"
-              strokeWidth={0.7}
-            />
-          ))}
-        </g>
 
         {/* Connection arcs */}
         <g fill="none">
@@ -191,7 +144,7 @@ export function NetworkMap() {
           ))}
         </g>
 
-        {/* State nodes */}
+        {/* Nodes */}
         <g>
           {nodes.map((n) => (
             <g key={n.name}>
@@ -216,11 +169,11 @@ export function NetworkMap() {
           ))}
         </g>
 
-        {/* National core */}
+        {/* Central hub */}
         <g>
-          <circle cx={core[0]} cy={core[1]} r={26} fill="url(#nm-core)" opacity={0.85} />
-          <circle cx={core[0]} cy={core[1]} r={5} fill="#ffffff" filter="url(#nm-glow)" />
-          <circle cx={core[0]} cy={core[1]} r={11} fill="none" stroke="#afd369" strokeWidth={1.2} strokeOpacity={0.6}>
+          <circle cx={CORE[0]} cy={CORE[1]} r={26} fill="url(#nm-core)" opacity={0.85} />
+          <circle cx={CORE[0]} cy={CORE[1]} r={5} fill="#ffffff" filter="url(#nm-glow)" />
+          <circle cx={CORE[0]} cy={CORE[1]} r={11} fill="none" stroke="#afd369" strokeWidth={1.2} strokeOpacity={0.6}>
             <animate attributeName="r" values="9;20;9" dur="3.4s" repeatCount="indefinite" />
             <animate attributeName="stroke-opacity" values="0.7;0;0.7" dur="3.4s" repeatCount="indefinite" />
           </circle>
@@ -229,8 +182,8 @@ export function NetworkMap() {
 
       {/* Footer caption */}
       <div className="relative z-10 flex items-center justify-between border-t border-white/10 px-5 py-3 text-xs text-white/60">
-        <span>NDLR — one secure source of truth, every state connected</span>
-        <span className="font-mono">50-state vision · 10 years</span>
+        <span>Core Admin — one secure source of truth, every team connected</span>
+        <span className="font-mono">Built to scale</span>
       </div>
     </div>
   )

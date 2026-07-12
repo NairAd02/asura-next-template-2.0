@@ -12,33 +12,33 @@ import {
 const modules = [
   {
     icon: Megaphone,
-    title: 'Campaign CMS',
-    body: 'Launch custom registration pages with unique slugs, templates, and per-campaign metrics. State-created campaigns flow through a built-in DLA approval workflow.',
+    title: 'Catalog management',
+    body: 'Create and publish catalog records with custom fields, categories, and per-item metrics. Team-created records flow through a built-in approval workflow.',
   },
   {
     icon: BarChart3,
     title: 'Reporting & analytics',
-    body: 'Build dynamic and ad-hoc reports across date, demographics, and source. Save configurations, schedule delivery, and drill from state to campaign to record.',
+    body: 'Build dynamic and ad-hoc reports across date, category, and source. Save configurations, schedule delivery, and drill from summary to record.',
   },
   {
     icon: MapPinned,
-    title: 'Geospatial heat maps',
-    body: 'Visualize registrations by state and ZIP code. Spot coverage gaps, target recruitment, and measure campaign lift on an interactive map.',
+    title: 'Usage dashboards',
+    body: 'Visualize activity by category and region. Spot coverage gaps, target growth, and measure impact on an interactive dashboard.',
   },
   {
     icon: Users,
     title: 'Users, roles & permissions',
-    body: 'Granular RBAC with jurisdiction scoping. Super Admin, National, State/Org Admin, Reporting, Search, and Viewer — additive from zero with mandatory MFA.',
+    body: 'Granular RBAC with scoped access. Admin, Manager, Reporting, Search, and Viewer — additive from zero with mandatory MFA.',
   },
   {
     icon: ShieldCheck,
     title: 'Identity & deduplication',
-    body: 'Configurable matching rules guarantee one citizen, one profile — across DMV, web, and partner channels — with the full change history preserved.',
+    body: 'Configurable matching rules guarantee one record, one profile — across web, integrations, and partner channels — with the full change history preserved.',
   },
   {
     icon: History,
     title: 'Immutable audit trail',
-    body: 'Every login, export, and record change is logged permanently. Nobody — not even a Super Admin — can alter history. Built for legal accountability.',
+    body: 'Every login, export, and record change is logged permanently. Nobody — not even an Admin — can alter history. Built for legal accountability.',
   },
   {
     icon: Download,
@@ -48,7 +48,7 @@ const modules = [
   {
     icon: Plug,
     title: 'Partner integrations',
-    body: 'Real-time and batch sync with Apple, Epic MyChart, Walgreens, and state DMVs through the centralized API — with automatic source attribution.',
+    body: 'Real-time and batch sync with your existing tools through the centralized API — with automatic source attribution.',
   },
 ]
 
@@ -61,11 +61,11 @@ export function Modules() {
             The platform
           </span>
           <h2 className="mt-3 text-balance font-heading text-3xl font-semibold tracking-tight text-brand-dark sm:text-4xl">
-            Everything a state program needs in one portal
+            Everything your team needs in one portal
           </h2>
           <p className="mt-4 text-pretty text-base leading-relaxed text-brand-mid">
-            Campaign management, analytics, and administration unified behind a single secure
-            login — with state-level data isolation by default.
+            Catalog management, analytics, and administration unified behind a single secure
+            login — with tenant-level data isolation by default.
           </p>
         </div>
 

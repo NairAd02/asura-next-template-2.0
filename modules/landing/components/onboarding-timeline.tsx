@@ -2,12 +2,12 @@ const phases = [
   {
     window: 'Days 1–15',
     title: 'Discovery & data mapping',
-    body: 'Kickoff with your team, map existing records, define jurisdiction scope, roles, and matching rules.',
+    body: 'Kickoff with your team, map existing records, define tenant scope, roles, and matching rules.',
   },
   {
     window: 'Days 15–45',
     title: 'Migration & configuration',
-    body: 'Securely migrate state records with full audit history intact, configure campaigns, branding, and DMV integration.',
+    body: 'Securely migrate records with full audit history intact, configure campaigns, branding, and integrations.',
   },
   {
     window: 'Days 45–75',
@@ -17,7 +17,7 @@ const phases = [
   {
     window: 'Days 75–90',
     title: 'Go live',
-    body: 'Cut over to NDLR as your official registry with 24/7 support, monitoring, and a dedicated success contact.',
+    body: 'Cut over to Core Admin as your system of record with 24/7 support, monitoring, and a dedicated success contact.',
   },
 ]
 
@@ -30,7 +30,7 @@ export function OnboardingTimeline() {
             Onboarding
           </span>
           <h2 className="mt-3 text-balance font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            From kickoff to live registry in 60–90 days
+            From kickoff to live rollout in 60–90 days
           </h2>
           <p className="mt-4 text-pretty text-base leading-relaxed text-muted-foreground">
             A proven, low-risk migration path that preserves your historical data and keeps your

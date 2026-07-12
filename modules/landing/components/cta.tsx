@@ -9,11 +9,11 @@ export function CTA() {
         <div className="grid grid-cols-1 items-center gap-8 rounded-[24px] bg-brand-blue-light p-8 sm:p-12 md:grid-cols-[1.5fr_1fr] md:gap-10 md:p-[54px] md:px-14">
           <div>
             <h2 className="text-balance font-heading text-3xl font-semibold tracking-tight text-brand-dark sm:text-4xl">
-              See what the NDLR could do for your state
+              See what Core Admin could do for your team
             </h2>
             <p className="mt-4 max-w-[520px] text-base leading-relaxed text-[#1d2a38] sm:text-[17px]">
               Book a guided walkthrough of the Administration Portal with our team. We&apos;ll map a
-              migration plan tailored to your state&apos;s data, partners, and timeline.
+              migration plan tailored to your data, partners, and timeline.
             </p>
           </div>
           <div className="flex flex-col gap-3.5">
@@ -22,7 +22,7 @@ export function CTA() {
                 size="lg"
                 className="h-11 rounded-full bg-brand-dark px-4 py-4 text-base font-bold text-white transition-opacity hover:opacity-90"
               >
-                Request a state demo
+                Request a demo
                 <ArrowRight className="size-4" />
               </Button>
             </NavigationComponent>

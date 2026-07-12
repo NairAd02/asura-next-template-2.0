@@ -9,7 +9,7 @@ import { paths } from '@/routes/paths'
 
 const navItems = [
   { label: 'Platform', href: '#platform' },
-  { label: 'For States', href: '#why-states' },
+  { label: 'For Teams', href: '#why-states' },
   { label: 'Onboarding', href: '#onboarding' },
   { label: 'Security', href: '#security' },
 ]

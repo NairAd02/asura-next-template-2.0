@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "NDLR Administration Portal",
-    "description": "Secure administration portal for Donate Life America. Manage donor registrations, campaigns, users, and analytics across all states."
+    "title": "Core Admin",
+    "description": "Secure admin portal to manage your catalog, users, and analytics."
   },
   "sidebar": {
     "groups": {
@@ -11,7 +11,6 @@
     },
     "navigation": {
       "dashboard": "Dashboard",
-      "campaigns": "Campaigns",
       "items": "Items",
       "itemCategories": "Item Categories",
       "users": "Users"
@@ -61,206 +60,6 @@
     "printError": "Print error: {message}",
     "qrCodeDescription": "QR code contains item barcode for quick lookup. Printed on physical label."
   },
-  "campaigns": {
-    "title": "Campaigns",
-    "description": "Create, govern, and publish campaign registration pages.",
-    "create": "New campaign",
-    "createTitle": "Create campaign",
-    "createDescription": "Configure a draft campaign from an approved template.",
-    "empty": "No campaigns found.",
-    "national": "National",
-    "updated": "Updated",
-    "columns": {
-      "campaign": "Campaign",
-      "status": "Status",
-      "template": "Template",
-      "scope": "Scope",
-      "window": "Window",
-      "organization": "Organization"
-    },
-    "form": {
-      "startDate": "Start date",
-      "endDate": "End date",
-      "createdBy": "Created by"
-    },
-    "filters": {
-      "search": "Search name, slug, organization",
-      "status": "Status",
-      "state": "State",
-      "organization": "Organization",
-      "searchLabel": "Search",
-      "stateLabel": "State",
-      "organizationLabel": "Organization",
-      "active": "{count} active filter{count, plural, one{} other{s}}",
-      "clearOne": "Clear filter",
-      "clearAll": "Clear all"
-    },
-    "status": {
-      "Draft": "Draft",
-      "PendingApproval": "Pending approval",
-      "Active": "Active",
-      "Archived": "Archived",
-      "Deleted": "Deleted"
-    },
-    "actions": {
-      "open": "Open"
-    },
-    "badges": {
-      "migrated": "Migrated",
-      "leaderboard": "Leaderboard",
-      "noLeaderboard": "No leaderboard"
-    },
-    "workspace": {
-      "title": "Campaign workspace",
-      "description": "Manage campaign configuration",
-      "tabs": {
-        "overview": "Overview",
-        "edit": "Edit",
-        "subgroups": "Subgroups",
-        "templates": "Templates",
-        "review": "Review",
-        "danger": "Danger"
-      }
-    },
-    "review": {
-      "latestComment": "Latest review comment"
-    },
-    "migration": {
-      "warnings": "Migration warnings"
-    },
-    "overview": {
-      "publicRoute": "Public route",
-      "lineage": "Migration lineage"
-    },
-    "pagination": {
-      "page": "Page {page}",
-      "previous": "Previous",
-      "next": "Next"
-    },
-    "subgroups": {
-      "title": "Campaign subgroups",
-      "description": "Manage campaign-scoped cohorts for attribution and leaderboard links.",
-      "new": "New subgroup",
-      "loading": "Loading subgroups...",
-      "empty": "No subgroups configured.",
-      "name": "Name",
-      "slug": "Slug",
-      "displayOrder": "Display order",
-      "status": "Status",
-      "active": "Active",
-      "inactive": "Inactive",
-      "copy": "Copy link",
-      "edit": "Edit",
-      "disable": "Disable",
-      "createTitle": "Create subgroup",
-      "editTitle": "Edit subgroup",
-      "created": "Subgroup created",
-      "updated": "Subgroup updated",
-      "disabled": "Subgroup disabled",
-      "cancel": "Cancel",
-      "create": "Create",
-      "save": "Save",
-      "saving": "Saving..."
-    },
-    "templates": {
-      "title": "Template catalog",
-      "description": "Manage approved base templates available to campaign managers.",
-      "new": "New template",
-      "name": "Name",
-      "description": "Description",
-      "previewUrl": "Preview URL",
-      "createdBy": "Created by",
-      "advanced": "Advanced",
-      "advancedDescription": "Allows subgroup and public leaderboard configuration.",
-      "active": "Active",
-      "inactive": "Inactive",
-      "activeDescription": "Inactive templates remain available for existing active campaigns.",
-      "edit": "Edit",
-      "createTitle": "Create template",
-      "editTitle": "Edit template",
-      "created": "Template created",
-      "updated": "Template updated",
-      "noDescription": "No description",
-      "cancel": "Cancel",
-      "create": "Create",
-      "save": "Save",
-      "saving": "Saving..."
-    },
-    "lifecycle": {
-      "submit": "Submit",
-      "submitDescription": "Move this draft campaign to pending approval.",
-      "approve": "Approve",
-      "approveDescription": "Publish this campaign and make its slug publicly resolvable.",
-      "reject": "Reject",
-      "rejectDescription": "Return this pending campaign to draft with reviewer comments.",
-      "comments": "Reviewer comments",
-      "archive": "Archive",
-      "archiveDescription": "Remove this active campaign from public access while retaining history.",
-      "delete": "Delete",
-      "deleteDescription": "Soft-delete this campaign after explicit confirmation.",
-      "irreversibleTitle": "Deletion confirmation",
-      "irreversibleDescription": "Registration history remains preserved by the API audit model.",
-      "rejectUnavailable": "Reject is only available for pending approval campaigns.",
-      "rejectUnavailableDescription": "Draft campaigns can be approved directly or submitted for review.",
-      "cancel": "Cancel",
-      "confirm": "Confirm",
-      "reset": "Reset",
-      "working": "Working...",
-      "saved": "Campaign updated"
-    },
-    "errors": {
-      "NDLR_API_BASE_URL_MISSING": "NDLR_API_BASE_URL is not configured.",
-      "NDLR_API_TIMEOUT": "The NDLR API timed out.",
-      "NDLR_API_NETWORK_ERROR": "The NDLR API could not be reached.",
-      "NDLR_API_ERROR": "The NDLR API returned an error.",
-      "VALIDATION_ERROR": "Some fields are invalid.",
-      "BUSINESS_VALIDATION_ERROR": "The campaign violates a business rule.",
-      "CONFLICT": "The campaign cannot be changed in its current state.",
-      "NOT_FOUND": "The requested campaign resource was not found.",
-      "FORBIDDEN": "You do not have permission for this action."
-    }
-  },
-  "campaignForm": {
-    "lockedTitle": "Campaign is locked",
-    "lockedDescription": "Archived and deleted campaigns cannot be edited.",
-    "tabs": {
-      "overview": "Overview",
-      "english": "English",
-      "spanish": "Spanish",
-      "advanced": "Advanced JSON"
-    },
-    "name": "Name",
-    "namePlaceholder": "Save Florida Lives",
-    "slug": "Slug",
-    "slugPlaceholder": "save-florida",
-    "slugLocked": "The slug is immutable once a campaign is active.",
-    "organization": "Organization",
-    "organizationPlaceholder": "Donate Life Florida",
-    "stateScope": "State scope",
-    "stateScopePlaceholder": "FL",
-    "language": "Language",
-    "languages": {
-      "EN": "English",
-      "ES": "Spanish",
-      "Bilingual": "Bilingual"
-    },
-    "template": "Template",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "showPublicLeaderboard": "Show public leaderboard",
-    "showPublicLeaderboardDescription": "Displays aggregate subgroup counts on the public campaign page when enabled.",
-    "heroHeadline": "Hero headline",
-    "heroCta": "Primary CTA label",
-    "heroSubheadline": "Hero subheadline",
-    "heroImage": "Hero image URL",
-    "sectionFieldsJson": "Section fields JSON",
-    "customConfigJson": "Custom config JSON",
-    "cancel": "Cancel",
-    "create": "Create campaign",
-    "save": "Save campaign",
-    "creating": "Creating...",
-    "saving": "Saving..."
-  },
   "timeAgo": {
     "justNow": "just now",
     "minutes": "{count} minute{count, plural, one{} other{s}} ago",
@@ -270,9 +69,9 @@
     "years": "{count} year{count, plural, one{} other{s}} ago"
   },
   "app": {
-    "name": "NDLR Admin Portal",
+    "name": "Core Admin",
     "version": "v1.0",
-    "subtitle": "National Donate Life Registry"
+    "subtitle": "Admin & Operations Portal"
   },
   "user": {
     "admin": "Administrator",

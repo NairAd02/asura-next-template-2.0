@@ -16,13 +16,13 @@ const navIcons = [
   { icon: LayoutDashboard, label: 'Overview', active: true },
   { icon: Megaphone, label: 'Campaigns', active: false },
   { icon: FileBarChart, label: 'Reports', active: false },
-  { icon: Map, label: 'Heat maps', active: false },
+  { icon: Map, label: 'Analytics', active: false },
   { icon: Users, label: 'Users & roles', active: false },
   { icon: Settings, label: 'Settings', active: false },
 ]
 
 const sources = [
-  { label: 'DMV', value: 46, color: 'var(--brand-blue)' },
+  { label: 'Integrations', value: 46, color: 'var(--brand-blue)' },
   { label: 'Website', value: 24, color: 'var(--brand-green)' },
   { label: 'Campaigns', value: 18, color: 'var(--brand-blue-light)' },
   { label: 'Partners', value: 12, color: 'var(--brand-green-dark)' },
@@ -40,10 +40,10 @@ export function DashboardPreview() {
             <span className="size-2.5 rounded-full bg-brand-green-dark/40" />
           </div>
           <div className="hidden items-center gap-2 rounded-md border border-border bg-card px-3 py-1 text-[11px] text-muted-foreground sm:flex">
-            admin.registerme.org / overview
+            app.coreadmin.io / overview
           </div>
           <div className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
-            <span className="rounded-full bg-secondary px-2 py-0.5">State of Texas</span>
+            <span className="rounded-full bg-secondary px-2 py-0.5">Acme Corp</span>
           </div>
         </div>
 
@@ -83,10 +83,10 @@ export function DashboardPreview() {
             {/* KPI cards */}
             <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
               {[
-                { label: 'Total donors', value: '4.92M' },
+                { label: 'Total records', value: '4.92M' },
                 { label: 'New this month', value: '38,204' },
                 { label: 'Active campaigns', value: '27' },
-                { label: 'DMV sync rate', value: '99.8%' },
+                { label: 'Sync rate', value: '99.8%' },
               ].map((kpi) => (
                 <div key={kpi.label} className="rounded-lg border border-border bg-card p-3">
                   <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">

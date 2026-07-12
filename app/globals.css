@@ -38,7 +38,7 @@
   --sidebar-border: oklch(0.94 0.006 135);
   --sidebar-ring: oklch(0.80 0.15 120);
   --text-inverted: oklch(0.985 0 0);
-  /* Donate Life brand tokens */
+  /* Brand tokens */
   --brand-cream: #F4F8EC;
   --brand-subtle: #EEF4FB;
   --brand-green: #AFD369;
@@ -85,7 +85,7 @@
   --sidebar-border: oklch(0.25 0.010 155);
   --sidebar-ring: oklch(0.80 0.15 120);
   --text-inverted: oklch(0.15 0.015 155);
-  /* Donate Life brand tokens */
+  /* Brand tokens */
   --brand-cream: #F4F8EC;
   --brand-subtle: #EEF4FB;
   --brand-green: #AFD369;

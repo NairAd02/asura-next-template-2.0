@@ -1,8 +1,8 @@
 const stats = [
-  { value: '50', label: 'states', sub: 'The national standard within 10 years' },
-  { value: '4–5', label: 'states / year', sub: 'Onboarded onto the platform annually' },
-  { value: '60–90', label: 'days', sub: 'From kickoff to live state registry' },
-  { value: '100%', label: 'data ownership', sub: 'Belongs to DLA & states — never siloed' },
+  { value: '500+', label: 'teams', sub: 'The standard for growing organizations' },
+  { value: '4–5', label: 'teams / month', sub: 'Onboarded onto the platform monthly' },
+  { value: '60–90', label: 'days', sub: 'From kickoff to live rollout' },
+  { value: '100%', label: 'data ownership', sub: 'Belongs to you and your team — never siloed' },
 ]
 
 export function VisionStats() {
@@ -11,12 +11,12 @@ export function VisionStats() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
-            One registry. Every state. A decade-long mission.
+            One platform. Every team. A long-term investment.
           </h2>
           <p className="mt-4 text-pretty text-base leading-relaxed text-[#d6e2f3]">
-            The NDLR isn&apos;t just software — it&apos;s the infrastructure for a unified national
-            donor system. The Administration Portal is built to make migrating your state&apos;s
-            official registry a clear, confident decision.
+            Core Admin isn&apos;t just software — it&apos;s the infrastructure for a unified
+            operations system. The Administration Portal is built to make migrating your team&apos;s
+            system of record a clear, confident decision.
           </p>
         </div>
 
