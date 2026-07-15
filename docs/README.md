@@ -6,6 +6,7 @@ This folder is the source-material layer for product and project knowledge.
 
 - `project-context.md` is the standard root document for product context, business rules, actors, flows, architecture notes, data model notes, functional requirements, and non-functional requirements.
 - `requirements/` is the curated backlog of candidate requirements extracted from `project-context.md`.
+- `human-operator-guide.md` explains how the human operator should pilot the OpenSpec + `.agent` workflow.
 - Executable specs live in `openspec/specs/`.
 
 ## Workflow
