@@ -1,6 +1,6 @@
 ---
 name: verification-harness
-description: Cargar al finalizar cualquier implementación. Define los gates de verificación (typecheck, lint, build) que deben pasar antes de declarar el trabajo como completado.
+description: Cargar al finalizar cualquier implementación. Define los gates de verificación OpenSpec, typecheck, lint y build.
 ---
 
 # Verification Harness
@@ -8,7 +8,15 @@ description: Cargar al finalizar cualquier implementación. Define los gates de 
 ## Cuándo usar
 **Siempre al finalizar una implementación.** Ningún trabajo se declara "done" sin pasar estos gates.
 
-## Los 3 Gates de verificación
+## Los 4 Gates de verificación
+
+### Gate 0: OpenSpec validation
+```bash
+openspec validate --all --json
+```
+- **Pasa:** OpenSpec no reporta cambios/specs inválidos.
+- **Falla:** artifacts mal formados o inconsistentes → corregir antes de continuar.
+- **Nota:** para un cambio específico también se puede usar `openspec validate <change-id>`.
 
 ### Gate 1: TypeScript Typecheck
 ```bash
@@ -40,6 +48,8 @@ pnpm build
 
 ## Protocolo de verificación
 
+0. Ejecutar **Gate 0** (OpenSpec validation).
+   - Si falla: corregir los artifacts de OpenSpec o documentar si el fallo es preexistente.
 1. Ejecutar **Gate 1** (typecheck).
    - Si falla: identificar si el error fue **introducido** por los cambios actuales o era **preexistente**.
    - Si es preexistente: documentarlo y continuar.
@@ -52,11 +62,13 @@ pnpm build
 ## Criterio de "Done"
 
 Un módulo o feature está **Done** cuando:
+- [ ] OpenSpec validation no reporta errores nuevos.
 - [ ] TypeScript no reporta errores nuevos introducidos por los cambios.
 - [ ] ESLint no reporta errores nuevos.
 - [ ] `next build` completa sin nuevos errores.
 - [ ] El código sigue los patrones definidos en las skills del proyecto.
 - [ ] Los namespaces i18n están actualizados en `en.json` y `es.json`.
+- [ ] El requirement brief asociado está enlazado al cambio OpenSpec y actualizado de estado si aplica.
 
 ## Errores TS preexistentes conocidos
 
@@ -65,6 +77,9 @@ Al trabajar en esta plantilla, existen errores TS previos no relacionados con ni
 ## Ruta rápida de verificación
 
 ```bash
-# Los 3 gates en secuencia
-pnpm tsc --noEmit && pnpm lint && pnpm build
+# Los gates en secuencia
+openspec validate --all --json
+pnpm tsc --noEmit
+pnpm lint
+pnpm build
 ```

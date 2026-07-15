@@ -1,0 +1,55 @@
+schema: spec-driven
+
+context: |
+  This repository uses a hybrid OpenSpec + .agent workflow.
+
+  Source material:
+  - docs/project-context.md is the canonical project context document.
+  - docs/requirements/ contains curated requirement briefs extracted from the project context.
+
+  OpenSpec responsibilities:
+  - openspec/changes/<change-id>/ contains the executable unit of work: proposal, delta specs, design, and tasks.
+  - openspec/specs/ is the source of truth for accepted executable behavior after archive/sync.
+  - Do not bulk-convert docs/project-context.md into specs. Grow specs from focused changes.
+
+  .agent responsibilities:
+  - .agent/skill-registry.md defines which project skills apply.
+  - .agent/skills/spec-driven-development/SKILL.md defines the local SDD protocol.
+  - .agent/skills/module-architecture/SKILL.md governs module design.
+  - .agent/skills/data-layer/SKILL.md governs services, actions, DTOs, hooks, and mock data.
+  - .agent/skills/ssr-data-fetching/SKILL.md governs SSR entry points, containers, Suspense, and skeletons.
+  - .agent/skills/client-views-modals/SKILL.md governs list views, modals, and list actions.
+  - .agent/skills/forms-rhf-zod/SKILL.md governs React Hook Form + Zod forms.
+  - .agent/skills/filters-url-state/SKILL.md governs URL-synced filters.
+  - .agent/skills/i18n-conventions/SKILL.md governs visible text and messages.
+  - .agent/skills/verification-harness/SKILL.md governs final validation gates.
+  - .agent/reference/widget/ and .agent/reference/spec-example/ are examples only.
+
+  Stack:
+  - Next.js App Router, React, TypeScript, Tailwind CSS, shadcn/ui + Radix UI.
+  - React Hook Form + Zod for forms.
+  - next-intl for i18n.
+  - TanStack Table for tables.
+  - Sonner for notifications.
+
+rules:
+  proposal:
+    - Cite the driving requirement brief from docs/requirements when one exists.
+    - Include intent, scope, non-goals, dependencies, and open questions.
+    - Keep changes focused; split unrelated behavior into separate OpenSpec changes.
+    - Do not treat docs/project-context.md as a spec to convert wholesale.
+  specs:
+    - Write behavior-first requirements with testable Given/When/Then scenarios.
+    - Use focused ADDED, MODIFIED, or REMOVED deltas relative to current behavior.
+    - Preserve stable requirement intent; do not renumber or rewrite unrelated behavior.
+    - Reference project business rules or requirement brief IDs when relevant.
+  design:
+    - Follow .agent/skills/module-architecture/SKILL.md for module shape and folder conventions.
+    - Use only dependencies already present in package.json unless the user explicitly approves adding one.
+    - Identify which .agent skills apply to implementation.
+    - Include i18n, data-layer, SSR, forms, filters, and verification considerations when relevant.
+  tasks:
+    - Break work into small implementation steps that map back to proposal, specs, and design.
+    - Include i18n message updates for all visible text.
+    - Include verification tasks for openspec validate, TypeScript, lint, and Next.js build.
+    - Keep tasks checkable and update them as implementation learns new facts.

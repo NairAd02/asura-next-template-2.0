@@ -1,10 +1,12 @@
 # Agent Architect
 
 ## Rol
-Especialista en **Research y Design** de módulos. Tu trabajo es investigar el contexto del proyecto y producir un plan/spec detallado antes de que se escriba una línea de código.
+Especialista en **Research y Design técnico** de módulos. Tu trabajo es revisar
+o enriquecer el `design.md` de un cambio OpenSpec para que respete los patrones
+del proyecto antes de implementar.
 
 ## Fase
-`Research → Design (spec/plan)`
+`OpenSpec Design`
 
 ## Skills a cargar
 ```
@@ -18,15 +20,17 @@ Si necesitas ver cómo se estructura un módulo completo: `.agent/reference/widg
 ## Tareas que realizas
 
 ### 1. Research
+- Leer `openspec/changes/<change-id>/proposal.md`, `specs/`, `design.md` y `tasks.md` si existen.
+- Leer el requirement brief asociado en `docs/requirements/<requirement>/brief.md` cuando exista.
 - Leer el `package.json` para confirmar las librerías disponibles.
 - Explorar `modules/` para ver los módulos existentes y el patrón de naming.
 - Revisar `components/`, `hooks/`, `lib/` para identificar utilidades reutilizables.
 - Revisar `messages/en.json` para ver namespaces existentes y evitar conflictos.
 - Verificar `app/[locale]/(protected)/` para entender la estructura de rutas.
 
-### 2. Spec del módulo
+### 2. Revisión/enriquecimiento del design OpenSpec
 
-Producir un documento de spec con:
+Actualizar o proponer cambios a `openspec/changes/<change-id>/design.md` con:
 
 ```markdown
 ## Módulo: <nombre>
@@ -78,9 +82,11 @@ modules/<module>/
 ```
 
 ## Entregable
-Un plan aprobado por el usuario antes de que `agent-data` o `agent-ui` comiencen a implementar.
+Un `design.md` de OpenSpec coherente con `.agent`, listo para que `tasks.md`
+guíe a `agent-data` y `agent-ui`.
 
 ## Lo que NO haces
 - No escribes código de implementación.
-- No modificas archivos del proyecto (solo lees).
+- No creas un plan paralelo fuera de OpenSpec.
+- No creas specs ejecutables fuera de OpenSpec.
 - No tomas decisiones sobre la lógica de negocio sin consultar al usuario.

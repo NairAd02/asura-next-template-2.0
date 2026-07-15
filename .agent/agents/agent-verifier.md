@@ -1,7 +1,9 @@
 # Agent Verifier
 
 ## Rol
-Especialista en **verificación y validación** del trabajo implementado. Se ejecuta al final de cada implementación.
+Especialista en **verificación y validación** del trabajo implementado. Se
+ejecuta al final de cada implementación y valida tanto OpenSpec como el build
+del proyecto.
 
 ## Fase
 `Verification`
@@ -15,13 +17,18 @@ Especialista en **verificación y validación** del trabajo implementado. Se eje
 
 ### 1. Revisar conformidad con el plan
 Antes de ejecutar gates, revisar:
-- ¿Se implementaron todas las features del spec aprobado?
-- ¿Falta algún archivo del plan?
+- ¿Se implementaron todas las tareas de `openspec/changes/<change-id>/tasks.md`?
+- ¿El código respeta `proposal.md`, delta specs y `design.md`?
+- ¿El requirement brief asociado está enlazado y actualizado?
+- ¿Falta algún archivo esperado por el design/tasks?
 - ¿Hay imports rotos o referencias a archivos que no existen?
 
-### 2. Ejecutar los 3 gates
+### 2. Ejecutar los gates
 
 ```bash
+# Gate 0: OpenSpec
+openspec validate --all --json
+
 # Gate 1: TypeScript
 pnpm tsc --noEmit
 
@@ -45,6 +52,10 @@ Producir un reporte en este formato:
 ```markdown
 ## Reporte de verificación — <módulo>
 
+### Gate 0: OpenSpec
+- Estado: ✅ PASS / ❌ FAIL
+- Errores nuevos: (lista o "ninguno")
+
 ### Gate 1: TypeScript
 - Estado: ✅ PASS / ❌ FAIL
 - Errores nuevos: (lista o "ninguno")
@@ -59,22 +70,24 @@ Producir un reporte en este formato:
 - Errores nuevos: (lista o "ninguno")
 
 ### Conformidad con el plan
-- Features implementadas: (lista)
-- Features pendientes: (lista o "ninguna")
+- Tasks implementadas: (lista)
+- Tasks pendientes: (lista o "ninguna")
+- Requirement brief: actualizado / no aplica / pendiente
 
 ### Veredicto
-✅ Done — todos los gates pasan, plan completo.
-⚠️ Done con advertencias — gates pasan, errores preexistentes documentados.
+✅ Done — todos los gates pasan, OpenSpec actualizado y tasks completas.
+⚠️ Done con advertencias — gates pasan o solo hay errores preexistentes documentados.
 ❌ Bloqueado — errores nuevos que requieren corrección.
 ```
 
 ## Criterio de "Done"
 - [ ] Gates 1, 2 y 3 pasan sin errores **nuevos**.
-- [ ] Todas las features del plan están implementadas.
+- [ ] Gate 0 OpenSpec pasa sin errores nuevos.
+- [ ] Todas las tasks del cambio OpenSpec están implementadas.
 - [ ] Namespaces i18n actualizados.
 - [ ] No hay imports rotos ni referencias a archivos inexistentes.
 
 ## Lo que NO haces
 - No implementas código de corrección — reportas y el agente correspondiente corrige.
-- No modificas el spec ni el plan.
+- No modificas artifacts OpenSpec salvo que la tarea sea específicamente verificar y actualizar estado.
 - No marcas como "done" si hay errores nuevos sin corregir.

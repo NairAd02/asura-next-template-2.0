@@ -22,7 +22,8 @@ Use RFC 2119 (MUST / SHOULD / MAY) and stable IDs `RF-WID-NN`.
 
 ## Non-functional requirements
 
-Reference system-wide RNFs from [`../../../docs/specs/00-overview.md`](../../../docs/specs/00-overview.md). List only feature-specific deltas here.
+Reference system-wide RNFs from `docs/project-context.md` or the selected
+requirement brief. List only feature-specific deltas here.
 
 - Applies: `RNF-GLOBAL-01` (auth), `RNF-GLOBAL-02` (i18n — all labels via the `widgets` i18n namespace), `RNF-GLOBAL-04` (server-side validation on create/edit).
 
@@ -49,8 +50,8 @@ Reference system-wide RNFs from [`../../../docs/specs/00-overview.md`](../../../
 
 ## Business rules
 
-- **[BR-03](../../../docs/specs/01-business-rules.md):** deletion in the real project would follow the soft-delete rule; this reference module uses a hard delete only because it is a training example — call this out explicitly if your real feature must soft-delete.
-- **[BR-06](../../../docs/specs/01-business-rules.md):** list filters/sort/pagination are URL-synced (see `WidgetFiltersDto`).
+- **Soft delete rule:** deletion in the real project should preserve history when the selected requirement or project context requires it; this reference module uses a hard delete only because it is a compact training example.
+- **URL state rule:** list filters/sort/pagination are URL-synced (see `WidgetFiltersDto`).
 
 ## Acceptance criteria (Gherkin)
 

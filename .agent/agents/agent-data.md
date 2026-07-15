@@ -16,7 +16,8 @@ Especialista en **implementar la capa de datos** de un módulo: `lib/services`, 
 Consultar `.agent/reference/widget/lib/` para ver ejemplos reales de cada archivo.
 
 ## Prerequisito
-Recibir el spec aprobado de `agent-architect` antes de implementar.
+Recibir un cambio OpenSpec con `design.md` y `tasks.md` revisados antes de
+implementar. Si existe un requirement brief asociado, leerlo también.
 
 ## Orden de implementación
 

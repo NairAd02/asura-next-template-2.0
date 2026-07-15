@@ -1,6 +1,14 @@
 # .agent/ — Ecosistema de Skills + Orquestación Multi-Agente
 
-Carpeta portable (agnóstica de runtime) que contiene el **Skill Registry**, las **skills de desarrollo**, las **definiciones de agentes** y un **módulo de referencia** para este proyecto Next.js 16.
+Carpeta portable (agnóstica de runtime) que contiene el **Skill Registry**, las
+**skills de desarrollo**, las **definiciones de agentes** y un **módulo de
+referencia** para este proyecto Next.js 16.
+
+Este proyecto usa un flujo híbrido:
+
+- `docs/project-context.md` y `docs/requirements/` guardan conocimiento y requerimientos candidatos.
+- `openspec/changes/` y `openspec/specs/` guardan cambios ejecutables y specs vivas.
+- `.agent/` guarda reglas técnicas, patrones de implementación y verificación.
 
 ## ¿Qué hay aquí?
 
@@ -22,15 +30,30 @@ Cuando detecta que una tarea aplica a ciertos skills, los pasa a los **subagente
 
 ### Fases SDD (Spec-Driven Development)
 ```
-Research → Design (spec/plan) → Implementation → Verification
+Research → OpenSpec Design → Implementation → Verification
 ```
+
+## Relación con OpenSpec
+
+OpenSpec es la capa de cambios:
+
+- `/opsx:explore` para investigar una idea o requirement.
+- `/opsx:propose <change-id>` para crear proposal, delta specs, design y tasks.
+- `/opsx:apply <change-id>` para implementar tasks.
+- `/opsx:update <change-id>` para ajustar artifacts cuando se aprende algo nuevo.
+- `/opsx:archive` o `openspec archive` para cerrar y actualizar `openspec/specs/`.
+
+`.agent` no escribe specs ejecutables. Sus skills se usan como criterio para que
+los artifacts y la implementación de OpenSpec respeten el stack del proyecto.
 
 ## Módulos de referencia
 
 `.agent/reference/widget/` contiene un módulo completo genérico con la entidad `Widget`.  
 **No es código de producción**, está excluido de `tsc`, `eslint` y `next build`. Su único propósito es que los agentes puedan leer código real que ilustre los patrones del proyecto.
 
-`.agent/reference/spec-example/` contiene el **spec formal** que originó ese mismo módulo `Widget` (`spec.md` + `edge-cases.md`), totalmente resuelto. Es la referencia que usa la skill `spec-authoring` y el agente `agent-spec-writer` para escribir specs nuevos en `docs/specs/features/`. Tampoco es documentación de producto — para eso están los ejemplos genéricos en `docs/specs/features/` (`item-catalog`, `notification-preferences`, `usage-dashboard`).
+`.agent/reference/spec-example/` contiene un ejemplo de requisitos y edge cases
+para el mismo módulo `Widget`. Sirve como referencia de calidad y trazabilidad,
+pero el destino de specs ejecutables es OpenSpec.
 
 ## Cómo usar en distintos runtimes
 

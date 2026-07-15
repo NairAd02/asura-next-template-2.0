@@ -13,4 +13,4 @@
 
 ## Notes
 
-- This reference module uses a hard delete (`RF-WID-05`) purely to keep the training example small. A real feature spec MUST call out explicitly whether it uses soft or hard delete, per [BR-03](../../../docs/specs/01-business-rules.md).
+- This reference module uses a hard delete (`RF-WID-05`) purely to keep the training example small. A real requirement/OpenSpec change MUST call out explicitly whether it uses soft or hard delete.
