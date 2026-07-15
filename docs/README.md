@@ -8,3 +8,4 @@ docs is the project-knowledge layer.
 - openspec/specs/: accepted executable behavior.
 
 The root AGENTS.md loads the SDD skill and registry first. Broad intent becomes a requirement brief; clear behavior becomes OpenSpec; internal non-contractual work can use .agent without a forced requirement brief.
+- developer-harness-guide.md: practical developer guide with flows and examples.

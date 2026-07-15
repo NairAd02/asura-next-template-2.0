@@ -63,7 +63,7 @@ OpenSpec owns change state and executable behavior. .agent supplies project-spec
 4. Keep apply-progress.md aligned with tasks.md while work is active.
 5. Run pnpm verify, persist a PASS verify-report.md, update the linked requirement, and only then archive the change.
 
-Start with [the human operator guide](docs/human-operator-guide.md), [the documentation index](docs/README.md), and [the agent harness guide](.agent/README.md).
+Start with [the developer harness guide](docs/developer-harness-guide.md), [the human operator guide](docs/human-operator-guide.md), [the documentation index](docs/README.md), and [the agent harness guide](.agent/README.md).
 
 ## Project structure
 
