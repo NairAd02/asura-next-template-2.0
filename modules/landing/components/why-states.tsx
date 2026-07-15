@@ -6,7 +6,7 @@ const audiences = [
     role: 'Operations & IT leads',
     points: [
       'Own your data and your tenant — fully isolated, fully exportable',
-      'Real-time visibility into activity, categories, and campaign ROI',
+      'Real-time visibility into item activity, categories, and team usage',
       'Replace aging vendor systems without a multi-year rebuild',
     ],
   },

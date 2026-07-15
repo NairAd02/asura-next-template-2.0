@@ -23,7 +23,7 @@ export function AdoptionMap() {
               Built to scale from a handful of teams to hundreds
             </h2>
             <p className="mt-4 text-pretty text-base leading-relaxed text-muted-foreground">
-              Each organization operates inside its own tenant — separate data, campaigns, and users —
+              Each organization operates inside its own tenant — separate items, categories, and users —
               on shared, horizontally scalable infrastructure. As more teams join, the network value
               compounds for everyone.
             </p>

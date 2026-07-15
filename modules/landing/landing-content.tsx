@@ -27,8 +27,8 @@ export default function LandingContent() {
                             One command center for the whole program
                         </h2>
                         <p className="mt-3 text-pretty text-muted-foreground">
-                            Real-time registry metrics, campaign attribution, and source-of-truth reporting — ready
-                            for your team on day one.
+                            Real-time item metrics, category trends, and source-of-truth reporting — ready for
+                            your team on day one.
                         </p>
                     </div>
                     <DashboardPreview />

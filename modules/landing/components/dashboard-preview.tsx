@@ -1,6 +1,6 @@
 import {
   LayoutDashboard,
-  Megaphone,
+  Boxes,
   Users,
   FileBarChart,
   Map,
@@ -14,7 +14,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 const navIcons = [
   { icon: LayoutDashboard, label: 'Overview', active: true },
-  { icon: Megaphone, label: 'Campaigns', active: false },
+  { icon: Boxes, label: 'Items', active: false },
   { icon: FileBarChart, label: 'Reports', active: false },
   { icon: Map, label: 'Analytics', active: false },
   { icon: Users, label: 'Users & roles', active: false },
@@ -24,7 +24,7 @@ const navIcons = [
 const sources = [
   { label: 'Integrations', value: 46, color: 'var(--brand-blue)' },
   { label: 'Website', value: 24, color: 'var(--brand-green)' },
-  { label: 'Campaigns', value: 18, color: 'var(--brand-blue-light)' },
+  { label: 'Categories', value: 18, color: 'var(--brand-blue-light)' },
   { label: 'Partners', value: 12, color: 'var(--brand-green-dark)' },
 ]
 
@@ -85,7 +85,7 @@ export function DashboardPreview() {
               {[
                 { label: 'Total records', value: '4.92M' },
                 { label: 'New this month', value: '38,204' },
-                { label: 'Active campaigns', value: '27' },
+                { label: 'Active items', value: '27' },
                 { label: 'Sync rate', value: '99.8%' },
               ].map((kpi) => (
                 <div key={kpi.label} className="rounded-lg border border-border bg-card p-3">
@@ -142,7 +142,7 @@ export function DashboardPreview() {
                 </div>
                 <div className="mt-4 flex items-center gap-1 rounded-md bg-secondary/60 px-2 py-1.5 text-[11px] text-muted-foreground">
                   <ArrowUpRight className="size-3 text-brand-green-dark" />
-                  Drill down to city &amp; campaign
+                  Drill down by category &amp; status
                 </div>
               </div>
             </div>

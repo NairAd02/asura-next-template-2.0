@@ -7,7 +7,7 @@ const phases = [
   {
     window: 'Days 15–45',
     title: 'Migration & configuration',
-    body: 'Securely migrate records with full audit history intact, configure campaigns, branding, and integrations.',
+    body: 'Securely migrate records with full audit history intact, configure categories, branding, and integrations.',
   },
   {
     window: 'Days 45–75',

@@ -44,9 +44,12 @@ export async function getAllItems(
 
 export async function getItemById(
   id: string,
-): Promise<ServiceResponse<ItemDetails | null>> {
+): Promise<ServiceResponse<ItemDetails>> {
   try {
     const record = findById(itemsStore, id);
+    if (!record) {
+      return { success: false, error: { code: "NOT_FOUND", message: "Item not found" } };
+    }
     return { success: true, data: record };
   } catch (error) {
     return { success: false, error: { code: "INTERNAL_ERROR", message: `Failed to get item: ${error}` } };
