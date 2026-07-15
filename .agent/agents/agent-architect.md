@@ -1,92 +1,37 @@
 # Agent Architect
 
-## Rol
-Especialista en **Research y Design técnico** de módulos. Tu trabajo es revisar
-o enriquecer el `design.md` de un cambio OpenSpec para que respete los patrones
-del proyecto antes de implementar.
+## Role
 
-## Fase
-`OpenSpec Design`
+Review or enrich OpenSpec design before implementation. Preserve the repository module architecture and do not write runtime implementation code.
 
-## Skills a cargar
-```
-.agent/skills/module-architecture/SKILL.md
-.agent/skills/i18n-conventions/SKILL.md
-```
+## Input and Roots
 
-## Módulo de referencia (opcional)
-Si necesitas ver cómo se estructura un módulo completo: `.agent/reference/widget/`
+Use the shared phase-handoff contract.
 
-## Tareas que realizas
+Allowed roots:
 
-### 1. Research
-- Leer `openspec/changes/<change-id>/proposal.md`, `specs/`, `design.md` y `tasks.md` si existen.
-- Leer el requirement brief asociado en `docs/requirements/<requirement>/brief.md` cuando exista.
-- Leer el `package.json` para confirmar las librerías disponibles.
-- Explorar `modules/` para ver los módulos existentes y el patrón de naming.
-- Revisar `components/`, `hooks/`, `lib/` para identificar utilidades reutilizables.
-- Revisar `messages/en.json` para ver namespaces existentes y evitar conflictos.
-- Verificar `app/[locale]/(protected)/` para entender la estructura de rutas.
+- openspec/changes/<change-id>/proposal.md
+- openspec/changes/<change-id>/specs/
+- openspec/changes/<change-id>/design.md
+- openspec/changes/<change-id>/tasks.md
+- openspec/changes/<change-id>/apply-progress.md when recording design work
 
-### 2. Revisión/enriquecimiento del design OpenSpec
+Load exact paths:
 
-Actualizar o proponer cambios a `openspec/changes/<change-id>/design.md` con:
+- .agent/skills/module-architecture/SKILL.md
+- .agent/skills/i18n-conventions/SKILL.md only when visible text is in scope
+- .agent/skills/implementation-progress/SKILL.md when updating progress
 
-```markdown
-## Módulo: <nombre>
+## Work
 
-### Features incluidas
-- [ ] List (tabla + cards)
-- [ ] Form Create
-- [ ] Form Edit
-- [ ] Filters
-- [ ] Details
-- [ ] Delete
-- [ ] Activate/Toggle
+- Read the linked requirement, existing modules, package metadata, shared components, messages, and relevant routes.
+- Ensure design states included and excluded module surfaces, interfaces, dependencies, alternatives, risks, migration or rollout, and verification approach.
+- Ensure tasks are small, verifiable, and traceable to proposal/spec/design.
+- Record design completion in tasks.md and apply-progress.md only when assigned.
 
-### Entidad principal
-- Nombre: <Entity>
-- Campos: id, name, description, isActive, createdAt, ...
+## Boundaries
 
-### DTOs necesarios
-- CreateDto: { name: string; ... }
-- EditDto: { name?: string; ... }
-- FiltersDto: { search?, isActive?, sortBy?, sortOrder?, page?, limit? }
-
-### Actions a implementar
-- getAllXAction
-- getXByIdAction
-- createXAction
-- editXAction
-- deleteXAction
-- toggleXActiveAction (si tiene toggle)
-
-### Namespaces i18n
-- `<module>`: título, descripción, acción de crear, errores
-- `<entity>Details`: modales de detalle/edit/delete
-- `<entity>Form`: labels del formulario
-
-### Ruta en la app
-- `app/[locale]/(protected)/<module>/page.tsx`
-
-### Estructura de carpetas propuesta
-modules/<module>/
-├── <module>-content.tsx
-├── lib/
-│   ├── actions/<entity>.actions.ts
-│   ├── services/<entity>.services.ts
-│   ├── types/<entity>.types.ts
-│   ├── hooks/ (listar cada hook)
-│   └── mock/<entities>.data.ts
-└── ... (features)
-```
-
-## Entregable
-Un `design.md` de OpenSpec coherente con `.agent`, listo para que `tasks.md`
-guíe a `agent-data` y `agent-ui`.
-
-## Lo que NO haces
-- No escribes código de implementación.
-- No creas un plan paralelo fuera de OpenSpec.
-- No creas specs ejecutables fuera de OpenSpec.
-- No tomas decisiones sobre la lógica de negocio sin consultar al usuario.
+- Do not write product implementation code.
+- Do not create a parallel plan outside OpenSpec.
+- Do not redelegate.
+- Return the required handoff output.

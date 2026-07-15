@@ -1,38 +1,36 @@
 # Skill Registry
 
-Índice central del ecosistema de skills. El orquestador lee esta tabla al inicio
-de cada tarea para decidir qué skills cargar en cada subagente.
-
-> **Formato:** `Skill | Trigger (cuándo aplica) | Path | Owner`
-
-## Registro de Skills
+Central index for project skills. The orchestrator reads this table at the start of every task, then passes only exact paths that apply.
 
 | Skill | Trigger | Path | Owner |
 |---|---|---|---|
-| `spec-driven-development` | **Siempre** — define el protocolo híbrido OpenSpec + `.agent` | `.agent/skills/spec-driven-development/SKILL.md` | `orchestrator` |
-| `requirements-curation` | Cuando hay que extraer o mantener requerimientos candidatos desde `docs/project-context.md` hacia `docs/requirements/` | `.agent/skills/requirements-curation/SKILL.md` | `agent-requirements-curator` |
-| `module-architecture` | Cuando hay que revisar o enriquecer el `design.md` de un cambio OpenSpec o planificar un módulo | `.agent/skills/module-architecture/SKILL.md` | `agent-architect` |
-| `data-layer` | Cuando hay que implementar `services`, `actions`, `types`, `hooks` o `mock` de un módulo | `.agent/skills/data-layer/SKILL.md` | `agent-data` |
-| `ssr-data-fetching` | Cuando hay que crear el entry point SSR (`*-content.tsx`), `Suspense`, skeletons o containers de servidor | `.agent/skills/ssr-data-fetching/SKILL.md` | `agent-ui` |
-| `client-views-modals` | Cuando hay que crear vistas de lista (table/cards), modales o hooks de acción de lista | `.agent/skills/client-views-modals/SKILL.md` | `agent-ui` |
-| `forms-rhf-zod` | Cuando hay que crear formularios de creación o edición, triggers, schemas Zod o form containers | `.agent/skills/forms-rhf-zod/SKILL.md` | `agent-ui` |
-| `filters-url-state` | Cuando hay que crear filtros sincronizados a URL, active-filters o el hook de filtros | `.agent/skills/filters-url-state/SKILL.md` | `agent-ui` |
-| `i18n-conventions` | Cuando la tarea toca **cualquier texto visible** (labels, títulos, errores) o los archivos `messages/` | `.agent/skills/i18n-conventions/SKILL.md` | `agent-data`, `agent-ui`, `agent-architect` |
-| `verification-harness` | Siempre al **final de cualquier implementación** para validar OpenSpec + proyecto | `.agent/skills/verification-harness/SKILL.md` | `agent-verifier` |
+| spec-driven-development | Always. Hybrid lifecycle and native OpenSpec state. | .agent/skills/spec-driven-development/SKILL.md | orchestrator |
+| requirements-curation | Broad product intent or requirement briefs. | .agent/skills/requirements-curation/SKILL.md | agent-requirements-curator |
+| module-architecture | OpenSpec design or module structure. | .agent/skills/module-architecture/SKILL.md | agent-architect |
+| data-layer | Module services, actions, types, hooks, or mocks. | .agent/skills/data-layer/SKILL.md | agent-data |
+| ssr-data-fetching | SSR entry points, containers, Suspense, or skeletons. | .agent/skills/ssr-data-fetching/SKILL.md | agent-ui |
+| client-views-modals | List views, modals, and list actions. | .agent/skills/client-views-modals/SKILL.md | agent-ui |
+| forms-rhf-zod | Create or edit forms, Zod schemas, and form containers. | .agent/skills/forms-rhf-zod/SKILL.md | agent-ui |
+| filters-url-state | URL-synchronized filters. | .agent/skills/filters-url-state/SKILL.md | agent-ui |
+| i18n-conventions | Visible text or messages. | .agent/skills/i18n-conventions/SKILL.md | agent-data, agent-ui, agent-architect |
+| implementation-progress | Every implemented OpenSpec change; progress, evidence, and archive readiness. | .agent/skills/implementation-progress/SKILL.md | orchestrator, agent-data, agent-ui, agent-verifier |
+| verification-harness | Final four gates and verification evidence. | .agent/skills/verification-harness/SKILL.md | agent-verifier |
 
-## Módulos de referencia
+## Reference Modules
 
-- `.agent/reference/widget/` — implementación de código completa del patrón con entidad genérica `Widget`.
-- `.agent/reference/spec-example/` — ejemplo de calidad de requisitos y trazabilidad; úsalo solo como referencia, no como destino de nuevas specs ejecutables.
+- .agent/reference/widget/ is a generic implementation reference.
+- .agent/reference/spec-example/ is a requirement-quality reference.
+- Neither reference folder is an executable-spec destination.
 
-Los agentes pueden leer cualquier archivo de ambas carpetas para ver ejemplos reales que ilustran las skills.
+## Phase Mapping
 
-## Mapeo Fase → Agente → Skills
-
-| Fase | Agente | Skills cargadas |
+| Phase | Owner | Exact skills normally loaded |
 |---|---|---|
-| Research: requirements | `agent-requirements-curator` | `requirements-curation` |
-| Design: OpenSpec proposal/specs/design/tasks | OpenSpec OPSX + `agent-architect` | `module-architecture`, `i18n-conventions` |
-| Implementation: Data | `agent-data` | `data-layer`, `i18n-conventions` |
-| Implementation: UI | `agent-ui` | `ssr-data-fetching`, `client-views-modals`, `forms-rhf-zod`, `filters-url-state`, `i18n-conventions` |
-| Verification | `agent-verifier` | `verification-harness` |
+| Requirement curation | agent-requirements-curator | requirements-curation |
+| OpenSpec design | orchestrator and agent-architect | spec-driven-development, module-architecture, i18n-conventions when visible text applies |
+| Data implementation | agent-data | data-layer, i18n-conventions when messages change, implementation-progress |
+| UI implementation | agent-ui | only applicable UI skills, i18n-conventions, implementation-progress |
+| Verification | agent-verifier | verification-harness, implementation-progress |
+| Archive | orchestrator | spec-driven-development, implementation-progress |
+
+The task and handoff determine the final minimal skill set; the table is not permission to load every skill.

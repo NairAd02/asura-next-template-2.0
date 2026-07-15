@@ -1,85 +1,65 @@
 ---
 name: verification-harness
-description: Cargar al finalizar cualquier implementación. Define los gates de verificación OpenSpec, typecheck, lint y build.
+description: Load at the end of every implementation to run the four gates, persist evidence, and check archive readiness.
 ---
 
 # Verification Harness
 
-## Cuándo usar
-**Siempre al finalizar una implementación.** Ningún trabajo se declara "done" sin pasar estos gates.
+## Native Preflight
 
-## Los 4 Gates de verificación
+Before verification, run:
 
-### Gate 0: OpenSpec validation
-```bash
-openspec validate --all --json
-```
-- **Pasa:** OpenSpec no reporta cambios/specs inválidos.
-- **Falla:** artifacts mal formados o inconsistentes → corregir antes de continuar.
-- **Nota:** para un cambio específico también se puede usar `openspec validate <change-id>`.
+openspec status --change <change-id> --json
 
-### Gate 1: TypeScript Typecheck
-```bash
-pnpm tsc --noEmit
-# o con npm:
-npx tsc --noEmit
-```
-- **Pasa:** sin errores de tipos.
-- **Falla:** errores de tipos TS → corregir antes de continuar.
-- **Nota:** `.agent/**` está excluido del tsconfig, no aparecerá en el check.
+Current OpenSpec versions do not expose instructions verify. Status is the native authority; do not create a second state file.
 
-### Gate 2: ESLint
-```bash
-pnpm lint
-# que ejecuta: eslint .
-```
-- **Pasa:** sin errores de linting (warnings son aceptables).
-- **Falla:** errores de lint → corregir antes de continuar.
-- **Nota:** `.agent/**` está en `.eslintignore`, no será analizado.
+Read proposal, specs, design, tasks, apply-progress.md, and the linked requirement brief when one applies. Reconcile progress with tasks.md before running gates.
 
-### Gate 3: Next.js Build
-```bash
-pnpm build
-# que ejecuta: next build
-```
-- **Pasa:** build completo sin errores.
-- **Falla:** errores de compilación o build → corregir antes de continuar.
-- **Nota:** `next.config.mjs` tiene `typescript.ignoreBuildErrors: true`, así que el build puede pasar aunque haya errores TS pre-existentes no introducidos por el trabajo actual.
+## Four Gates
 
-## Protocolo de verificación
+Run in this order through the repository scripts:
 
-0. Ejecutar **Gate 0** (OpenSpec validation).
-   - Si falla: corregir los artifacts de OpenSpec o documentar si el fallo es preexistente.
-1. Ejecutar **Gate 1** (typecheck).
-   - Si falla: identificar si el error fue **introducido** por los cambios actuales o era **preexistente**.
-   - Si es preexistente: documentarlo y continuar.
-   - Si es introducido: corregir y re-ejecutar.
-2. Ejecutar **Gate 2** (lint).
-   - Misma lógica: solo los errores nuevos bloquean.
-3. Ejecutar **Gate 3** (build).
-   - Misma lógica: solo fallos nuevos bloquean.
+1. pnpm validate:specs
+2. pnpm typecheck
+3. pnpm lint
+4. pnpm build
 
-## Criterio de "Done"
+The aggregate command is:
 
-Un módulo o feature está **Done** cuando:
-- [ ] OpenSpec validation no reporta errores nuevos.
-- [ ] TypeScript no reporta errores nuevos introducidos por los cambios.
-- [ ] ESLint no reporta errores nuevos.
-- [ ] `next build` completa sin nuevos errores.
-- [ ] El código sigue los patrones definidos en las skills del proyecto.
-- [ ] Los namespaces i18n están actualizados en `en.json` y `es.json`.
-- [ ] El requirement brief asociado está enlazado al cambio OpenSpec y actualizado de estado si aplica.
+pnpm verify
 
-## Errores TS preexistentes conocidos
+Typecheck must remain tsc --noEmit --incremental false. Build must not suppress TypeScript errors.
 
-Al trabajar en esta plantilla, existen errores TS previos no relacionados con ningún trabajo nuevo (ver historial del proyecto). No bloquean: solo reportar y seguir.
+## Evidence
 
-## Ruta rápida de verificación
+Create openspec/changes/<change-id>/verify-report.md. The report SHALL contain:
 
-```bash
-# Los gates en secuencia
-openspec validate --all --json
-pnpm tsc --noEmit
-pnpm lint
-pnpm build
-```
+- conformance against proposal, specs, design, and tasks
+- each gate command, exit code, and concise summary
+- relevant warnings
+- PASS or FAIL verdict
+- report invalidation rule
+
+A warning is recorded but does not make a successful command FAIL unless it violates the change contract.
+
+If a gate fails, record FAIL, identify the cause, and return a blocked handoff. Do not declare completion.
+
+## Archive Readiness
+
+Before archive, run:
+
+openspec status --change <change-id> --json
+
+Archive is blocked when any condition is true:
+
+- tasks.md has unchecked tasks
+- apply-progress.md is absent or disagrees with tasks.md
+- verify-report.md is missing or verdict is not PASS
+- implementation or change artifacts changed after the report
+- a linked requirement brief or requirements index cannot be updated coherently
+
+For behavior work, update the linked brief and index to implemented with the archived change reference. For an explicitly requirementless technical change, record no requirement as applicable.
+
+## Handoff
+
+Use .agent/contracts/phase-handoff.md. The verifier writes only verification artifacts and task/progress state within its allowed roots; implementation fixes return to the owning role.

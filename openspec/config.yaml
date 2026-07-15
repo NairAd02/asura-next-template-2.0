@@ -3,53 +3,48 @@ schema: spec-driven
 context: |
   This repository uses a hybrid OpenSpec + .agent workflow.
 
-  Source material:
-  - docs/project-context.md is the canonical project context document.
-  - docs/requirements/ contains curated requirement briefs extracted from the project context.
+  docs/ is project knowledge:
+  - docs/project-context.md is canonical broad context.
+  - docs/requirements/ contains curated requirement briefs.
 
-  OpenSpec responsibilities:
-  - openspec/changes/<change-id>/ contains the executable unit of work: proposal, delta specs, design, and tasks.
-  - openspec/specs/ is the source of truth for accepted executable behavior after archive/sync.
-  - Do not bulk-convert docs/project-context.md into specs. Grow specs from focused changes.
+  OpenSpec is the only executable change and accepted-spec layer:
+  - openspec/changes/<change-id>/ contains proposal, delta specs, design, tasks, apply-progress, and verification evidence.
+  - openspec/specs/ contains accepted behavior after archive.
 
-  .agent responsibilities:
-  - .agent/skill-registry.md defines which project skills apply.
-  - .agent/skills/spec-driven-development/SKILL.md defines the local SDD protocol.
-  - .agent/skills/module-architecture/SKILL.md governs module design.
-  - .agent/skills/data-layer/SKILL.md governs services, actions, DTOs, hooks, and mock data.
-  - .agent/skills/ssr-data-fetching/SKILL.md governs SSR entry points, containers, Suspense, and skeletons.
-  - .agent/skills/client-views-modals/SKILL.md governs list views, modals, and list actions.
-  - .agent/skills/forms-rhf-zod/SKILL.md governs React Hook Form + Zod forms.
-  - .agent/skills/filters-url-state/SKILL.md governs URL-synced filters.
-  - .agent/skills/i18n-conventions/SKILL.md governs visible text and messages.
-  - .agent/skills/verification-harness/SKILL.md governs final validation gates.
-  - .agent/reference/widget/ and .agent/reference/spec-example/ are examples only.
+  .agent is technical governance:
+  - AGENTS.md is the root Codex entry point.
+  - .agent/skill-registry.md resolves exact skills.
+  - .agent/contracts/phase-handoff.md defines specialized handoffs.
+  - .agent/skills/spec-driven-development/SKILL.md defines the lifecycle.
+  - .agent/skills/implementation-progress/SKILL.md defines progress and evidence.
+  - .agent/skills/verification-harness/SKILL.md defines final gates.
 
   Stack:
-  - Next.js App Router, React, TypeScript, Tailwind CSS, shadcn/ui + Radix UI.
-  - React Hook Form + Zod for forms.
-  - next-intl for i18n.
-  - TanStack Table for tables.
-  - Sonner for notifications.
+  - Next.js App Router, React, TypeScript, Tailwind CSS, shadcn/ui and Radix UI.
+  - React Hook Form and Zod, next-intl, TanStack Table, Sonner.
+  - Node.js 20.19.0 or newer, pnpm 10.30.2, compatible global OpenSpec CLI.
 
 rules:
   proposal:
-    - Cite the driving requirement brief from docs/requirements when one exists.
-    - Include intent, scope, non-goals, dependencies, and open questions.
-    - Keep changes focused; split unrelated behavior into separate OpenSpec changes.
-    - Do not treat docs/project-context.md as a spec to convert wholesale.
+    - Cite the driving requirement brief when one exists; explicitly record no requirement when the change is requirementless technical work.
+    - State intent, scope, non-goals, dependencies, and open questions.
+    - Include measurable success criteria and a rollback strategy.
+    - Identify capability impact and keep changes focused.
+    - Do not bulk-convert project-context.md into specs.
   specs:
-    - Write behavior-first requirements with testable Given/When/Then scenarios.
-    - Use focused ADDED, MODIFIED, or REMOVED deltas relative to current behavior.
-    - Preserve stable requirement intent; do not renumber or rewrite unrelated behavior.
-    - Reference project business rules or requirement brief IDs when relevant.
+    - Write behavior-first requirements with testable Given, When, Then scenarios.
+    - Use focused ADDED, MODIFIED, REMOVED, or RENAMED deltas relative to current behavior.
+    - Preserve stable requirement intent and avoid unrelated rewrites.
+    - Reference requirement IDs and business rules when relevant.
   design:
-    - Follow .agent/skills/module-architecture/SKILL.md for module shape and folder conventions.
-    - Use only dependencies already present in package.json unless the user explicitly approves adding one.
-    - Identify which .agent skills apply to implementation.
-    - Include i18n, data-layer, SSR, forms, filters, and verification considerations when relevant.
+    - Follow module-architecture when module behavior applies.
+    - Record decisions, alternatives, rationale, interfaces, risks, migration or rollout, rollback, and verification approach.
+    - Use only dependencies already present unless the user explicitly approves a new dependency.
+    - Identify exact applicable .agent skills and responsibility boundaries.
+    - Address i18n, data, SSR, forms, filters, and verification only when relevant.
   tasks:
-    - Break work into small implementation steps that map back to proposal, specs, and design.
-    - Include i18n message updates for all visible text.
-    - Include verification tasks for openspec validate, TypeScript, lint, and Next.js build.
-    - Keep tasks checkable and update them as implementation learns new facts.
+    - Break work into small, independently verifiable steps traceable to proposal, specs, and design.
+    - Keep checkbox tasks current; tasks.md is the completion authority.
+    - Include progress creation or updates for implemented changes.
+    - Include verification tasks for OpenSpec validation, non-incremental TypeScript, lint, and Next.js build.
+    - Include requirement-status and archive preparation when a requirement is linked.
