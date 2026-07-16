@@ -1,10 +1,10 @@
 # Requirement Brief: Manage Fleet Vehicles
 
 > **ID:** REQ-006  
-> **Status:** in-openspec  
+> **Status:** implemented  
 > **Priority:** high  
 > **Source:** `docs/project-context.md#client-pilot-fleet-vehicle-management`  
-> **OpenSpec change:** `add-vehicle-management`
+> **OpenSpec change:** `archive/2026-07-16-add-vehicle-management`
 
 ## Intent
 
@@ -110,7 +110,7 @@ pattern.
 
 ## Suggested OpenSpec Change
 
-- **Change ID:** `add-vehicle-management`
+- **Change ID:** `archive/2026-07-16-add-vehicle-management`
 - **Affected domain/spec:** `vehicles`
 - **Notes for proposal/spec/design/tasks:** Reuse the `.agent/reference/widget`
   module structure while giving vehicles an independent domain contract,

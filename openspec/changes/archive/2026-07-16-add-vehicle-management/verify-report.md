@@ -25,7 +25,7 @@ PASS
 | `pnpm verify:fast` | 0 | 27.6 s | Unit tests, incremental typecheck, and cached lint passed: 3 files, 13 tests. |
 | `openspec validate add-vehicle-management --strict` | 0 | 2.4 s | Change `add-vehicle-management` is valid. |
 | `openspec status --change "add-vehicle-management" --json` | 0 | 3.2 s | Native OpenSpec status shows all planning artifacts present and complete. |
-| `pnpm verify` | 0 | 79.0 s | Final aggregate passed: specs/harness validation, unit tests, non-incremental app/reference typecheck, full lint, and production build. |
+| `pnpm verify` | 0 | 84.6 s | Final aggregate passed: specs/harness validation, unit tests, non-incremental app/reference typecheck, full lint, and production build. |
 
 ## Final Gate Detail
 
@@ -112,6 +112,6 @@ SHA-256 snapshot.
     "routes/groups-routes/groups-routes.tsx",
     "routes/paths.tsx"
   ],
-  "digest": "c03b4201decda70ce79aa27fce7838bc7387cfdc4e0debc2e9fb95a703575754"
+  "digest": "998fba8505814bcf5c723deab5b80049e029addc0f3aa84d2d73069eea95a13e"
 }
 ```
