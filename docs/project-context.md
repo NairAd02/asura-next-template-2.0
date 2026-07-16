@@ -41,6 +41,20 @@ Document durable rules that affect more than one feature.
 - `.agent` must remain the source of technical conventions for implementation
   and verification.
 
+## Client Pilot: Fleet Vehicle Management
+
+A simulated client request asks the admin panel to include a management module
+for company vehicles. The module uses mock data only and does not require real
+authentication, authorization, durable persistence, external APIs, imports, or
+reports. The goal is to validate the harness with a realistic CRUD module
+modeled after the accepted suppliers reference module.
+
+The vehicle management module should let an admin operator browse, search,
+filter, sort, paginate, create, edit, inspect details, delete, and change
+operational status for company vehicles. Vehicle attributes may be selected by
+the implementer as long as they represent a plausible fleet inventory and are
+validated consistently at client and server boundaries.
+
 ## Non-Functional Requirements
 
 Capture performance, security, accessibility, i18n, auditability, reliability, and compliance expectations.

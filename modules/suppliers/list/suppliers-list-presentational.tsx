@@ -10,21 +10,53 @@ import EditSupplierContainer from "../form/edit/edit-supplier-container";
 import SupplierDetailsContainer from "../details/supplier-details-container";
 import DeleteSupplierContainer from "../delete/delete-supplier-container";
 import ToggleSupplierActiveContainer from "../activate/toggle-supplier-active-container";
+import {
+  useDeleteSupplierListAction,
+  useEditSupplierListAction,
+  useViewSupplierListAction,
+} from "./hooks";
 
 export default function SuppliersListPresentational({ suppliers }: { suppliers: Supplier[] }) {
   const t = useTranslations("supplierDetails");
-  const [viewId, setViewId] = useState<string | null>(null);
-  const [editId, setEditId] = useState<string | null>(null);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [toggleId, setToggleId] = useState<string | null>(null);
-  const actions = { onView: setViewId, onEdit: setEditId, onDelete: setDeleteId, onToggle: setToggleId };
-  const toggleSupplier = suppliers.find((supplier) => supplier.id === toggleId);
+  const {
+    editingItemId,
+    isModalOpen: isEditModalOpen,
+    handleEditItem,
+    handleCloseModal,
+    handleModalOpenChange: handleEditModalOpenChange,
+  } = useEditSupplierListAction();
+  const {
+    viewingItemId,
+    isModalOpen: isViewModalOpen,
+    handleViewItem,
+    handleModalOpenChange: handleViewModalOpenChange,
+  } = useViewSupplierListAction();
+  const {
+    deletingItemId,
+    isDeleteDialogOpen,
+    handleDeleteItem,
+    handleDeleteDialogOpenChange,
+  } = useDeleteSupplierListAction();
+  const [togglingActiveId, setTogglingActiveId] = useState<string | null>(null);
+  const [isToggleDialogOpen, setIsToggleDialogOpen] = useState(false);
+
+  const handleToggleActive = (id: string) => {
+    setTogglingActiveId(id);
+    setIsToggleDialogOpen(true);
+  };
+  const handleToggleDialogOpenChange = (open: boolean) => {
+    setIsToggleDialogOpen(open);
+    if (!open) setTogglingActiveId(null);
+  };
+  const actions = { onView: handleViewItem, onEdit: handleEditItem, onDelete: handleDeleteItem, onToggle: handleToggleActive };
+  const toggleSupplier = suppliers.find((supplier) => supplier.id === togglingActiveId);
+
   return <div className="pb-4">
     <div className="hidden md:block"><SuppliersListTableView suppliers={suppliers} {...actions} /></div>
     <div className="block md:hidden"><SuppliersListCardsView suppliers={suppliers} {...actions} /></div>
-    <Modal open={editId !== null} onOpenChange={(open) => { if (!open) setEditId(null); }} title={t("editTitle")} description={t("editDescription")} maxWidth="2xl" bodyClassName="px-0 py-0 pb-4">{editId && <EditSupplierContainer supplierId={editId} onClose={() => setEditId(null)} />}</Modal>
-    <Modal open={viewId !== null} onOpenChange={(open) => { if (!open) setViewId(null); }} title={t("title")} description={t("description")} maxWidth="xl" maxHeight="lg">{viewId && <SupplierDetailsContainer supplierId={viewId} />}</Modal>
-    {deleteId && <DeleteSupplierContainer supplierId={deleteId} open onOpenChange={(open) => { if (!open) setDeleteId(null); }} />}
-    {toggleSupplier && <ToggleSupplierActiveContainer supplierId={toggleSupplier.id} isActive={toggleSupplier.isActive} open onOpenChange={(open) => { if (!open) setToggleId(null); }} />}
+    <Modal open={isEditModalOpen} onOpenChange={handleEditModalOpenChange} title={t("editTitle")} description={t("editDescription")} maxWidth="2xl" bodyClassName="px-0 py-0 pb-4">{editingItemId && <EditSupplierContainer supplierId={editingItemId} onClose={handleCloseModal} />}</Modal>
+    <Modal open={isViewModalOpen} onOpenChange={handleViewModalOpenChange} title={t("title")} description={t("description")} maxWidth="xl" maxHeight="lg">{viewingItemId && <SupplierDetailsContainer supplierId={viewingItemId} />}</Modal>
+    {deletingItemId && <DeleteSupplierContainer supplierId={deletingItemId} open={isDeleteDialogOpen} onOpenChange={handleDeleteDialogOpenChange} />}
+    {toggleSupplier && <ToggleSupplierActiveContainer supplierId={toggleSupplier.id} isActive={toggleSupplier.isActive} open={isToggleDialogOpen} onOpenChange={handleToggleDialogOpenChange} />}
   </div>;
 }

@@ -62,6 +62,18 @@ describe("supplier filters and validation", () => {
       sortBy: "createdAt",
       sortOrder: "desc",
     });
+
+    expect(supplierFiltersToUrl({
+      search: "   ",
+      isActive: "",
+      sortBy: "name",
+      sortOrder: "asc",
+    })).toEqual({
+      search: undefined,
+      isActive: undefined,
+      sortBy: "name",
+      sortOrder: "asc",
+    });
   });
 
   it("normalizes valid schema input and rejects invalid server input without mutation", async () => {

@@ -103,8 +103,8 @@ export function sanitizeSupplierFilters(input: unknown = {}): SupplierFiltersDto
 
 export function supplierFiltersToUrl(filters: SupplierFilters): Partial<SupplierFiltersDto> {
   return {
-    ...(filters.search.trim() ? { search: filters.search.trim() } : {}),
-    ...(filters.isActive !== "" ? { isActive: filters.isActive } : {}),
+    search: filters.search.trim() || undefined,
+    isActive: filters.isActive === "" ? undefined : filters.isActive,
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
   };

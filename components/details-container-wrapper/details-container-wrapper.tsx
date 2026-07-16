@@ -8,7 +8,7 @@ export interface DetailsContainerWrapperProps<T> {
   data: T | null;
   isLoading: boolean;
   error: string | null;
-  entityKey: "item" | "customer" | "user" | "releaseSession" | "incident" | "entry" | "correction" | "itemCategory" | "itemSize" | "termsVersion" | "supplier";
+  entityKey: "item" | "customer" | "user" | "releaseSession" | "incident" | "entry" | "correction" | "itemCategory" | "itemSize" | "termsVersion" | "supplier" | "vehicle";
   containerClassName?: string;
   combineErrorAndNotFound?: boolean;
   children: (data: T) => ReactNode;
