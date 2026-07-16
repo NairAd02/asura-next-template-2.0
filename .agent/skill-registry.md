@@ -13,8 +13,9 @@ Central index for project skills. The orchestrator reads this table at the start
 | forms-rhf-zod | Create or edit forms, Zod schemas, and form containers. | .agent/skills/forms-rhf-zod/SKILL.md | agent-ui |
 | filters-url-state | URL-synchronized filters. | .agent/skills/filters-url-state/SKILL.md | agent-ui |
 | i18n-conventions | Visible text or messages. | .agent/skills/i18n-conventions/SKILL.md | agent-data, agent-ui, agent-architect |
+| behavior-testing | Changed data, schemas, URL state, client state, localization, responsive composition, or final risk-based smoke. | .agent/skills/behavior-testing/SKILL.md | agent-data, agent-ui, agent-verifier |
 | implementation-progress | Every implemented OpenSpec change; machine-readable current snapshot, cumulative handoffs, evidence, and archive readiness. | .agent/skills/implementation-progress/SKILL.md | orchestrator, agent-data, agent-ui, agent-verifier |
-| verification-harness | Four gates, SHA-256 evidence, strict archive readiness, or applicable `no-change` checks. | .agent/skills/verification-harness/SKILL.md | agent-verifier |
+| verification-harness | Final specs, unit/component, typecheck, lint, build, SHA-256 evidence, strict archive readiness, or applicable `no-change` checks. | .agent/skills/verification-harness/SKILL.md | agent-verifier |
 
 ## Reference Modules
 
@@ -28,9 +29,9 @@ Central index for project skills. The orchestrator reads this table at the start
 |---|---|---|
 | Requirement curation | agent-requirements-curator | requirements-curation |
 | OpenSpec design | orchestrator and agent-architect | spec-driven-development, module-architecture, i18n-conventions when visible text applies |
-| Data implementation | agent-data | data-layer, i18n-conventions when messages change, implementation-progress |
-| UI implementation | agent-ui | only applicable UI skills, i18n-conventions, implementation-progress |
-| Verification | agent-verifier | verification-harness, implementation-progress |
+| Data implementation | agent-data | data-layer, behavior-testing when behavior changes, i18n-conventions when messages change, implementation-progress |
+| UI implementation | agent-ui | only applicable UI skills, behavior-testing when behavior changes, i18n-conventions, implementation-progress |
+| Verification | agent-verifier | verification-harness, behavior-testing when behavior or browser smoke applies, implementation-progress |
 | Archive | orchestrator | spec-driven-development, implementation-progress |
 
 The task and handoff determine the final minimal skill set; the table is not permission to load every skill.

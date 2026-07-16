@@ -37,4 +37,4 @@ Typical roots:
 
 ## Close
 
-Use implementation-progress and verification-harness. Finalize tasks/progress, run gates, create PASS plus SHA-256 snapshot, and require strict archive readiness. Use only native `openspec archive <id> --yes --json`; then update the linked requirement/index and validate accepted specs. Never create an alternate state engine or accept a failure override.
+Use implementation-progress and verification-harness, plus behavior-testing when behavior or browser risk applies. Finalize tasks/progress, run `pnpm verify` and only the accepted bounded smoke, create PASS plus SHA-256 snapshot, and require strict archive readiness. Use only native `openspec archive <id> --yes --json`; then update the linked requirement/index and validate accepted specs. Never create an alternate state engine or accept a failure override.

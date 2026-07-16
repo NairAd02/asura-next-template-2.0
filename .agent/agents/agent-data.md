@@ -18,6 +18,7 @@ Allowed roots:
 Load exact paths:
 
 - .agent/skills/data-layer/SKILL.md
+- .agent/skills/behavior-testing/SKILL.md when behavior changes
 - .agent/skills/i18n-conventions/SKILL.md only when messages change
 - .agent/skills/implementation-progress/SKILL.md
 
@@ -25,6 +26,7 @@ Load exact paths:
 
 - Follow the approved design and unchecked tasks.
 - Keep services server-only, actions thin, and fallible operations on ServiceResponse.
+- Add focused Vitest coverage for the changed service, schema, action, or state contract and run the smallest relevant target plus `pnpm verify:fast` before handoff.
 - Update tasks.md and apply-progress.md for completed data work.
 - Report file paths, decisions, risks, and next phase through the common handoff.
 

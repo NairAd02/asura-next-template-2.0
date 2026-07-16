@@ -32,13 +32,15 @@ Open http://localhost:3000. For local HTTPS, run pnpm dev:https.
 ~~~bash
 pnpm validate:specs  # validate active changes and accepted specs
 pnpm validate:harness # run Node negative tests and mechanical harness checks
+pnpm test:unit:run   # deterministic Vitest unit/component tests
+pnpm verify:fast     # cached implementation feedback
 pnpm typecheck       # TypeScript without incremental cache
 pnpm lint            # ESLint
 pnpm build           # production Next.js build with TypeScript errors enabled
-pnpm verify          # run the four gates above in order
+pnpm verify          # run specs, tests, typecheck, lint, and build in order
 ~~~
 
-pnpm verify stops at the first failing gate and returns a non-zero exit code. Generated TypeScript build state is ignored and must not be committed.
+pnpm verify stops at the first failing gate and returns a non-zero exit code. `verify:fast` is provisional and never archive evidence. A bounded integrated-browser smoke is added only when the accepted change has localization, responsive, or route-composition risk that lower layers cannot prove. Generated TypeScript build state is ignored and must not be committed.
 
 ## SDD architecture
 

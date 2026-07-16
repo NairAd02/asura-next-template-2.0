@@ -20,6 +20,7 @@ Use this contract whenever work passes between the orchestrator and a specialize
 - Artifacts: created or updated paths.
 - Files changed: all modified paths.
 - Completed tasks: task IDs checked in tasks.md, if any.
+- Verification: exact commands/checks and results, or explicitly not run.
 - Risks: unresolved risks, deviations, or none.
 - Next phase: recommended owner and action.
 - Skill resolution: paths-injected, inline-fallback, or none.

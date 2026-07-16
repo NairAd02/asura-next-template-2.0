@@ -1,6 +1,6 @@
 ---
 name: verification-harness
-description: Load at the end of every implementation to run the four gates, persist evidence, and check archive readiness.
+description: Load at the end of every implementation to run the final specs, unit/component, typecheck, lint, and build gates, persist evidence, and check archive readiness.
 ---
 
 # Verification Harness
@@ -17,14 +17,15 @@ Read proposal, specs, design, tasks, apply-progress.md, and the linked requireme
 
 For work explicitly classified `no-change`, skip change status and do not create `apply-progress.md` or `verify-report.md`. Run only applicable checks and return command evidence in the handoff/final result.
 
-## Four Gates
+## Final Gates
 
 Run in this order through the repository scripts:
 
 1. pnpm validate:specs
-2. pnpm typecheck
-3. pnpm lint
-4. pnpm build
+2. pnpm test:unit:run
+3. pnpm typecheck
+4. pnpm lint
+5. pnpm build
 
 The aggregate command is:
 
@@ -32,19 +33,22 @@ pnpm verify
 
 Typecheck must remain tsc --noEmit --incremental false. Build must not suppress TypeScript errors.
 
+`pnpm verify:fast` is provisional executor feedback only and is never final or archive evidence. After the final aggregate, run a short integrated-browser smoke only when an accepted task names integration or visual risk that lower layers cannot prove. Do not reproduce deterministic unit/component scenarios as browser matrices.
+
 ## Evidence
 
 Create openspec/changes/<change-id>/verify-report.md. The report SHALL contain:
 
 - conformance against proposal, specs, design, and tasks
-- each gate command, exit code, and concise summary
+- each gate command, exit code, duration, and concise summary
+- the bounded integrated-browser checklist and result when required
 - relevant warnings
 - PASS or FAIL verdict
 - report invalidation rule
 
 A warning is recorded but does not make a successful command FAIL unless it violates the change contract.
 
-After all implementation/browser/verification task checkboxes are complete, set the progress snapshot to `ready-for-archive`, generate snapshot JSON with `node scripts/validate-harness.mjs --snapshot <change-id>`, and place it under `## Evidence Snapshot` in the PASS report. Any covered edit requires all gates and the snapshot again.
+After all implementation/browser/verification task checkboxes are complete, set the progress snapshot to `ready-for-archive`, generate snapshot JSON with `node scripts/validate-harness.mjs --snapshot <change-id>`, and place it under `## Evidence Snapshot` in the PASS report. Any covered edit requires the final command, applicable browser smoke, and snapshot again.
 
 If a gate fails, record FAIL, identify the cause, and return a blocked handoff. Do not declare completion.
 

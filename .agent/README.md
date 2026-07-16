@@ -9,6 +9,7 @@ This portable folder provides the technical-governance layer for the hybrid work
 - contracts/phase-handoff.md: required specialized-role handoff.
 - skills/spec-driven-development: lifecycle and OpenSpec-native state.
 - skills/implementation-progress: cumulative progress and evidence.
+- skills/behavior-testing: smallest valuable Vitest/component layer and bounded browser smoke.
 - skills/verification-harness: final gates and archive readiness.
 - agents/: bounded role definitions.
 - reference/: examples only, never executable specs.

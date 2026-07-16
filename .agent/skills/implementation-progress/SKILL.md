@@ -50,10 +50,11 @@ When progress and tasks.md disagree, stop and reconcile the discrepancy before c
 Create or replace openspec/changes/<change-id>/verify-report.md after final verification. It SHALL include:
 
 - conformance against proposal, specs, design, and tasks
-- exact command, exit code, and concise summary for OpenSpec validation, typecheck, lint, and build
+- exact command, exit code, duration, and concise summary for specs/harness validation, unit/component tests, non-incremental typecheck, full lint, and build
+- the bounded integrated-browser checklist and result when the accepted change requires it
 - relevant warnings
 - PASS or FAIL verdict
-- invalidation rule: any subsequent implementation or change-artifact modification requires all four gates again
+- invalidation rule: any subsequent implementation or change-artifact modification requires the final command and applicable browser smoke again
 - an `## Evidence Snapshot` fenced JSON block generated after finalizing tasks and progress with `node scripts/validate-harness.mjs --snapshot <change-id>`
 
 The snapshot uses schema version 1, SHA-256, a complete sorted path set, and a combined digest. It covers all active change files except `verify-report.md`, linked requirement/index files, and every source/artifact path declared in progress.
@@ -69,7 +70,7 @@ Before archive, verify all of the following:
 - Native OpenSpec status has been checked.
 - `node scripts/validate-harness.mjs --archive-ready <change-id>` exits 0 and proves the PASS snapshot is fresh.
 
-Terminal order is fixed: finalize implementation/browser tasks; run the four gates; finalize verification task checkboxes and set progress `ready-for-archive`; generate the report and snapshot; run status plus strict readiness; invoke native archive; update requirement/index; validate accepted specs.
+Terminal order is fixed: finalize implementation and browser task definitions; run `pnpm verify` and the applicable bounded smoke; finalize verification task checkboxes and set progress `ready-for-archive`; generate the report and snapshot; run status plus strict readiness; invoke native archive; update requirement/index; validate accepted specs.
 
 Report creation, native archive movement, and post-archive requirement/index updates are close operations, not task checkboxes.
 

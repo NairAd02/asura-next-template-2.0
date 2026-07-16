@@ -8,6 +8,7 @@ import {
   createEvidenceSnapshot,
   validateChangeLifecycle,
   validateLocalSkillIntegration,
+  validateVerificationScripts,
 } from "./harness-validation.mjs";
 
 async function write(root, relativePath, content) {
@@ -107,6 +108,39 @@ test("rejects unsafe archive skill integration", async () => {
   } finally {
     await rm(root, { recursive: true, force: true });
   }
+});
+
+test("accepts the lightweight verification command contract", () => {
+  assert.deepEqual(
+    validateVerificationScripts({
+      scripts: {
+        "test:unit": "vitest",
+        "test:unit:run": "vitest run",
+        "typecheck:fast": "tsc --noEmit --incremental",
+        "lint:fast": "eslint . --cache",
+        "verify:fast": "pnpm test:unit:run && pnpm typecheck:fast && pnpm lint:fast",
+        verify: "pnpm validate:specs && pnpm test:unit:run && pnpm typecheck && pnpm lint && pnpm build",
+      },
+      devDependencies: { vitest: "^4.1.10" },
+    }),
+    [],
+  );
+});
+
+test("rejects a missing unit gate and browser framework dependency", () => {
+  const errors = validateVerificationScripts({
+    scripts: {
+      "test:unit": "vitest",
+      "test:unit:run": "vitest run",
+      "typecheck:fast": "tsc --noEmit --incremental",
+      "lint:fast": "eslint . --cache",
+      "verify:fast": "pnpm test:unit:run && pnpm typecheck:fast && pnpm lint:fast",
+      verify: "pnpm validate:specs && pnpm typecheck && pnpm lint && pnpm build",
+    },
+    devDependencies: { cypress: "latest" },
+  });
+  assert.ok(errors.some((error) => error.includes("verify must include test:unit:run")), errors.join("\n"));
+  assert.ok(errors.some((error) => error.includes("cypress is outside")), errors.join("\n"));
 });
 
 test("accepts a coherent fresh fixture", async () => {

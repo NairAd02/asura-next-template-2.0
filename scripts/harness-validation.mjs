@@ -18,6 +18,7 @@ const GUIDANCE_FILES = [
   "docs/developer-harness-guide.md",
   "docs/human-operator-guide.md",
   ".agent/skills/spec-driven-development/SKILL.md",
+  ".agent/skills/behavior-testing/SKILL.md",
   ".agent/skills/implementation-progress/SKILL.md",
   ".agent/skills/verification-harness/SKILL.md",
   ".agent/agents/orchestrator.md",
@@ -128,6 +129,41 @@ export function validateOpenSpecVersion(output) {
   return actual === EXPECTED_OPENSPEC_VERSION
     ? []
     : [`OpenSpec version mismatch: expected ${EXPECTED_OPENSPEC_VERSION}, received ${actual || "no version"}.`];
+}
+
+export function validateVerificationScripts(manifest) {
+  const errors = [];
+  const scripts = manifest?.scripts ?? {};
+  const requiredFragments = {
+    "verify:fast": ["test:unit:run", "typecheck:fast", "lint:fast"],
+    verify: ["validate:specs", "test:unit:run", "typecheck", "lint", "build"],
+  };
+
+  for (const [scriptName, fragments] of Object.entries(requiredFragments)) {
+    const command = scripts[scriptName];
+    if (typeof command !== "string") {
+      errors.push(`package.json: missing required script ${scriptName}.`);
+      continue;
+    }
+    for (const fragment of fragments) {
+      if (!command.includes(fragment)) {
+        errors.push(`package.json: script ${scriptName} must include ${fragment}.`);
+      }
+    }
+  }
+
+  for (const scriptName of ["test:unit", "test:unit:run", "typecheck:fast", "lint:fast"]) {
+    if (typeof scripts[scriptName] !== "string") errors.push(`package.json: missing required script ${scriptName}.`);
+  }
+
+  const dependencies = { ...(manifest?.dependencies ?? {}), ...(manifest?.devDependencies ?? {}) };
+  for (const browserFramework of ["@playwright/test", "playwright", "cypress"]) {
+    if (browserFramework in dependencies) {
+      errors.push(`package.json: ${browserFramework} is outside the lightweight browser-binary-free verification profile.`);
+    }
+  }
+
+  return errors;
 }
 
 async function readRequired(root, relativePath, errors) {
@@ -364,8 +400,18 @@ export async function listActiveChanges(root) {
 }
 
 export async function validateRepository(root, openSpecVersionOutput) {
+  const manifestErrors = [];
+  const manifestContent = await readRequired(root, "package.json", manifestErrors);
+  if (manifestContent !== null) {
+    try {
+      manifestErrors.push(...validateVerificationScripts(JSON.parse(manifestContent)));
+    } catch (error) {
+      manifestErrors.push(`package.json: invalid JSON: ${error.message}.`);
+    }
+  }
   const errors = [
     ...validateOpenSpecVersion(openSpecVersionOutput),
+    ...manifestErrors,
     ...(await validateLocalSkillIntegration(root)),
     ...(await validateGuidance(root)),
   ];

@@ -23,12 +23,14 @@ Load only the relevant exact paths from:
 - .agent/skills/forms-rhf-zod/SKILL.md
 - .agent/skills/filters-url-state/SKILL.md
 - .agent/skills/i18n-conventions/SKILL.md
+- .agent/skills/behavior-testing/SKILL.md when behavior changes
 - .agent/skills/implementation-progress/SKILL.md
 
 ## Work
 
 - Follow approved design and unchecked tasks.
 - Reuse shared components and preserve server/client boundaries.
+- Add focused Testing Library or Vitest coverage for changed client behavior and run the smallest relevant target plus `pnpm verify:fast` before handoff.
 - Update both locale files for assigned visible text.
 - Update tasks.md and apply-progress.md for completed UI work.
 - Return the common handoff with exact files and risks.

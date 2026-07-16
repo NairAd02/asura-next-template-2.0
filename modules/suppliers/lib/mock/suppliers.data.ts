@@ -27,3 +27,8 @@ export function getSuppliersStore(): Supplier[] {
   globalStore.__nextTemplateSuppliersStore ??= cloneSeeds();
   return globalStore.__nextTemplateSuppliersStore;
 }
+
+export function resetSuppliersStore(): Supplier[] {
+  globalStore.__nextTemplateSuppliersStore = cloneSeeds();
+  return globalStore.__nextTemplateSuppliersStore;
+}
