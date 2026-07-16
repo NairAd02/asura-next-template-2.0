@@ -23,6 +23,7 @@ El agente lee primero:
 
 1. .agent/skills/spec-driven-development/SKILL.md
 2. .agent/skill-registry.md
+3. .agent/agents/orchestrator.md
 
 Despues clasifica la tarea.
 
@@ -42,7 +43,8 @@ Para un change activo, el agente debe:
 2. Ejecutar openspec instructions apply --change <id> --json.
 3. Reread proposal, specs, design, tasks y el requirement brief cuando exista.
 4. Confirmar que no faltan artifacts, rutas o decisiones bloqueantes.
-5. Cargar solo las skills necesarias.
+5. Crear un plan de delegacion para cambios OpenSpec implementados.
+6. Cargar solo las skills necesarias.
 
 Este es el momento de aprobacion ligera. Revisa que proposal, specs, design y tasks representen lo que quieres antes de pedir implementacion.
 
@@ -50,9 +52,11 @@ Este es el momento de aprobacion ligera. Revisa que proposal, specs, design y ta
 
 - tasks.md es la autoridad para saber que esta terminado.
 - apply-progress.md es acumulativo: guarda tareas completas, archivos, decisiones, problemas, tareas restantes y skills cargadas.
+- Si las tasks mapean a roles especializados, tasks.md usa owner tags como `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u `[orchestrator]`.
+- apply-progress.md registra `delegationPlan`: roles requeridos, task IDs, roots permitidos, skills exactas, metodo de resolucion y motivo si se usa inline fallback.
 - Si tasks.md y apply-progress.md no coinciden, se reconcilian antes de seguir.
 - Cada rol recibe un handoff con tarea acotada, change ID, estado nativo, raices editables y paths exactos de skills.
-- Un ejecutor no redelega. Si el runtime no soporta subagentes, el rol se ejecuta en linea con los mismos limites.
+- Un ejecutor no redelega. Si el runtime no soporta subagentes, el rol se ejecuta en linea con los mismos limites y se registra `inline-fallback` con el motivo concreto.
 - El ejecutor crea junto al codigo las pruebas Vitest o Testing Library mas pequenas que detecten la regresion y usa `pnpm verify:fast` durante la iteracion.
 
 ## Verificacion y Archive
@@ -81,6 +85,7 @@ Un change no se archiva si:
 
 - quedan tareas sin marcar;
 - falta apply-progress.md o no coincide con tasks.md;
+- faltan delegationPlan o handoffs para tareas owner-tagged ya completadas;
 - falta verify-report.md PASS;
 - el snapshot SHA-256 esta incompleto o stale;
 - el requirement vinculado y su indice no se pueden actualizar.
@@ -105,7 +110,7 @@ Como modifica comportamiento, datos y UI, el flujo normal es:
 1. Crear un requirement, por ejemplo REQ-003.
 2. Crear un change, por ejemplo add-item-tags.
 3. Revisar proposal, delta specs, design y tasks.
-4. Implementar la capa de datos, UI, filtros e i18n que correspondan.
+4. Asignar tasks con owner tags y handoffs para data, UI, filtros, i18n y verifier.
 5. Mantener apply-progress.md y tasks.md.
 6. Ejecutar pnpm verify.
 7. Crear verify-report.md, actualizar REQ-003 y archivar.

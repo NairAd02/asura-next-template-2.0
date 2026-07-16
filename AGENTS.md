@@ -4,6 +4,7 @@ Before any task action, read these exact files in order:
 
 1. .agent/skills/spec-driven-development/SKILL.md
 2. .agent/skill-registry.md
+3. .agent/agents/orchestrator.md
 
 Then classify the task:
 
@@ -20,7 +21,9 @@ For an active change, treat OpenSpec as the only executable state authority:
 - OpenSpec 1.6 exposes no instructions verify or archive artifact. Do not invent a second state engine.
 - For `no-change` work, run applicable checks without change status, apply-progress.md, or verify-report.md.
 
-Resolve only the exact skill paths needed from .agent/skill-registry.md. Every specialized handoff must use .agent/contracts/phase-handoff.md. Executors do not redelegate. If subagents are unavailable, perform the relevant role inline with its same allowed roots and responsibilities.
+Resolve only the exact skill paths needed from .agent/skill-registry.md. Every specialized handoff must use .agent/contracts/phase-handoff.md. Executors do not redelegate.
+
+Before implementation, create a delegation plan for every implemented OpenSpec change. If tasks touch more than one registry owner, both data and UI roots, visible text plus behavior, a module workflow, or final verification, assign owner-tagged tasks to the relevant roles and use subagents when available. If subagents are unavailable, perform the relevant role inline with the same allowed roots and responsibilities, record `inline-fallback`, and include the concrete fallback reason in apply-progress.md. Do not silently implement specialized work in the orchestrator thread.
 
 Do not apply until the required proposal, specs, design, tasks, and requirement brief when applicable have been reread and shown to be coherent, reachable, and free of blocking questions.
 

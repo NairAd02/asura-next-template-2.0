@@ -25,6 +25,9 @@ const GUIDANCE_FILES = [
   ".agent/agents/agent-verifier.md",
 ];
 
+const OWNER_TAG_PATTERN = /\[(orchestrator|agent-[a-z0-9-]+)\]/g;
+const VALID_SKILL_RESOLUTIONS = new Set(["paths-injected", "inline-fallback", "none"]);
+
 function normalizeRelativePath(value) {
   return value.replaceAll("\\", "/").replace(/^\.\//, "");
 }
@@ -93,7 +96,15 @@ export function parseTasks(markdown) {
   const tasks = [];
   const pattern = /^\s*-\s+\[([ xX])\]\s+((?:\d+\.)+\d+)\s+(.+)$/gm;
   for (const match of markdown.matchAll(pattern)) {
-    tasks.push({ id: match[2], done: match[1].toLowerCase() === "x", description: match[3].trim() });
+    const description = match[3].trim();
+    const ownerTags = [...description.matchAll(OWNER_TAG_PATTERN)].map((ownerMatch) => ownerMatch[1]);
+    tasks.push({
+      id: match[2],
+      done: match[1].toLowerCase() === "x",
+      description,
+      ownerTags,
+      ownerTag: ownerTags[0] ?? null,
+    });
   }
   return tasks;
 }
@@ -303,6 +314,105 @@ function compareTaskIds(actual, expected, label, errors) {
   }
 }
 
+function parseHandoffEntries(progressMarkdown) {
+  const section = extractSection(progressMarkdown, "Handoff History");
+  if (section === null) return [];
+  return section
+    .split(/(?=^###\s+)/m)
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+function validateDelegationPlan(changeId, tasks, progress, progressMarkdown, errors) {
+  const ownerTaggedTasks = tasks.filter((task) => task.ownerTags.length > 0);
+  if (ownerTaggedTasks.length === 0) return;
+
+  for (const task of ownerTaggedTasks) {
+    if (task.ownerTags.length !== 1) {
+      errors.push(`${changeId}: task ${task.id} must have exactly one owner tag, found ${task.ownerTags.length}.`);
+    }
+  }
+
+  const delegationPlan = progress.delegationPlan;
+  if (!delegationPlan || typeof delegationPlan !== "object" || Array.isArray(delegationPlan)) {
+    errors.push(`${changeId}: owner-tagged tasks require Current Snapshot delegationPlan evidence.`);
+    return;
+  }
+  if (delegationPlan.schemaVersion !== 1) errors.push(`${changeId}: delegationPlan schemaVersion must be 1.`);
+  if (
+    !Array.isArray(delegationPlan.requiredRoles) ||
+    delegationPlan.requiredRoles.some((role) => typeof role !== "string" || role.length === 0)
+  ) {
+    errors.push(`${changeId}: delegationPlan.requiredRoles must be an array of strings.`);
+  }
+  if (!Array.isArray(delegationPlan.roles)) {
+    errors.push(`${changeId}: delegationPlan.roles must be an array.`);
+    return;
+  }
+
+  const rolesByName = new Map();
+  for (const entry of delegationPlan.roles) {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      errors.push(`${changeId}: delegationPlan.roles entries must be objects.`);
+      continue;
+    }
+    const { role, taskIds, allowedRoots, skills, resolution, fallbackReason } = entry;
+    if (typeof role !== "string" || role.length === 0) {
+      errors.push(`${changeId}: delegationPlan role entries require a role string.`);
+      continue;
+    }
+    if (rolesByName.has(role)) errors.push(`${changeId}: delegationPlan role ${role} is duplicated.`);
+    rolesByName.set(role, entry);
+    for (const [field, value] of Object.entries({ taskIds, allowedRoots, skills })) {
+      if (!Array.isArray(value) || value.some((item) => typeof item !== "string" || item.length === 0)) {
+        errors.push(`${changeId}: delegationPlan role ${role} field ${field} must be an array of strings.`);
+      }
+    }
+    if (!VALID_SKILL_RESOLUTIONS.has(resolution)) {
+      errors.push(`${changeId}: delegationPlan role ${role} has unsupported resolution ${resolution ?? "missing"}.`);
+    }
+    if (resolution === "inline-fallback" && (typeof fallbackReason !== "string" || fallbackReason.trim().length === 0)) {
+      errors.push(`${changeId}: delegationPlan role ${role} uses inline-fallback without a fallbackReason.`);
+    }
+  }
+
+  const requiredRoles = new Set(Array.isArray(delegationPlan.requiredRoles) ? delegationPlan.requiredRoles : []);
+  for (const task of ownerTaggedTasks) {
+    if (task.ownerTags.length !== 1) continue;
+    const role = task.ownerTag;
+    if (!requiredRoles.has(role)) errors.push(`${changeId}: delegationPlan.requiredRoles is missing owner ${role}.`);
+    const roleEntry = rolesByName.get(role);
+    if (!roleEntry) {
+      errors.push(`${changeId}: delegationPlan.roles is missing owner ${role}.`);
+      continue;
+    }
+    if (!Array.isArray(roleEntry.taskIds) || !roleEntry.taskIds.includes(task.id)) {
+      errors.push(`${changeId}: owner-tagged task ${task.id} is not covered by delegationPlan role ${role}.`);
+    }
+  }
+
+  const handoffEntries = parseHandoffEntries(progressMarkdown);
+  const completedOwners = new Set(ownerTaggedTasks.filter((task) => task.done && task.ownerTags.length === 1).map((task) => task.ownerTag));
+
+  for (const match of progressMarkdown.matchAll(/Skill resolution:\s*([a-z-]+)/gi)) {
+    const resolution = match[1].toLowerCase();
+    if (!VALID_SKILL_RESOLUTIONS.has(resolution)) {
+      errors.push(`${changeId}: Handoff History contains unsupported Skill resolution ${match[1]}.`);
+    }
+  }
+
+  for (const owner of completedOwners) {
+    const matchingEntries = handoffEntries.filter((entry) => entry.includes(owner));
+    if (matchingEntries.length === 0) {
+      errors.push(`${changeId}: completed owner-tagged tasks for ${owner} lack matching Handoff History.`);
+      continue;
+    }
+    if (!matchingEntries.some((entry) => /Skill resolution:\s*(?:paths-injected|inline-fallback|none)\b/i.test(entry))) {
+      errors.push(`${changeId}: Handoff History for ${owner} lacks Skill resolution evidence.`);
+    }
+  }
+}
+
 export async function validateChangeLifecycle(root, changeId, { archiveReady = false } = {}) {
   const errors = [];
   const changeRelative = `openspec/changes/${changeId}`;
@@ -336,10 +446,13 @@ export async function validateChangeLifecycle(root, changeId, { archiveReady = f
   }
 
   let progress;
+  let progressMarkdown;
   try {
-    progress = parseProgress(await readFile(progressPath, "utf8"));
+    progressMarkdown = await readFile(progressPath, "utf8");
+    progress = parseProgress(progressMarkdown);
     compareTaskIds(progress.completedTaskIds, completed, `${changeId}: completedTaskIds`, errors);
     compareTaskIds(progress.remainingTaskIds, pending, `${changeId}: remainingTaskIds`, errors);
+    validateDelegationPlan(changeId, tasks, progress, progressMarkdown, errors);
     if (archiveReady && progress.status !== "ready-for-archive") {
       errors.push(`${changeId}: archive readiness requires progress status ready-for-archive.`);
     }

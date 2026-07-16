@@ -17,7 +17,7 @@ docs -> OpenSpec -> .agent -> implementation -> verification -> archive
 
 ## Entry Classification
 
-Read .agent/skill-registry.md after loading this skill.
+Read .agent/skill-registry.md and .agent/agents/orchestrator.md after loading this skill.
 
 | Incoming task | Required path |
 |---|---|
@@ -47,12 +47,14 @@ Before approving implementation:
 5. Check referenced paths are valid or explicitly planned.
 6. Resolve blocking questions before apply.
 7. Select only exact skills from the registry.
+8. Create a delegation plan for implemented OpenSpec work before the first implementation edit.
 
 A requirement brief is needed for broad product intent, business rules, permissions, flows, or behavior changes. It is not mandatory for an internal technical task with no contract change.
 
 ## Implementation
 
 - Follow tasks.md; update its checkboxes as tasks complete.
+- Owner-tag tasks that map to specialized roles, using tags such as `[orchestrator]`, `[agent-data]`, `[agent-ui]`, `[agent-architect]`, or `[agent-verifier]`.
 - Load the implementation-progress skill for every implemented change.
 - Create and update apply-progress.md cumulatively.
 - Keep tasks.md as the completion authority.
@@ -64,11 +66,14 @@ A requirement brief is needed for broad product intent, business rules, permissi
 
 ## Delegation and Inline Fallback
 
-Use .agent/contracts/phase-handoff.md for every specialized role.
+Use .agent/contracts/phase-handoff.md for every specialized role. Do not implement product or verification work inline in the orchestrator thread while a specialized role is available.
 
+- Before implementation, derive required roles from tasks, changed roots, and the registry.
+- Require a bounded handoff when a change touches more than one registry owner, both data and UI roots, visible text plus behavior, a module route/list/form/filter/modal workflow, or final verification.
+- Persist the delegation plan in apply-progress.md before or with the first implementation edit.
 - Pass role, bounded task, change ID, native status, allowed roots, exact skill paths, and relevant requirement context.
 - Executors cannot redelegate.
-- In a runtime without subagents, execute the specialist role inline with the same responsibilities and allowed roots.
+- In a runtime without subagents, execute the specialist role inline with the same responsibilities and allowed roots, record `Skill resolution: inline-fallback`, and include the concrete fallback reason in progress evidence.
 - A role reports status, summary, artifacts, files, completed tasks, risks, next phase, and skill-resolution method.
 
 ## Verification and Archive

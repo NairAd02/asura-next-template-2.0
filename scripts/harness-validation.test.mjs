@@ -18,6 +18,7 @@ async function write(root, relativePath, content) {
 }
 
 function progress(overrides = {}) {
+  const { handoffHistory = "- verifier pending.", ...snapshotOverrides } = overrides;
   const value = {
     schemaVersion: 1,
     status: "ready-for-archive",
@@ -25,9 +26,27 @@ function progress(overrides = {}) {
     remainingTaskIds: [],
     filesChanged: ["src/example.js"],
     skillsLoaded: [".agent/skills/spec-driven-development/SKILL.md"],
+    ...snapshotOverrides,
+  };
+  return `# Apply Progress\n\n## Current Snapshot\n\n\`\`\`json\n${JSON.stringify(value, null, 2)}\n\`\`\`\n\n## Decisions and Deviations\n\nNone.\n\n## Problems\n\nNone.\n\n## Handoff History\n\n${handoffHistory}\n`;
+}
+
+function delegationPlan(overrides = {}) {
+  return {
+    schemaVersion: 1,
+    requiredRoles: ["agent-data"],
+    roles: [
+      {
+        role: "agent-data",
+        taskIds: ["1.1"],
+        allowedRoots: ["src/**"],
+        skills: [".agent/skills/data-layer/SKILL.md"],
+        resolution: "paths-injected",
+        fallbackReason: "",
+      },
+    ],
     ...overrides,
   };
-  return `# Apply Progress\n\n## Current Snapshot\n\n\`\`\`json\n${JSON.stringify(value, null, 2)}\n\`\`\`\n\n## Decisions and Deviations\n\nNone.\n\n## Problems\n\nNone.\n\n## Handoff History\n\n- verifier pending.\n`;
 }
 
 async function createFixture() {
@@ -92,6 +111,120 @@ test("rejects stale SHA-256 evidence", async () => {
     assert.deepEqual(await validateChangeLifecycle(root, change), []);
     const errors = await validateChangeLifecycle(root, change, { archiveReady: true });
     assert.ok(errors.some((error) => error.includes("Evidence Snapshot is stale")), errors.join("\n"));
+  });
+});
+
+test("accepts owner-tagged task with matching delegation plan and handoff", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan(),
+        handoffHistory:
+          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+      }),
+    );
+    assert.deepEqual(await validateChangeLifecycle(root, change), []);
+  });
+});
+
+test("rejects owner-tagged task when delegationPlan is missing", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("delegationPlan")), errors.join("\n"));
+  });
+});
+
+test("rejects duplicate owner tags on one task", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] [agent-ui] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan(),
+        handoffHistory:
+          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("exactly one owner tag")), errors.join("\n"));
+  });
+});
+
+test("rejects owner-tagged task not covered by delegationPlan task IDs", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [
+            {
+              role: "agent-data",
+              taskIds: ["9.9"],
+              allowedRoots: ["src/**"],
+              skills: [".agent/skills/data-layer/SKILL.md"],
+              resolution: "paths-injected",
+              fallbackReason: "",
+            },
+          ],
+        }),
+        handoffHistory:
+          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("not covered by delegationPlan")), errors.join("\n"));
+  });
+});
+
+test("rejects inline-fallback without fallbackReason", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [
+            {
+              role: "agent-data",
+              taskIds: ["1.1"],
+              allowedRoots: ["src/**"],
+              skills: [".agent/skills/data-layer/SKILL.md"],
+              resolution: "inline-fallback",
+              fallbackReason: "",
+            },
+          ],
+        }),
+        handoffHistory:
+          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: inline-fallback.\n",
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("without a fallbackReason")), errors.join("\n"));
+  });
+});
+
+test("rejects completed owner-tagged role with no matching handoff history", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan(),
+        handoffHistory:
+          "### 2026-07-16 - agent-ui\n\n- Status: success.\n- Completed tasks: none.\n- Skill resolution: paths-injected.\n",
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("lack matching Handoff History")), errors.join("\n"));
   });
 });
 

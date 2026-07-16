@@ -32,6 +32,20 @@ Maintain one machine-readable current summary followed by durable narrative hist
   "completedTaskIds": ["1.1"],
   "remainingTaskIds": ["1.2"],
   "filesChanged": ["modules/example/index.ts"],
+  "delegationPlan": {
+    "schemaVersion": 1,
+    "requiredRoles": ["agent-data"],
+    "roles": [
+      {
+        "role": "agent-data",
+        "taskIds": ["1.1"],
+        "allowedRoots": ["modules/example/lib/**"],
+        "skills": [".agent/skills/data-layer/SKILL.md"],
+        "resolution": "paths-injected",
+        "fallbackReason": ""
+      }
+    ]
+  },
   "skillsLoaded": [".agent/skills/data-layer/SKILL.md"]
 }
 ```
@@ -40,8 +54,10 @@ Maintain one machine-readable current summary followed by durable narrative hist
 - `status` is `in-progress`, `blocked`, `ready-for-verification`, or `ready-for-archive`.
 - Task IDs SHALL exactly match the numbered checkbox IDs in `tasks.md`.
 - `filesChanged` SHALL contain sorted repository-relative source/artifact paths covered by verification; omit generated outputs and deleted paths.
+- `delegationPlan` SHALL exist when tasks.md contains owner-tagged tasks. It uses schema version 1, lists required roles, and gives each role task IDs, allowed roots, exact skills, resolution (`paths-injected` or `inline-fallback`), and a fallback reason when inline fallback is used.
 - Preserve `## Decisions and Deviations`, `## Problems`, and a cumulative `## Handoff History` after the snapshot.
 - Every handoff entry records the complete phase-handoff output, including allowed roots and exact skill paths.
+- Completed owner-tagged tasks SHALL be covered by `## Handoff History`; inline fallback requires both `Skill resolution: inline-fallback` and a concrete fallback reason.
 
 When progress and tasks.md disagree, stop and reconcile the discrepancy before continuing.
 

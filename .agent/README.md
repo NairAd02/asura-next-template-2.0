@@ -22,4 +22,4 @@ OpenSpec owns executable state and accepted behavior. .agent supplies technical 
 
 Every implemented change uses tasks.md as completion authority, apply-progress.md for cumulative context, and verify-report.md for final PASS or FAIL evidence.
 
-Skills are resolved from the registry and passed as exact paths. Executors cannot redelegate. A runtime without subagents uses an inline role fallback with the same file boundaries.
+Skills are resolved from the registry and passed as exact paths. Implemented OpenSpec work records a delegation plan before edits, owner-tags specialized tasks, and reconciles completed owner work with handoff history. Executors cannot redelegate. A runtime without subagents uses an inline role fallback with the same file boundaries and a recorded fallback reason.

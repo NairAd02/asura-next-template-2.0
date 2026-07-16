@@ -2,6 +2,8 @@
 
 Central index for project skills. The orchestrator reads this table at the start of every task, then passes only exact paths that apply.
 
+When a task maps to a phase listed here, assign that phase to its owner through a phase handoff or explicit inline-fallback handoff. Owner-tag implementation tasks with exactly one role tag, for example `[agent-data]`, `[agent-ui]`, or `[agent-verifier]`, so tasks.md, apply-progress.md, and handoff history can be reconciled.
+
 | Skill | Trigger | Path | Owner |
 |---|---|---|---|
 | spec-driven-development | Always. Hybrid lifecycle and native OpenSpec state. | .agent/skills/spec-driven-development/SKILL.md | orchestrator |
@@ -34,4 +36,4 @@ Central index for project skills. The orchestrator reads this table at the start
 | Verification | agent-verifier | verification-harness, behavior-testing when deterministic behavior changed, implementation-progress |
 | Archive | orchestrator | spec-driven-development, implementation-progress |
 
-The task and handoff determine the final minimal skill set; the table is not permission to load every skill.
+The task, owner tag, and handoff determine the final minimal skill set; the table is not permission to load every skill.

@@ -17,6 +17,7 @@ Codex lee primero:
 
 1. .agent/skills/spec-driven-development/SKILL.md
 2. .agent/skill-registry.md
+3. .agent/agents/orchestrator.md
 
 Luego clasifica:
 
@@ -36,17 +37,20 @@ Para un change activo, Codex debe:
 2. Ejecutar openspec instructions apply --change <id> --json.
 3. Reread proposal, specs, design, tasks y el brief cuando existe.
 4. Confirmar que los archivos existen, que el scope coincide, que las rutas son validas y que no hay preguntas bloqueantes.
-5. Cargar solo las skills exactas necesarias.
+5. Crear un plan de delegacion cuando el change se va a implementar.
+6. Cargar solo las skills exactas necesarias.
 
 Pide aprobacion ligera sobre estos artifacts antes de cambiar codigo si el trabajo modifica comportamiento o alcance.
 
 ## Durante implementacion
 
-Cada change implementado debe tener apply-progress.md. Es acumulativo y registra estado, tareas completas, archivos, decisiones, problemas, tareas restantes y skills.
+Cada change implementado debe tener apply-progress.md. Es acumulativo y registra estado, tareas completas, archivos, decisiones, problemas, tareas restantes, skills y, cuando hay owner tags, `delegationPlan`.
+
+Las tareas que pertenecen a roles especializados deben llevar exactamente un owner tag, por ejemplo `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u `[orchestrator]`. El plan de delegacion debe cubrir esos roles con task IDs, roots permitidos, skills exactas y metodo de resolucion.
 
 tasks.md sigue siendo la autoridad de completitud. Si ambos documentos difieren, Codex debe reconciliarlos antes de continuar.
 
-Los roles reciben un handoff con tarea, change, estado OpenSpec, raices editables y skills exactas. Un ejecutor no redelega. Si el runtime no tiene subagentes, Codex ejecuta el rol en linea con los mismos limites.
+Los roles reciben un handoff con tarea, change, estado OpenSpec, raices editables y skills exactas. Un ejecutor no redelega. Si el runtime no tiene subagentes, Codex ejecuta el rol en linea con los mismos limites y registra `inline-fallback` con el motivo concreto.
 
 Mientras cambia el codigo, el ejecutor agrega pruebas focalizadas y usa `pnpm verify:fast`. Ese comando acelera el feedback, pero no sustituye la evidencia final.
 
@@ -72,6 +76,7 @@ No archives un change si:
 
 - quedan tareas sin marcar;
 - falta apply-progress.md o no coincide con tasks.md;
+- faltan delegationPlan o handoffs para tareas owner-tagged completadas;
 - falta verify-report.md PASS;
 - el snapshot de evidencia falta o quedo stale;
 - el brief o indice de requirements vinculados no se puede actualizar coherentemente.

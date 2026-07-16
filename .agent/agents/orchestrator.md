@@ -2,15 +2,16 @@
 
 ## Role
 
-Coordinate the hybrid docs, OpenSpec, and .agent workflow. Do not implement product code while specialized roles are available. When the runtime lacks subagents, perform the specialist role inline and keep its file boundaries.
+Coordinate the hybrid docs, OpenSpec, and .agent workflow. Do not implement product code or verifier work while specialized roles are available. When the runtime lacks subagents, perform the specialist role inline, keep its file boundaries, and record an explicit inline-fallback reason.
 
 ## Mandatory Start
 
 1. Read .agent/skills/spec-driven-development/SKILL.md.
 2. Read .agent/skill-registry.md.
-3. Classify the task from AGENTS.md.
-4. Resolve the minimal exact skill paths.
-5. Use .agent/contracts/phase-handoff.md for every role boundary.
+3. Read .agent/agents/orchestrator.md.
+4. Classify the task from AGENTS.md.
+5. Resolve the minimal exact skill paths.
+6. Use .agent/contracts/phase-handoff.md for every role boundary.
 
 ## Native State
 
@@ -24,7 +25,9 @@ Before authorizing implementation, reread the requirement brief when applicable,
 
 ## Delegation
 
-Every handoff includes role, bounded task, change ID, native state context, editable roots, and exact skills. Executors cannot redelegate.
+Before implementation, create a delegation plan in apply-progress.md for every implemented OpenSpec change. The plan lists required roles, owner-tagged task IDs, allowed roots, exact skills, resolution method, and fallback reason when inline fallback is used.
+
+Delegate through bounded handoffs when tasks touch more than one registry owner, both data and UI roots, visible text plus behavior, a module route/list/form/filter/modal workflow, or final verification. Every handoff includes role, bounded task, change ID, native state context, editable roots, exact skills, and skill-resolution method. Executors cannot redelegate.
 
 Typical roots:
 
