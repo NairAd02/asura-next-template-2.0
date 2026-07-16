@@ -156,16 +156,15 @@ The workflow SHALL persist reproducible final verification evidence across speci
 - **WHEN** verification begins
 - **THEN** the verifier SHALL inspect native OpenSpec status
 - **AND** it SHALL run OpenSpec plus harness validation, unit/component tests, non-incremental application plus reference typechecking, application plus reference linting, and the production build through `pnpm verify`
-- **AND** it SHALL perform only explicitly required short browser-smoke assertions after the command
 - **AND** it SHALL finalize verification task checkboxes and progress before writing the report
-- **AND** it SHALL create `verify-report.md` with conformance, exact commands, exit codes, durations, warnings, browser-smoke results when applicable, handoffs, verdict, and a SHA-256 snapshot of covered files.
+- **AND** it SHALL create `verify-report.md` with conformance, exact commands, exit codes, durations, warnings, handoffs, verdict, and a SHA-256 snapshot of covered files.
 
 #### Scenario: A verified change is modified
 
 - **GIVEN** `verify-report.md` has a PASS verdict and snapshot
 - **WHEN** a covered implementation, test, configuration, planning, task, progress, or linked requirement file changes
 - **THEN** archive readiness validation SHALL fail
-- **AND** `pnpm verify`, applicable smoke assertions, and the report SHALL be regenerated.
+- **AND** `pnpm verify` and the report SHALL be regenerated.
 
 #### Scenario: Archive is requested
 
@@ -220,7 +219,7 @@ Internal non-contract work SHALL run applicable verification without inventing a
 
 ### Requirement: Tiered Feedback and Test Ownership
 
-REQ-005 SHALL provide fast implementation feedback separately from final reproducible evidence, and the executor that implements behavior SHALL own its focused deterministic tests.
+The workflow SHALL provide fast implementation feedback separately from reproducible automated final evidence, and the executor that implements deterministic behavior SHALL own its focused automated tests.
 
 #### Scenario: Executor checks behavior during implementation
 
@@ -237,7 +236,7 @@ REQ-005 SHALL provide fast implementation feedback separately from final reprodu
 
 #### Scenario: Browser smoke is selected
 
-- **WHEN** a completed behavior change has integration or visual risk not covered efficiently by unit/component tests
-- **THEN** the verifier SHALL run a short explicit integrated-browser smoke
-- **AND** routine deterministic scenarios SHALL NOT be duplicated into an exhaustive browser matrix.
+- **WHEN** an operator chooses to inspect a completed change in a browser for diagnosis or exploratory confidence
+- **THEN** that inspection SHALL remain outside OpenSpec tasks, `verify-report.md`, PASS criteria, snapshot invalidation, and archive readiness
+- **AND** a discovered defect SHALL be handled in a subsequent iteration with focused automated regression coverage when the behavior is deterministic.
 

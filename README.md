@@ -40,7 +40,7 @@ pnpm build           # production Next.js build with TypeScript errors enabled
 pnpm verify          # run specs, tests, typecheck, lint, and build in order
 ~~~
 
-pnpm verify stops at the first failing gate and returns a non-zero exit code. `verify:fast` is provisional and never archive evidence. A bounded integrated-browser smoke is added only when the accepted change has localization, responsive, or route-composition risk that lower layers cannot prove. Generated TypeScript build state is ignored and must not be committed.
+pnpm verify stops at the first failing gate and returns a non-zero exit code. `verify:fast` is provisional and never archive evidence. Browser exploration is optional human diagnosis outside PASS and archive readiness; generated TypeScript build state is ignored and must not be committed.
 
 ## SDD architecture
 

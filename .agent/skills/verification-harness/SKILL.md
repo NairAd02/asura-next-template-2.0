@@ -33,7 +33,7 @@ pnpm verify
 
 Typecheck must remain tsc --noEmit --incremental false. Build must not suppress TypeScript errors.
 
-`pnpm verify:fast` is provisional executor feedback only and is never final or archive evidence. After the final aggregate, run a short integrated-browser smoke only when an accepted task names integration or visual risk that lower layers cannot prove. Do not reproduce deterministic unit/component scenarios as browser matrices.
+`pnpm verify:fast` is provisional executor feedback only and is never final or archive evidence.
 
 ## Evidence
 
@@ -41,14 +41,13 @@ Create openspec/changes/<change-id>/verify-report.md. The report SHALL contain:
 
 - conformance against proposal, specs, design, and tasks
 - each gate command, exit code, duration, and concise summary
-- the bounded integrated-browser checklist and result when required
 - relevant warnings
 - PASS or FAIL verdict
 - report invalidation rule
 
 A warning is recorded but does not make a successful command FAIL unless it violates the change contract.
 
-After all implementation/browser/verification task checkboxes are complete, set the progress snapshot to `ready-for-archive`, generate snapshot JSON with `node scripts/validate-harness.mjs --snapshot <change-id>`, and place it under `## Evidence Snapshot` in the PASS report. Any covered edit requires the final command, applicable browser smoke, and snapshot again.
+After all implementation and verification task checkboxes are complete, set the progress snapshot to `ready-for-archive`, generate snapshot JSON with `node scripts/validate-harness.mjs --snapshot <change-id>`, and place it under `## Evidence Snapshot` in the PASS report. Any covered edit requires the final command and snapshot again.
 
 If a gate fails, record FAIL, identify the cause, and return a blocked handoff. Do not declare completion.
 

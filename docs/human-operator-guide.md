@@ -58,11 +58,11 @@ Ejecuta:
 pnpm verify
 ~~~
 
-Esto corre OpenSpec/harness validation, pruebas unitarias y de componentes, typecheck sin cache incremental, lint completo y build. Despues se ejecuta solo el smoke corto de navegador que exija el riesgo aceptado; no una matriz exhaustiva. El verifier crea verify-report.md con comandos, duraciones, exit codes, resumen, warnings, conformidad, resultado del smoke cuando aplique y veredicto PASS o FAIL.
+Esto corre OpenSpec/harness validation, pruebas unitarias y de componentes, typecheck sin cache incremental, lint completo y build. El verifier crea verify-report.md con comandos, duraciones, exit codes, resumen, warnings, conformidad y veredicto PASS o FAIL. La exploracion en navegador es opcional para diagnostico humano y no bloquea PASS ni archive readiness.
 
 Un PASS final incluye un snapshot SHA-256 generado con `node scripts/validate-harness.mjs --snapshot <change-id>`. La validacion normal permite cambios en progreso reconciliados; `node scripts/validate-harness.mjs --archive-ready <change-id>` aplica el preflight terminal estricto.
 
-Cualquier cambio posterior en implementacion o artifacts invalida el reporte y exige repetir `pnpm verify` y el smoke aplicable.
+Cualquier cambio posterior en implementacion o artifacts invalida el reporte y exige repetir `pnpm verify` y regenerar la evidencia.
 
 Nota de version: OpenSpec 1.6 tiene instructions apply, pero no instructions verify ni archive. Para verificar o archivar, Codex debe usar openspec status --change <id> --json como preflight nativo. No se crea una maquina de estados alternativa.
 
@@ -78,7 +78,7 @@ No archives un change si:
 
 Para un change con brief, marca el brief y su fila de indice como implemented con la referencia archive. Para un change tecnico sin brief, registra no requirement as applicable.
 
-El cierre es fail-closed: no hay override por confirmacion ni por fallos preexistentes. Finaliza tasks/progress y el smoke aplicable, ejecuta `pnpm verify`, crea PASS + snapshot, valida readiness, usa `openspec archive <change-id> --yes --json`, actualiza brief/indice y valida las specs aceptadas. No se mueve el directorio manualmente.
+El cierre es fail-closed: no hay override por confirmacion ni por fallos preexistentes. Finaliza tasks/progress, ejecuta `pnpm verify`, crea PASS + snapshot, valida readiness, usa `openspec archive <change-id> --yes --json`, actualiza brief/indice y valida las specs aceptadas. No se mueve el directorio manualmente.
 
 ## Ejemplo de tarea tecnica pequena
 

@@ -56,7 +56,7 @@ A requirement brief is needed for broad product intent, business rules, permissi
 - Load the implementation-progress skill for every implemented change.
 - Create and update apply-progress.md cumulatively.
 - Keep tasks.md as the completion authority.
-- Load behavior-testing when behavior changes and make the owning executor create the smallest valuable tests with the implementation.
+- Load behavior-testing when deterministic behavior changes and make the owning executor create the smallest valuable tests with the implementation.
 - Use `pnpm verify:fast` only as provisional feedback while implementation is changing.
 - Update proposal, specs, design, or tasks before continuing when implementation discovers a scope or behavior change.
 - Use shared components and existing dependencies before creating new abstractions.
@@ -73,18 +73,17 @@ Use .agent/contracts/phase-handoff.md for every specialized role.
 
 ## Verification and Archive
 
-- Use the verification-harness and implementation-progress skills at close, plus behavior-testing when changed behavior or browser risk applies.
+- Use the verification-harness and implementation-progress skills at close, plus behavior-testing when deterministic behavior changes.
 - Run `pnpm verify` for specs/harness validation, unit/component tests, non-incremental typecheck, full lint, and build.
-- Run only the bounded integrated-browser smoke required by the accepted change, after `pnpm verify`; do not duplicate deterministic lower-layer cases.
 - Persist verify-report.md with PASS or FAIL.
-- Any later implementation or change-artifact modification invalidates the report and requires the final command and applicable browser smoke again.
+- Any later implementation or change-artifact modification invalidates the report and requires the final command and fresh evidence again.
 - Continuous harness validation permits a reconciled in-progress change without final evidence. Strict `--archive-ready` validation requires all tasks complete, progress `ready-for-archive`, and a fresh PASS snapshot.
 - Archive only after tasks, progress, report, and linked requirement close data are coherent. No pre-existing failure or confirmation can override PASS.
 - Use only `openspec archive <change-id> --yes --json`; never move a change directory manually.
 
 For `no-change` internal work, run applicable checks and return their evidence in the handoff/final response without change status, progress, or report artifacts.
 
-Terminal order: finalize implementation and browser task definitions, run `pnpm verify` and the applicable bounded smoke, finalize verification task IDs, generate PASS report plus SHA-256 snapshot, run status and strict archive readiness, archive natively, update requirement/index, then validate accepted specs.
+Terminal order: finalize implementation and verification task definitions, run `pnpm verify`, finalize verification task IDs, generate PASS report plus SHA-256 snapshot, run status and strict archive readiness, archive natively, update requirement/index, then validate accepted specs.
 
 ## Reference Material
 

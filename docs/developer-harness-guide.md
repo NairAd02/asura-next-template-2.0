@@ -71,9 +71,9 @@ El comando corre, en orden:
 4. ESLint completo.
 5. Next.js production build.
 
-El navegador integrado se reserva para un smoke corto definido por el riesgo aceptado —por ejemplo localizacion, composicion responsive o un flujo critico— y se ejecuta despues de `pnpm verify`. No se repiten en el navegador escenarios deterministas ya cubiertos por Vitest.
+La exploracion en navegador es opcional y queda fuera de tasks.md, verify-report.md, PASS y archive readiness. Puede usarse para diagnostico o confianza adicional; si revela una regresion determinista, se abre una iteracion posterior con cobertura Vitest o Testing Library focalizada.
 
-El verifier crea verify-report.md con comandos, duraciones, exit codes, warnings, el smoke cuando aplique y veredicto PASS o FAIL.
+El verifier crea verify-report.md con comandos, duraciones, exit codes, warnings y veredicto PASS o FAIL.
 
 El reporte PASS incluye un bloque `Evidence Snapshot` generado con `node scripts/validate-harness.mjs --snapshot <change-id>`.
 
@@ -85,11 +85,11 @@ Un change no se archiva si:
 - el snapshot SHA-256 esta incompleto o stale;
 - el requirement vinculado y su indice no se pueden actualizar.
 
-Cualquier cambio posterior al reporte invalida PASS y exige repetir `pnpm verify` y el smoke aplicable.
+Cualquier cambio posterior al reporte invalida PASS y exige repetir `pnpm verify` y regenerar la evidencia.
 
 Nota: OpenSpec 1.6 ofrece instructions apply, pero no instructions verify ni archive. Para esas dos fases se usa openspec status --change <id> --json como preflight nativo.
 
-El cierre no admite excepciones por fallos preexistentes. El orden terminal es: completar tasks/progress y definir el smoke aplicable, ejecutar `pnpm verify` y ese smoke, finalizar tareas de verificacion, escribir PASS + snapshot, ejecutar `node scripts/validate-harness.mjs --archive-ready <change-id>`, archivar con `openspec archive <change-id> --yes --json`, actualizar brief/indice y validar specs aceptadas. Crear el reporte, mover el archive y actualizar el requirement despues del archive son operaciones de cierre, no checkboxes de implementacion.
+El cierre no admite excepciones por fallos preexistentes. El orden terminal es: completar tasks/progress, ejecutar `pnpm verify`, finalizar tareas de verificacion, escribir PASS + snapshot, ejecutar `node scripts/validate-harness.mjs --archive-ready <change-id>`, archivar con `openspec archive <change-id> --yes --json`, actualizar brief/indice y validar specs aceptadas. Crear el reporte, mover el archive y actualizar el requirement despues del archive son operaciones de cierre, no checkboxes de implementacion.
 
 ## Ejemplo: Nueva Funcionalidad
 
