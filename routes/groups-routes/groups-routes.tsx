@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import {
   LayoutDashboard,
   Boxes,
+  ListTodo,
   Tag,
   Users,
   Truck,
@@ -53,6 +54,11 @@ export function useGroupRoutes(): { routes: GroupRoute[]; isLoading: boolean } {
           title: tNav("itemCategories"),
           icon: <Tag className="text-accent" />,
           path: paths.itemCategories.root,
+        },
+        {
+          title: tNav("tasks"),
+          icon: <ListTodo className="text-accent" />,
+          path: paths.tasks.root,
         },
         {
           title: tNav("suppliers"),

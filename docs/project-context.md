@@ -55,6 +55,19 @@ operational status for company vehicles. Vehicle attributes may be selected by
 the implementer as long as they represent a plausible fleet inventory and are
 validated consistently at client and server boundaries.
 
+## Client Pilot: Task Management
+
+A simulated client request asks the admin panel to include a lightweight task
+management module. The module uses mock data only and does not require durable
+persistence, real authentication, real authorization, external APIs, imports, or
+reports. The goal is to keep the domain intentionally simple while exercising
+the harness through a visible module workflow.
+
+The task management module should let an operator browse mock tasks, create a
+task, edit simple task fields, inspect task details, delete tasks, and move a
+task through a small status lifecycle. Task attributes should remain simple and
+validated consistently at client and server boundaries.
+
 ## Non-Functional Requirements
 
 Capture performance, security, accessibility, i18n, auditability, reliability, and compliance expectations.

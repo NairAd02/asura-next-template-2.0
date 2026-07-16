@@ -7,6 +7,7 @@ interface ApplicationPath {
   dashboard: Path;
   items: Path;
   itemCategories: Path;
+  tasks: Path;
   suppliers: Path;
   vehicles: Path;
   users: Path;
@@ -25,6 +26,10 @@ export const paths: ApplicationPath = {
   },
   itemCategories: {
     root: "/item-categories",
+    isProtected: true,
+  },
+  tasks: {
+    root: "/tasks",
     isProtected: true,
   },
   suppliers: {
