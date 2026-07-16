@@ -25,7 +25,7 @@ export default function CreateWidgetTrigger() {
         maxWidth="2xl"
         bodyClassName="px-0 py-0 pb-4"
       >
-        {open && <CreateWidgetFormContainer onClose={() => setOpen(false)} />}
+        <CreateWidgetFormContainer onClose={() => setOpen(false)} />
       </Modal>
     </>
   );
