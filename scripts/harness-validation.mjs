@@ -15,8 +15,8 @@ const LOCAL_SKILLS = {
 const GUIDANCE_FILES = [
   "AGENTS.md",
   "README.md",
-  "docs/developer-harness-guide.md",
-  "docs/human-operator-guide.md",
+  "harness-docs/developer-harness-guide.md",
+  "harness-docs/human-operator-guide.md",
   ".agent/skills/spec-driven-development/SKILL.md",
   ".agent/skills/behavior-testing/SKILL.md",
   ".agent/skills/implementation-progress/SKILL.md",

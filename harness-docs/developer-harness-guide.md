@@ -166,7 +166,7 @@ actualiza el requirement si aplica y archiva solo con todos los gates PASS.
 ## Referencias
 
 - AGENTS.md: punto de entrada obligatorio.
-- docs/human-operator-guide.md: guia para quien coordina el trabajo.
+- harness-docs/human-operator-guide.md: guia para quien coordina el trabajo.
 - .agent/contracts/phase-handoff.md: contrato entre roles.
 - .agent/skills/spec-driven-development/SKILL.md: protocolo completo.
 - .agent/skill-registry.md: resolucion de skills por path exacto.

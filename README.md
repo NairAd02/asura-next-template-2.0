@@ -68,7 +68,7 @@ OpenSpec owns change state and executable behavior. .agent supplies project-spec
 
 For an internal task classified `no-change`, run applicable checks and report them directly; do not invent change status, progress, or report artifacts.
 
-Start with [the developer harness guide](docs/developer-harness-guide.md), [the human operator guide](docs/human-operator-guide.md), [the documentation index](docs/README.md), and [the agent harness guide](.agent/README.md).
+Start with [the developer harness guide](harness-docs/developer-harness-guide.md), [the human operator guide](harness-docs/human-operator-guide.md), [the documentation index](docs/README.md), and [the agent harness guide](.agent/README.md).
 
 ## Project structure
 
@@ -79,6 +79,7 @@ modules/      domain modules and landing experience
 messages/     English and Spanish next-intl messages
 routes/       typed navigation configuration
 docs/         product context and curated requirements
+harness-docs/ harness usability guides (developer, operator, audit)
 openspec/     active changes and accepted executable specs
 .agent/       technical skills, roles, contracts, and references
 ~~~
