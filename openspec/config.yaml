@@ -22,7 +22,7 @@ context: |
   Stack:
   - Next.js App Router, React, TypeScript, Tailwind CSS, shadcn/ui and Radix UI.
   - React Hook Form and Zod, next-intl, TanStack Table, Sonner.
-  - Node.js 20.19.0 or newer, pnpm 10.30.2, compatible global OpenSpec CLI.
+  - Node.js 20.19.0 or newer, pnpm 10.30.2, exact global OpenSpec CLI 1.6.0.
 
 rules:
   proposal:
@@ -47,4 +47,5 @@ rules:
     - Keep checkbox tasks current; tasks.md is the completion authority.
     - Include progress creation or updates for implemented changes.
     - Include verification tasks for OpenSpec validation, non-incremental TypeScript, lint, and Next.js build.
-    - Include requirement-status and archive preparation when a requirement is linked.
+    - Include verification commands that can finish before report creation.
+    - Treat verify-report creation, native archive placement, and post-archive requirement/index updates as close operations rather than task checkboxes.

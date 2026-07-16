@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { createWidgetAction } from "../actions/widget.actions";
-import { convertCreateWidgetDto, CreateWidgetDto, WidgetDetails } from "../types/widget.types";
+import { WidgetDetails } from "../types/widget.types";
 import { CreateWidgetSchema } from "../../form/create/schemas/create-widget-schema";
 
 interface Props {
@@ -20,11 +20,11 @@ export function useCreateWidget({ onSuccess }: Props = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await createWidgetAction(convertCreateWidgetDto(schema));
+      const response = await createWidgetAction(schema);
       if (!response.success) {
         const code = response.error.code as string;
-        const translated = t.has(`errors.${code}` as any)
-          ? t(`errors.${code}` as any)
+        const translated = t.has(`errors.${code}`)
+          ? t(`errors.${code}`)
           : response.error.message;
         setError(translated);
         return;

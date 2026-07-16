@@ -58,6 +58,8 @@ pnpm verify
 
 Esto corre OpenSpec validation, typecheck sin cache incremental, lint y build. El verifier crea verify-report.md con comandos, exit codes, resumen, warnings, conformidad y veredicto PASS o FAIL.
 
+Un PASS final incluye un snapshot SHA-256 generado con `node scripts/validate-harness.mjs --snapshot <change-id>`. La validacion normal permite cambios en progreso reconciliados; `node scripts/validate-harness.mjs --archive-ready <change-id>` aplica el preflight terminal estricto.
+
 Cualquier cambio posterior en implementacion o artifacts invalida el reporte y exige repetir los cuatro gates.
 
 Nota de version: OpenSpec 1.6 tiene instructions apply, pero no instructions verify ni archive. Para verificar o archivar, Codex debe usar openspec status --change <id> --json como preflight nativo. No se crea una maquina de estados alternativa.
@@ -69,15 +71,20 @@ No archives un change si:
 - quedan tareas sin marcar;
 - falta apply-progress.md o no coincide con tasks.md;
 - falta verify-report.md PASS;
+- el snapshot de evidencia falta o quedo stale;
 - el brief o indice de requirements vinculados no se puede actualizar coherentemente.
 
 Para un change con brief, marca el brief y su fila de indice como implemented con la referencia archive. Para un change tecnico sin brief, registra no requirement as applicable.
+
+El cierre es fail-closed: no hay override por confirmacion ni por fallos preexistentes. Finaliza tasks/progress, ejecuta los gates, crea PASS + snapshot, valida readiness, usa `openspec archive <change-id> --yes --json`, actualiza brief/indice y valida las specs aceptadas. No se mueve el directorio manualmente.
 
 ## Ejemplo de tarea tecnica pequena
 
 Pedido: Actualiza una guia interna para aclarar el nombre de un comando, sin cambiar comportamiento.
 
 Clasificacion: .agent + verificacion. No hace falta requirement brief. OpenSpec es opcional si se quiere trazabilidad tecnica.
+
+Si se clasifica `no-change`, ejecuta checks aplicables sin status de change, apply-progress.md ni verify-report.md; la evidencia se devuelve en el handoff o resultado final.
 
 ## Prompts utiles
 

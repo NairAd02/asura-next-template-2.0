@@ -28,7 +28,7 @@ export default function ToggleWidgetActiveContainer({ widgetId, isActive, open, 
 
   const { toggleWidgetActive, isLoading } = useToggleWidgetActive({
     onSuccess: () => {
-      toast.success(`Widget ${isActive ? "deactivated" : "activated"} successfully`, { position: "top-right" });
+      toast.success(t(isActive ? "deactivateSuccess" : "activateSuccess"), { position: "top-right" });
       onOpenChange(false);
       setTimeout(() => { router.refresh(); }, 300);
     },
@@ -44,12 +44,12 @@ export default function ToggleWidgetActiveContainer({ widgetId, isActive, open, 
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>{t("cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => toggleWidgetActive(widgetId, !isActive)}
             disabled={isLoading}
           >
-            {isLoading ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+            {isLoading ? t("updating") : isActive ? t("deactivate") : t("activate")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

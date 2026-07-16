@@ -10,6 +10,8 @@ metadata:
   generatedBy: "1.6.0"
 ---
 
+<!-- LOCAL_HARNESS_INTEGRATION_V1 -->
+
 Sync delta specs from a change to main specs.
 
 This is an **agent-driven** operation - you will read delta specs and directly edit main specs to apply the changes. This allows intelligent merging (e.g., adding a scenario without copying the entire requirement).
@@ -146,3 +148,12 @@ Main specs are now updated. The change remains active - archive when implementat
 - If something is unclear, ask for clarification
 - Show what you're changing as you go
 - The operation should be idempotent - running twice should give same result
+
+## Repository Integration (Authoritative)
+
+The local overlay takes precedence over generated guidance above.
+
+- Require an explicit or unambiguous active change and run `openspec status --change "<change-id>" --json`.
+- Use `artifactPaths.specs.existingOutputPaths` as the authoritative delta list and keep the change active after the idempotent merge.
+- Sync is not archive and does not complete implementation tasks.
+- If PASS evidence exists, changing live behavior invalidates its snapshot; update cumulative progress and repeat all four gates before archive.

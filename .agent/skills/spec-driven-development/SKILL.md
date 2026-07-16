@@ -75,7 +75,13 @@ Use .agent/contracts/phase-handoff.md for every specialized role.
 - Run pnpm verify for OpenSpec validation, non-incremental typecheck, lint, and build.
 - Persist verify-report.md with PASS or FAIL.
 - Any later implementation or change-artifact modification invalidates the report and requires the four gates again.
-- Archive only after tasks, progress, report, and linked requirement status are coherent.
+- Continuous harness validation permits a reconciled in-progress change without final evidence. Strict `--archive-ready` validation requires all tasks complete, progress `ready-for-archive`, and a fresh PASS snapshot.
+- Archive only after tasks, progress, report, and linked requirement close data are coherent. No pre-existing failure or confirmation can override PASS.
+- Use only `openspec archive <change-id> --yes --json`; never move a change directory manually.
+
+For `no-change` internal work, run applicable checks and return their evidence in the handoff/final response without change status, progress, or report artifacts.
+
+Terminal order: finalize tasks/progress, run gates, finalize verification task IDs, generate PASS report plus SHA-256 snapshot, run status and strict archive readiness, archive natively, update requirement/index, then validate accepted specs.
 
 ## Reference Material
 

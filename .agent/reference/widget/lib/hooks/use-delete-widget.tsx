@@ -20,8 +20,8 @@ export function useDeleteWidget({ onSuccess }: Props = {}) {
       const response = await deleteWidgetAction(id);
       if (!response.success) {
         const code = response.error.code as string;
-        const translated = t.has(`errors.${code}` as any)
-          ? t(`errors.${code}` as any)
+        const translated = t.has(`errors.${code}`)
+          ? t(`errors.${code}`)
           : response.error.message;
         setError(translated);
         return;

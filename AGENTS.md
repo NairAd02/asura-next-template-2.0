@@ -18,7 +18,10 @@ For an active change, treat OpenSpec as the only executable state authority:
 - Before apply: run openspec status --change <id> --json and openspec instructions apply --change <id> --json.
 - Before verify or archive: run openspec status --change <id> --json.
 - OpenSpec 1.6 exposes no instructions verify or archive artifact. Do not invent a second state engine.
+- For `no-change` work, run applicable checks without change status, apply-progress.md, or verify-report.md.
 
 Resolve only the exact skill paths needed from .agent/skill-registry.md. Every specialized handoff must use .agent/contracts/phase-handoff.md. Executors do not redelegate. If subagents are unavailable, perform the relevant role inline with its same allowed roots and responsibilities.
 
 Do not apply until the required proposal, specs, design, tasks, and requirement brief when applicable have been reread and shown to be coherent, reachable, and free of blocking questions.
+
+Archive is fail-closed: finalize tasks/progress, run the four gates, create PASS evidence with a fresh SHA-256 snapshot, run strict readiness, invoke `openspec archive <id> --yes --json`, update the linked requirement/index, and validate accepted specs. Confirmation and pre-existing failures never bypass readiness.

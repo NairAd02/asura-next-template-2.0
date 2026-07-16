@@ -2,7 +2,7 @@
 
 import { useWidget } from "../../lib/hooks/use-widget";
 import EditWidgetFormContainer from "./edit-widget-form-container";
-import { DetailsContainerWrapper } from "@/components/details-container-wrapper/details-container-wrapper";
+import WidgetDetailsState from "../../components/widget-details-state";
 
 interface Props {
   widgetId: string;
@@ -13,8 +13,8 @@ export default function EditWidgetContainer({ widgetId, onClose }: Props) {
   const { widget, isLoading, error } = useWidget({ widgetId });
 
   return (
-    <DetailsContainerWrapper data={widget} isLoading={isLoading} error={error} entityKey="widget">
+    <WidgetDetailsState data={widget} isLoading={isLoading} error={error}>
       {(widget) => <EditWidgetFormContainer widget={widget} onClose={onClose} />}
-    </DetailsContainerWrapper>
+    </WidgetDetailsState>
   );
 }

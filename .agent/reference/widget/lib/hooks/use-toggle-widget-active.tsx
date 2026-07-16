@@ -21,8 +21,8 @@ export function useToggleWidgetActive({ onSuccess }: Props = {}) {
       const response = await toggleWidgetActiveAction(id, isActive);
       if (!response.success) {
         const code = response.error.code as string;
-        const translated = t.has(`errors.${code}` as any)
-          ? t(`errors.${code}` as any)
+        const translated = t.has(`errors.${code}`)
+          ? t(`errors.${code}`)
           : response.error.message;
         setError(translated);
         return;

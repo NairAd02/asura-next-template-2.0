@@ -35,7 +35,7 @@ export async function getAllWidgets(
     page: filters.page ?? 1,
     limit: filters.limit ?? 10,
     search: filters.search,
-    searchFields: ["name", "description"] as any,
+    searchFields: ["name", "description"],
     filters: {
       isActive: filters.isActive,
     },
@@ -51,9 +51,12 @@ export async function getAllWidgets(
 
 export async function getWidgetById(
   id: string,
-): Promise<ServiceResponse<WidgetDetails | null>> {
+): Promise<ServiceResponse<WidgetDetails>> {
   try {
     const record = findById(widgetsStore, id);
+    if (!record) {
+      return { success: false, error: { code: "NOT_FOUND", message: "Widget not found" } };
+    }
     return { success: true, data: record };
   } catch (error) {
     return {

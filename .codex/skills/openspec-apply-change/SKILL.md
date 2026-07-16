@@ -10,6 +10,8 @@ metadata:
   generatedBy: "1.6.0"
 ---
 
+<!-- LOCAL_HARNESS_INTEGRATION_V1 -->
+
 Implement tasks from an OpenSpec change.
 
 **Store selection:** If the user names a store (a store is a standalone OpenSpec repo registered on this machine) or the work lives in one, run `openspec store list --json` to discover registered store ids, then pass `--store <id>` on the commands that read or write specs and changes (`new change`, `status`, `instructions`, `list`, `show`, `validate`, `archive`, `doctor`, `context`). Other commands do not take the flag. Hints printed by commands already carry the flag; keep it on follow-ups. Without a store, commands act on the nearest local `openspec/` root.
@@ -158,3 +160,14 @@ This skill supports the "actions on a change" model:
 
 - **Can be invoked anytime**: Before all artifacts are done (if tasks exist), after partial implementation, interleaved with other actions
 - **Allows artifact updates**: If implementation reveals design issues, suggest updating artifacts - not phase-locked, work fluidly
+
+## Repository Integration (Authoritative)
+
+The local overlay takes precedence over generated guidance above.
+
+- Before any implementation edit, run both `openspec status --change "<change-id>" --json` and `openspec instructions apply --change "<change-id>" --json`.
+- Read every returned context file and the linked requirement brief. Block apply until proposal, delta specs, design, and tasks are coherent, paths are reachable or planned, and no blocking question remains.
+- Resolve only exact paths from `.agent/skill-registry.md`. Every specialized role uses `.agent/contracts/phase-handoff.md`, explicit editable roots, and no redelegation.
+- Load `.agent/skills/implementation-progress/SKILL.md`; create or update `apply-progress.md` before or with the first implementation edit.
+- Reconcile each task checkbox with the `Current Snapshot` completed/remaining IDs and append every phase handoff cumulatively.
+- Completing implementation is not archive readiness. Final verification, PASS evidence, SHA-256 snapshot, and strict archive preflight remain required.

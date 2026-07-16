@@ -7,6 +7,7 @@ import { createWidgetSchema, CreateWidgetSchema } from "./schemas/create-widget-
 import WidgetForm from "../widget-form";
 import { useCreateWidget } from "../../lib/hooks/use-create-widget";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 interface Props {
   onClose?: () => void;
@@ -14,17 +15,24 @@ interface Props {
 
 export default function CreateWidgetFormContainer({ onClose }: Props) {
   const router = useRouter();
+  const t = useTranslations("widgetForm");
+  const schema = createWidgetSchema({
+    nameRequired: t("validation.nameRequired"),
+    nameTooLong: t("validation.nameTooLong"),
+    descriptionTooLong: t("validation.descriptionTooLong"),
+    typeInvalid: t("validation.typeInvalid"),
+  });
 
   const { createWidget, isLoading, error } = useCreateWidget({
     onSuccess: () => {
-      toast.success("Widget created successfully", { position: "top-right" });
+      toast.success(t("createSuccess"), { position: "top-right" });
       onClose?.();
       setTimeout(() => { router.refresh(); }, 300);
     },
   });
 
   const form = useForm<CreateWidgetSchema>({
-    resolver: zodResolver(createWidgetSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       description: "",
@@ -33,8 +41,8 @@ export default function CreateWidgetFormContainer({ onClose }: Props) {
     },
   });
 
-  async function onSubmit(data: CreateWidgetSchema) {
-    createWidget(data);
+  function onSubmit(data: CreateWidgetSchema) {
+    void createWidget(data);
   }
 
   return (

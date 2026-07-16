@@ -10,13 +10,14 @@ interface Props {
 
 export default function WidgetDetailsPresentational({ widget }: Props) {
   const t = useTranslations("widgetDetails");
+  const tForm = useTranslations("widgetForm");
   const typeInfo = getWidgetTypeInfo(widget.type);
 
   return (
     <div className="space-y-4 p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">{widget.name}</h3>
-        <Badge className={typeInfo.className}>{typeInfo.label}</Badge>
+        <Badge className={typeInfo.className}>{tForm(`typeValues.${widget.type}`)}</Badge>
       </div>
       {widget.description && (
         <p className="text-sm text-muted-foreground">{widget.description}</p>

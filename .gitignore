@@ -24,6 +24,5 @@ node_modules
 # generated reports
 /.generated
 package-lock.json
-pnpm-lock.yaml
 certificates
 tsconfig.tsbuildinfo

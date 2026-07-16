@@ -27,7 +27,7 @@ export default function DeleteWidgetContainer({ widgetId, open, onOpenChange }: 
 
   const { deleteWidget, isLoading } = useDeleteWidget({
     onSuccess: () => {
-      toast.success("Widget deleted successfully", { position: "top-right" });
+      toast.success(t("deleteSuccess"), { position: "top-right" });
       onOpenChange(false);
       setTimeout(() => { router.refresh(); }, 300);
     },
@@ -41,13 +41,13 @@ export default function DeleteWidgetContainer({ widgetId, open, onOpenChange }: 
           <AlertDialogDescription>{t("confirmDelete")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>{t("cancel")}</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => deleteWidget(widgetId)}
             disabled={isLoading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            {isLoading ? t("deleting") : t("delete")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

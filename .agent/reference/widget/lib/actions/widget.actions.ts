@@ -11,13 +11,38 @@ import {
   toggleWidgetsBulk,
 } from "../services/widget.services";
 import {
-  CreateWidgetDto,
-  EditWidgetDto,
+  convertCreateWidgetDto,
+  convertEditWidgetDto,
   WidgetDetails,
   WidgetFiltersDto,
   WidgetsResponse,
 } from "../types/widget.types";
 import type { ServiceResponse } from "@/lib/api-responses";
+import { createWidgetSchema } from "../../form/create/schemas/create-widget-schema";
+import { editWidgetSchema } from "../../form/edit/schemas/edit-widget-schema";
+
+const SERVER_VALIDATION_MESSAGES = {
+  nameRequired: "NAME_REQUIRED",
+  nameTooLong: "NAME_TOO_LONG",
+  descriptionTooLong: "DESCRIPTION_TOO_LONG",
+  typeInvalid: "TYPE_INVALID",
+};
+
+function validationError(issues: { path: PropertyKey[]; message: string }[]): ServiceResponse<never> {
+  return {
+    success: false,
+    error: {
+      code: "VALIDATION_ERROR",
+      message: "Invalid widget data",
+      details: {
+        issues: issues.map((issue) => ({
+          path: issue.path.map(String).join("."),
+          code: issue.message,
+        })),
+      },
+    },
+  };
+}
 
 // ─── Actions ─────────────────────────────────────────────────────────────────
 
@@ -29,21 +54,25 @@ export async function getAllWidgetsAction(
 
 export async function getWidgetByIdAction(
   id: string,
-): Promise<ServiceResponse<WidgetDetails | null>> {
+): Promise<ServiceResponse<WidgetDetails>> {
   return await getWidgetById(id);
 }
 
 export async function createWidgetAction(
-  dto: CreateWidgetDto,
+  input: unknown,
 ): Promise<ServiceResponse<WidgetDetails>> {
-  return await createWidget(dto);
+  const parsed = createWidgetSchema(SERVER_VALIDATION_MESSAGES).safeParse(input);
+  if (!parsed.success) return validationError(parsed.error.issues);
+  return await createWidget(convertCreateWidgetDto(parsed.data));
 }
 
 export async function editWidgetAction(
   widgetId: string,
-  dto: EditWidgetDto,
+  input: unknown,
 ): Promise<ServiceResponse<WidgetDetails>> {
-  return await editWidget(widgetId, dto);
+  const parsed = editWidgetSchema(SERVER_VALIDATION_MESSAGES).safeParse(input);
+  if (!parsed.success) return validationError(parsed.error.issues);
+  return await editWidget(widgetId, convertEditWidgetDto(parsed.data));
 }
 
 export async function deleteWidgetAction(

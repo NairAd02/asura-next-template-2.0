@@ -24,6 +24,8 @@ Use this contract whenever work passes between the orchestrator and a specialize
 - Next phase: recommended owner and action.
 - Skill resolution: paths-injected, inline-fallback, or none.
 
+For an implemented OpenSpec change, append this complete output to `apply-progress.md` under `## Handoff History`; chat output alone is not durable evidence.
+
 ## Rules
 
 - An executor SHALL NOT redelegate work.

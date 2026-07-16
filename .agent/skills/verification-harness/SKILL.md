@@ -15,6 +15,8 @@ Current OpenSpec versions do not expose instructions verify. Status is the nativ
 
 Read proposal, specs, design, tasks, apply-progress.md, and the linked requirement brief when one applies. Reconcile progress with tasks.md before running gates.
 
+For work explicitly classified `no-change`, skip change status and do not create `apply-progress.md` or `verify-report.md`. Run only applicable checks and return command evidence in the handoff/final result.
+
 ## Four Gates
 
 Run in this order through the repository scripts:
@@ -42,6 +44,8 @@ Create openspec/changes/<change-id>/verify-report.md. The report SHALL contain:
 
 A warning is recorded but does not make a successful command FAIL unless it violates the change contract.
 
+After all implementation/browser/verification task checkboxes are complete, set the progress snapshot to `ready-for-archive`, generate snapshot JSON with `node scripts/validate-harness.mjs --snapshot <change-id>`, and place it under `## Evidence Snapshot` in the PASS report. Any covered edit requires all gates and the snapshot again.
+
 If a gate fails, record FAIL, identify the cause, and return a blocked handoff. Do not declare completion.
 
 ## Archive Readiness
@@ -59,6 +63,8 @@ Archive is blocked when any condition is true:
 - a linked requirement brief or requirements index cannot be updated coherently
 
 For behavior work, update the linked brief and index to implemented with the archived change reference. For an explicitly requirementless technical change, record no requirement as applicable.
+
+Run `node scripts/validate-harness.mjs --archive-ready <change-id>` before native archive. PASS has no exception for failures that existed before the change.
 
 ## Handoff
 

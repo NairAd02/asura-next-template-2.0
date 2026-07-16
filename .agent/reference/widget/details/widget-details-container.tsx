@@ -2,7 +2,7 @@
 
 import { useWidget } from "../lib/hooks/use-widget";
 import WidgetDetailsPresentational from "./widget-details-presentational";
-import { DetailsContainerWrapper } from "@/components/details-container-wrapper/details-container-wrapper";
+import WidgetDetailsState from "../components/widget-details-state";
 
 interface Props {
   widgetId: string;
@@ -11,8 +11,8 @@ interface Props {
 export default function WidgetDetailsContainer({ widgetId }: Props) {
   const { widget, isLoading, error } = useWidget({ widgetId });
   return (
-    <DetailsContainerWrapper data={widget} isLoading={isLoading} error={error} entityKey="widget">
+    <WidgetDetailsState data={widget} isLoading={isLoading} error={error}>
       {(widget) => <WidgetDetailsPresentational widget={widget} />}
-    </DetailsContainerWrapper>
+    </WidgetDetailsState>
   );
 }

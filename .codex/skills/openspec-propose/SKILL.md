@@ -10,6 +10,8 @@ metadata:
   generatedBy: "1.6.0"
 ---
 
+<!-- LOCAL_HARNESS_INTEGRATION_V1 -->
+
 Propose a new change - create the change and generate all artifacts in one step.
 
 I'll create a change with artifacts:
@@ -112,3 +114,14 @@ After completing all artifacts, summarize:
 - If context is critically unclear, ask the user - but prefer making reasonable decisions to keep momentum
 - If a change with that name already exists, ask if user wants to continue it or create a new one
 - Verify each artifact file exists after writing before proceeding to next
+
+## Repository Integration (Authoritative)
+
+The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guidance above.
+
+- Read `.agent/skills/spec-driven-development/SKILL.md` and `.agent/skill-registry.md` first.
+- Perform entry classification: broad product intent, business rules, permissions, and flows require requirements curation before executable planning; internal non-contract work may remain `no-change`.
+- Link the applicable `docs/requirements/<id>/brief.md` from the proposal, or explicitly record that no requirement applies.
+- Reuse a matching active change; use `openspec status --change "<change-id>" --json` and resolved artifact paths.
+- Tasks cover implementable and verifiable work. Report creation, requirement reconciliation after native archive, and archive movement are close operations, not task checkboxes.
+- Stop after artifact creation for lightweight approval. Apply performs an independent fail-closed readiness review.

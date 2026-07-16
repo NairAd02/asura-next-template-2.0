@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
 import { RHFTextField } from "@/components/form/rhf-components/rhf-text-field/rhf-text-field";
 import { RHFTextAreaField } from "@/components/form/rhf-components/rhf-text-area-field/rhf-text-area-field";
 import { RHFToggleField } from "@/components/form/rhf-components/rhf-toggle-field/rhf-toggle-field";
@@ -8,11 +7,6 @@ import { RHFSelectField } from "@/components/form/rhf-components/rhf-select-fiel
 import { AlertComponent } from "@/components/ui/alert-component";
 import { useTranslations } from "next-intl";
 import FormActionFooter from "@/components/form/components/form-action-footer";
-
-const WIDGET_TYPE_OPTIONS = [
-  { label: "Type A", value: "type_a" },
-  { label: "Type B", value: "type_b" },
-];
 
 interface WidgetFormProps {
   loading?: boolean;
@@ -28,7 +22,10 @@ export default function WidgetForm({
   isEditMode = false,
 }: WidgetFormProps) {
   const t = useTranslations("widgetForm");
-  const { control } = useFormContext();
+  const widgetTypeOptions = [
+    { label: t("typeValues.type_a"), value: "type_a" },
+    { label: t("typeValues.type_b"), value: "type_b" },
+  ];
 
   return (
     <div className="flex flex-col h-full max-h-[75vh]">
@@ -72,7 +69,7 @@ export default function WidgetForm({
           <RHFSelectField
             name="type"
             label={t("type")}
-            options={WIDGET_TYPE_OPTIONS}
+            options={widgetTypeOptions}
             placeholder={t("typePlaceholder")}
           />
         </div>

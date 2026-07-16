@@ -1,7 +1,7 @@
 # Módulo de Referencia — Widget
 
 > ⚠️ **Este módulo NO es código de producción.**  
-> Es un módulo de ejemplo/entrenamiento para agentes de IA. Está **excluido** del typecheck, lint y build de Next.js.  
+> Es un módulo de ejemplo/entrenamiento para agentes de IA. Tiene typecheck y lint explícitos propios, aunque no forma parte del build de Next.js.  
 > Su único propósito es ilustrar los patrones del proyecto con una entidad genérica (`Widget`).
 
 ## Estructura

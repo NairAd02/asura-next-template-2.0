@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { editWidgetAction } from "../actions/widget.actions";
-import { convertEditWidgetDto, WidgetDetails } from "../types/widget.types";
+import { WidgetDetails } from "../types/widget.types";
 import { EditWidgetSchema } from "../../form/edit/schemas/edit-widget-schema";
 
 interface Props {
@@ -19,11 +19,11 @@ export function useEditWidget({ onSuccess }: Props = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await editWidgetAction(widgetId, convertEditWidgetDto(schema));
+      const response = await editWidgetAction(widgetId, schema);
       if (!response.success) {
         const code = response.error.code as string;
-        const translated = t.has(`errors.${code}` as any)
-          ? t(`errors.${code}` as any)
+        const translated = t.has(`errors.${code}`)
+          ? t(`errors.${code}`)
           : response.error.message;
         setError(translated);
         return;

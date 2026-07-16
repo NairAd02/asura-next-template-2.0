@@ -19,12 +19,13 @@ export function useWidget({ widgetId }: Props) {
     if (!widgetId) return;
     setIsLoading(true);
     setError(null);
+    setWidget(null);
     try {
       const response = await getWidgetByIdAction(widgetId);
       if (!response.success) {
         const code = response.error.code as string;
-        const translated = t.has(`errors.${code}` as any)
-          ? t(`errors.${code}` as any)
+        const translated = t.has(`errors.${code}`)
+          ? t(`errors.${code}`)
           : response.error.message;
         setError(translated);
         return;
@@ -35,7 +36,12 @@ export function useWidget({ widgetId }: Props) {
     }
   }, [widgetId, t]);
 
-  useEffect(() => { fetchWidget(); }, [fetchWidget]);
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void fetchWidget();
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [fetchWidget]);
 
   return { widget, isLoading, error, refetch: fetchWidget };
 }

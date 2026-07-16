@@ -13,8 +13,8 @@ Central index for project skills. The orchestrator reads this table at the start
 | forms-rhf-zod | Create or edit forms, Zod schemas, and form containers. | .agent/skills/forms-rhf-zod/SKILL.md | agent-ui |
 | filters-url-state | URL-synchronized filters. | .agent/skills/filters-url-state/SKILL.md | agent-ui |
 | i18n-conventions | Visible text or messages. | .agent/skills/i18n-conventions/SKILL.md | agent-data, agent-ui, agent-architect |
-| implementation-progress | Every implemented OpenSpec change; progress, evidence, and archive readiness. | .agent/skills/implementation-progress/SKILL.md | orchestrator, agent-data, agent-ui, agent-verifier |
-| verification-harness | Final four gates and verification evidence. | .agent/skills/verification-harness/SKILL.md | agent-verifier |
+| implementation-progress | Every implemented OpenSpec change; machine-readable current snapshot, cumulative handoffs, evidence, and archive readiness. | .agent/skills/implementation-progress/SKILL.md | orchestrator, agent-data, agent-ui, agent-verifier |
+| verification-harness | Four gates, SHA-256 evidence, strict archive readiness, or applicable `no-change` checks. | .agent/skills/verification-harness/SKILL.md | agent-verifier |
 
 ## Reference Modules
 

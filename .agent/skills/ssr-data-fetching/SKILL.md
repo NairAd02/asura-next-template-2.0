@@ -21,7 +21,7 @@ import { Suspense } from "react";
 import { getTranslations } from 'next-intl/server';
 import { ModuleHeader } from "@/modules/components/module-header/module-header";
 import WidgetsFiltersContainer from "./filters/widgets-filters-container";
-import WidgetsListContainer from "./list/widgets-list-container";
+import WidgetsListContainer from "./list/widget-list-container";
 import WidgetsListLoadingSkeleton from "./list/widgets-list-loading-skeleton";
 import { WidgetFiltersDto } from "./lib/types/widget.types";
 import { Box } from "lucide-react";
@@ -72,7 +72,7 @@ export default async function WidgetsContent({ filters }: Props) {
 El container hace el `await` de la action y pasa datos al presentational. No contiene lógica de UI.
 
 ```typescript
-// modules/widgets/list/widgets-list-container.tsx
+// modules/widgets/list/widget-list-container.tsx
 import { getAllWidgetsAction } from "../lib/actions/widget.actions";
 import { WidgetFiltersDto } from "../lib/types/widget.types";
 import ModulePagination from "@/components/pagination/module-pagination";
@@ -174,4 +174,4 @@ export default function EditWidgetContainer({ widgetId, onClose }: Props) {
 
 ## Referencia navegable
 
-Ver: `.agent/reference/widget/widget-content.tsx` y `.agent/reference/widget/list/widgets-list-container.tsx`
+Ver: `.agent/reference/widget/widget-content.tsx` y `.agent/reference/widget/list/widget-list-container.tsx`

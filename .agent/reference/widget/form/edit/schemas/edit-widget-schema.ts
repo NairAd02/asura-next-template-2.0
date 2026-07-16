@@ -1,10 +1,29 @@
 import { z } from "zod";
 
-export const editWidgetSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string().optional().or(z.literal("")),
-  isActive: z.boolean(),
-  type: z.enum(["type_a", "type_b"]),
-});
+export interface EditWidgetValidationMessages {
+  nameRequired: string;
+  nameTooLong: string;
+  descriptionTooLong: string;
+  typeInvalid: string;
+}
 
-export type EditWidgetSchema = z.infer<typeof editWidgetSchema>;
+export const editWidgetSchema = (messages: EditWidgetValidationMessages) =>
+  z.object({
+    name: z
+      .string()
+      .trim()
+      .min(1, messages.nameRequired)
+      .max(120, messages.nameTooLong),
+    description: z
+      .string()
+      .trim()
+      .max(1_000, messages.descriptionTooLong)
+      .optional(),
+    isActive: z.boolean(),
+    type: z.enum(["type_a", "type_b"], {
+      required_error: messages.typeInvalid,
+      invalid_type_error: messages.typeInvalid,
+    }),
+  });
+
+export type EditWidgetSchema = z.infer<ReturnType<typeof editWidgetSchema>>;

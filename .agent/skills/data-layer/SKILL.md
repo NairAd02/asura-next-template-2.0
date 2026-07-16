@@ -14,7 +14,7 @@ Cuando se implementan los archivos dentro de `modules/<module>/lib/`.
 [Server Component / Route Handler]
         │ llama directamente
         ▼
-   actions (use server)          ← Wrapper fino, solo llama al service
+   actions (use server)          ← Boundary fino: valida entrada y llama al service
         │ llama
         ▼
    services (server-only)        ← Lógica real: DB, API externa, mock
@@ -53,9 +53,12 @@ export async function getAllWidgets(filters: WidgetFiltersDto = {}): Promise<Wid
   return { widgets: rows as unknown as Widget[], pagination };
 }
 
-export async function getWidgetById(id: string): Promise<ServiceResponse<Widget | null>> {
+export async function getWidgetById(id: string): Promise<ServiceResponse<Widget>> {
   try {
     const record = findById(widgetsStore, id);
+    if (!record) {
+      return { success: false, error: { code: "NOT_FOUND", message: "Widget not found" } };
+    }
     return { success: true, data: record };
   } catch (error) {
     return { success: false, error: { code: "INTERNAL_ERROR", message: `Failed to get widget: ${error}` } };
@@ -85,6 +88,8 @@ export async function createWidget(dto: CreateWidgetDto): Promise<ServiceRespons
 
 **Reglas de services:**
 - `import "server-only"` SIEMPRE como primera línea.
+- El límite servidor debe validar DTOs con el mismo schema Zod compartido que usa el formulario; nunca confiar solo en la validación cliente.
+- Una búsqueda individual inexistente devuelve `NOT_FOUND`, nunca un success con `null`.
 - Manejar errores con try/catch → devolver `{ success: false, error: { code, message } }`.
 - Nunca tirar excepciones: siempre devolver `ServiceResponse`.
 - Separar visualmente Queries y Mutations con comentarios `// ─── Queries` / `// ─── Mutations`.
@@ -95,6 +100,7 @@ export async function createWidget(dto: CreateWidgetDto): Promise<ServiceRespons
 "use server";                                  // ← SIEMPRE primera línea
 
 import { createWidget, editWidget, getAllWidgets, getWidgetById, deleteWidget } from "../services/widget.services";
+import { createWidgetSchema } from "../../form/create/schemas/create-widget-schema";
 import { CreateWidgetDto, EditWidgetDto, Widget, WidgetFiltersDto, WidgetsResponse } from "../types/widget.types";
 import type { ServiceResponse } from "@/lib/api-responses";
 
@@ -104,12 +110,21 @@ export async function getAllWidgetsAction(options: WidgetFiltersDto = {}): Promi
   return await getAllWidgets(options);
 }
 
-export async function getWidgetByIdAction(id: string): Promise<ServiceResponse<Widget | null>> {
+export async function getWidgetByIdAction(id: string): Promise<ServiceResponse<Widget>> {
   return await getWidgetById(id);
 }
 
 export async function createWidgetAction(dto: CreateWidgetDto): Promise<ServiceResponse<Widget>> {
-  return await createWidget(dto);
+  const parsed = createWidgetSchema({
+    nameRequired: "NAME_REQUIRED",
+    nameTooLong: "NAME_TOO_LONG",
+    descriptionTooLong: "DESCRIPTION_TOO_LONG",
+    typeInvalid: "TYPE_INVALID",
+  }).safeParse(dto);
+  if (!parsed.success) {
+    return { success: false, error: { code: "VALIDATION_ERROR", message: "Invalid widget data" } };
+  }
+  return await createWidget(parsed.data);
 }
 
 export async function editWidgetAction(id: string, dto: EditWidgetDto): Promise<ServiceResponse<Widget>> {
@@ -123,7 +138,7 @@ export async function deleteWidgetAction(id: string): Promise<ServiceResponse<vo
 
 **Reglas de actions:**
 - `"use server"` SIEMPRE primera línea.
-- Son wrappers **FINOS**: no contienen lógica de negocio — solo delegan al service.
+- Son boundaries **FINOS**: validan y normalizan la entrada con schemas compartidos, y delegan la lógica de negocio al service.
 - Tipado explícito en parámetros y retorno.
 - Un action por operación de service.
 
@@ -258,6 +273,8 @@ export const widgetsStore: Widget[] = [
 
 - [ ] `"server-only"` en services, `"use server"` en actions
 - [ ] `ServiceResponse<T>` en todas las mutations y queries que pueden fallar
+- [ ] Validación Zod compartida en cliente y en el límite servidor
+- [ ] Queries individuales inexistentes devuelven `NOT_FOUND`
 - [ ] DTOs separados para Create y Edit (Edit tiene todos los campos opcionales)
 - [ ] `convert*Dto` para transformar schema de Zod a DTO limpio
 - [ ] Hook cliente con `isLoading`, `error`, `reset` y mapeo de errores i18n

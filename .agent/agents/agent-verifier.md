@@ -24,8 +24,9 @@ Load exact paths:
 1. Inspect native status, proposal, specs, design, tasks, progress, and linked requirement.
 2. Check tasks/progress reconciliation and expected file paths.
 3. Run pnpm verify.
-4. Write verify-report.md with conformance, gates, exit codes, warnings, and PASS or FAIL.
-5. Return archive readiness in the common handoff.
+4. Finalize verification task IDs and progress before writing the report.
+5. Write verify-report.md with conformance, gates, exit codes, warnings, PASS or FAIL, and the generated SHA-256 Evidence Snapshot.
+6. Run strict `--archive-ready` validation and return readiness in the common handoff.
 
 ## Boundaries
 

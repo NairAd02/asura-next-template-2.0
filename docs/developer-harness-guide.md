@@ -71,16 +71,21 @@ El comando corre, en orden:
 
 El verifier crea verify-report.md con comandos, exit codes, warnings y veredicto PASS o FAIL.
 
+El reporte PASS incluye un bloque `Evidence Snapshot` generado con `node scripts/validate-harness.mjs --snapshot <change-id>`.
+
 Un change no se archiva si:
 
 - quedan tareas sin marcar;
 - falta apply-progress.md o no coincide con tasks.md;
 - falta verify-report.md PASS;
+- el snapshot SHA-256 esta incompleto o stale;
 - el requirement vinculado y su indice no se pueden actualizar.
 
 Cualquier cambio posterior al reporte invalida PASS y exige repetir los cuatro gates.
 
 Nota: OpenSpec 1.6 ofrece instructions apply, pero no instructions verify ni archive. Para esas dos fases se usa openspec status --change <id> --json como preflight nativo.
+
+El cierre no admite excepciones por fallos preexistentes. El orden terminal es: completar tasks/progress, ejecutar gates, finalizar tareas de verificacion, escribir PASS + snapshot, ejecutar `node scripts/validate-harness.mjs --archive-ready <change-id>`, archivar con `openspec archive <change-id> --yes --json`, actualizar brief/indice y validar specs aceptadas. Crear el reporte, mover el archive y actualizar el requirement despues del archive son operaciones de cierre, no checkboxes de implementacion.
 
 ## Ejemplo: Nueva Funcionalidad
 
@@ -122,6 +127,7 @@ Clasificacion:
 - No requiere requirement brief.
 - OpenSpec es opcional si se quiere trazabilidad tecnica.
 - Se verifica al finalizar.
+- No ejecuta status de un change ni crea apply-progress.md/verify-report.md.
 
 ## Prompts Recomendados
 

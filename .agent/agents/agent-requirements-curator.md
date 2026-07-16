@@ -21,7 +21,7 @@ Load only .agent/skills/requirements-curation/SKILL.md unless another exact skil
 - Extract stable ID, source, intent, actors, scope, out of scope, flows, constraints, dependencies, questions, and suggested change.
 - Keep broad or ambiguous intent as candidate or ready-for-openspec.
 - Mark a brief in-openspec only after an active change exists.
-- Update a linked brief and index to implemented after the orchestrator confirms archive readiness.
+- Update a linked brief and index to implemented after the orchestrator confirms native archive success and provides the archive reference.
 
 ## Boundaries
 

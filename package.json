@@ -11,9 +11,12 @@
     "dev:https": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "validate:specs": "openspec validate --all --json",
-    "typecheck": "tsc --noEmit --incremental false",
+    "lint": "eslint . && eslint .agent/reference/widget --no-ignore",
+    "validate:harness": "node --test scripts/harness-validation.test.mjs && node scripts/validate-harness.mjs",
+    "validate:specs": "openspec validate --all --json && pnpm validate:harness",
+    "typecheck:app": "tsc --noEmit --incremental false",
+    "typecheck:reference": "tsc --project tsconfig.reference.json --noEmit --incremental false",
+    "typecheck": "pnpm typecheck:app && pnpm typecheck:reference",
     "verify": "pnpm validate:specs && pnpm typecheck && pnpm lint && pnpm build"
   },
   "dependencies": {

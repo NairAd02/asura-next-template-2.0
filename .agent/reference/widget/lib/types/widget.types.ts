@@ -4,13 +4,12 @@ export type WidgetType = "type_a" | "type_b";
 
 // ─── Enum Helpers ─────────────────────────────────────────────────────────────
 
-export const widgetTypeConfig: Record<WidgetType, { label: string; className: string }> = {
-  type_a: { label: "Type A", className: "text-blue-600 bg-blue-100" },
-  type_b: { label: "Type B", className: "text-green-600 bg-green-100" },
+export const widgetTypeConfig: Record<WidgetType, { className: string }> = {
+  type_a: { className: "text-blue-600 bg-blue-100" },
+  type_b: { className: "text-green-600 bg-green-100" },
 };
 
-export const getWidgetTypeInfo = (type: WidgetType) =>
-  widgetTypeConfig[type] || { label: type, className: "text-gray-600 bg-gray-100" };
+export const getWidgetTypeInfo = (type: WidgetType) => widgetTypeConfig[type];
 
 // ─── Interfaces de entidad ────────────────────────────────────────────────────
 
@@ -34,7 +33,7 @@ export interface Widget {
   updatedByUser: UserInfo | null;
 }
 
-export interface WidgetDetails extends Widget {}
+export type WidgetDetails = Widget;
 
 // ─── Response types ───────────────────────────────────────────────────────────
 
@@ -82,11 +81,16 @@ export interface CreateWidgetDto {
   type?: WidgetType;
 }
 
-export const convertCreateWidgetDto = (schema: any): CreateWidgetDto => ({
-  name: typeof schema.name === "string" ? schema.name.trim() : "",
-  description: typeof schema.description === "string" ? schema.description.trim() || null : null,
-  isActive: schema.isActive !== undefined ? schema.isActive : true,
-  type: schema.type ?? "type_a",
+export const convertCreateWidgetDto = (schema: {
+  name: string;
+  description?: string;
+  isActive: boolean;
+  type: WidgetType;
+}): CreateWidgetDto => ({
+  name: schema.name,
+  description: schema.description || null,
+  isActive: schema.isActive,
+  type: schema.type,
 });
 
 // ─── Edit DTO ─────────────────────────────────────────────────────────────────
@@ -98,9 +102,14 @@ export interface EditWidgetDto {
   type?: WidgetType;
 }
 
-export const convertEditWidgetDto = (schema: any): EditWidgetDto => ({
-  name: typeof schema.name === "string" ? schema.name.trim() : undefined,
-  description: typeof schema.description === "string" ? schema.description.trim() || null : undefined,
-  isActive: schema.isActive !== undefined ? schema.isActive : undefined,
-  type: schema.type !== undefined ? schema.type : undefined,
+export const convertEditWidgetDto = (schema: {
+  name: string;
+  description?: string;
+  isActive: boolean;
+  type: WidgetType;
+}): EditWidgetDto => ({
+  name: schema.name,
+  description: schema.description || null,
+  isActive: schema.isActive,
+  type: schema.type,
 });

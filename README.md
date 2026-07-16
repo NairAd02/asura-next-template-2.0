@@ -31,6 +31,7 @@ Open http://localhost:3000. For local HTTPS, run pnpm dev:https.
 
 ~~~bash
 pnpm validate:specs  # validate active changes and accepted specs
+pnpm validate:harness # run Node negative tests and mechanical harness checks
 pnpm typecheck       # TypeScript without incremental cache
 pnpm lint            # ESLint
 pnpm build           # production Next.js build with TypeScript errors enabled
@@ -58,10 +59,12 @@ OpenSpec owns change state and executable behavior. .agent supplies project-spec
 ## Operating the harness
 
 1. Classify the request. Broad or ambiguous product intent starts with requirement curation; behavior ready to implement starts or resumes an OpenSpec change. Internal refactors or documentation can use .agent directly when no contract changes.
-2. Before every phase, inspect the active change with openspec status --change <change-id> --json and openspec instructions <phase> --change <change-id> --json.
+2. Before apply, run openspec status --change <change-id> --json and openspec instructions apply --change <change-id> --json. Before verify/archive, use status only; OpenSpec 1.6.0 has no instructions for those phases.
 3. Implement only the unchecked tasks in tasks.md, using the smallest applicable set of skills from .agent/skill-registry.md.
 4. Keep apply-progress.md aligned with tasks.md while work is active.
-5. Run pnpm verify, persist a PASS verify-report.md, update the linked requirement, and only then archive the change.
+5. Finalize tasks/progress, run pnpm verify, persist a PASS verify-report.md with `node scripts/validate-harness.mjs --snapshot <change-id>`, and require `--archive-ready` before native `openspec archive <change-id> --yes --json`.
+
+For an internal task classified `no-change`, run applicable checks and report them directly; do not invent change status, progress, or report artifacts.
 
 Start with [the developer harness guide](docs/developer-harness-guide.md), [the human operator guide](docs/human-operator-guide.md), [the documentation index](docs/README.md), and [the agent harness guide](.agent/README.md).
 

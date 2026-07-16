@@ -34,8 +34,8 @@ modules/<module>/form/
 // form/create/schemas/create-widget-schema.ts
 import { z } from "zod";
 
-export const createWidgetSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+export const createWidgetSchema = (messages: { nameRequired: string }) => z.object({
+  name: z.string().min(1, messages.nameRequired),
   description: z.string().optional().or(z.literal("")),
   isActive: z.boolean().default(true),
   // Ejemplo de campo condicional:
@@ -52,13 +52,15 @@ export const createWidgetSchema = z.object({
   }
 });
 
-export type CreateWidgetSchema = z.infer<typeof createWidgetSchema>;
+export type CreateWidgetSchema = z.infer<ReturnType<typeof createWidgetSchema>>;
 ```
 
 **Reglas de schemas:**
 - Schema **separado** para Create y Edit (Edit generalmente tiene todos los campos opcionales).
 - Usar `.superRefine()` para validaciones cruzadas (campos que dependen de otros).
-- Exportar siempre el tipo inferido: `export type XSchema = z.infer<typeof xSchema>`.
+- Exportar siempre el tipo inferido; para factories usar `z.infer<ReturnType<typeof xSchema>>`.
+- Los mensajes de validación visibles se reciben desde i18n mediante una factory de schema; no se codifican en un único idioma.
+- El mismo schema compartido se ejecuta también en el límite servidor antes de delegar al service.
 - El schema de Edit puede ser más permisivo (todos `optional`) o idéntico al de Create según el caso.
 
 ## 2. Create Form Container
@@ -69,6 +71,7 @@ export type CreateWidgetSchema = z.infer<typeof createWidgetSchema>;
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createWidgetSchema, CreateWidgetSchema } from "./schemas/create-widget-schema";
 import WidgetForm from "../widget-form";
 import { useCreateWidget } from "../../lib/hooks/use-create-widget";
@@ -78,6 +81,7 @@ interface Props { onClose?: () => void; }
 
 export default function CreateWidgetFormContainer({ onClose }: Props) {
   const router = useRouter();
+  const t = useTranslations('widgetForm');
 
   const { createWidget, isLoading, error } = useCreateWidget({
     onSuccess: () => {
@@ -88,7 +92,7 @@ export default function CreateWidgetFormContainer({ onClose }: Props) {
   });
 
   const form = useForm<CreateWidgetSchema>({
-    resolver: zodResolver(createWidgetSchema),
+    resolver: zodResolver(createWidgetSchema({ nameRequired: t('validation.nameRequired') })),
     defaultValues: {
       name: "",
       description: "",
@@ -299,6 +303,8 @@ export default function CreateWidgetTrigger() {
 ## Checklist de forms
 
 - [ ] Schema Zod separado para Create y Edit
+- [ ] Mensajes de validación obtenidos por i18n mediante factories de schema
+- [ ] El límite servidor reutiliza los schemas compartidos
 - [ ] `FormProvider` + `useForm` + `zodResolver` en el form container
 - [ ] `router.refresh()` con `setTimeout 300ms` en `onSuccess`
 - [ ] `useFormContext()` en el form compartido (no props del form)
