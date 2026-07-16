@@ -7,6 +7,7 @@ interface ApplicationPath {
   dashboard: Path;
   items: Path;
   itemCategories: Path;
+  suppliers: Path;
   users: Path;
   authLogin: Path;
   forgotPassword: Path;
@@ -23,6 +24,10 @@ export const paths: ApplicationPath = {
   },
   itemCategories: {
     root: "/item-categories",
+    isProtected: true,
+  },
+  suppliers: {
+    root: "/suppliers",
     isProtected: true,
   },
   users: {

@@ -6,6 +6,7 @@ import {
   Boxes,
   Tag,
   Users,
+  Truck,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { paths } from "../paths";
@@ -51,6 +52,11 @@ export function useGroupRoutes(): { routes: GroupRoute[]; isLoading: boolean } {
           title: tNav("itemCategories"),
           icon: <Tag className="text-accent" />,
           path: paths.itemCategories.root,
+        },
+        {
+          title: tNav("suppliers"),
+          icon: <Truck className="text-accent" />,
+          path: paths.suppliers.root,
         },
       ],
     },

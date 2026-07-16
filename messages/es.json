@@ -13,7 +13,8 @@
       "dashboard": "Dashboard",
       "items": "Artículos",
       "itemCategories": "Categorías de Artículos",
-      "users": "Usuarios"
+      "users": "Usuarios",
+      "suppliers": "Proveedores"
     }
   },
   "languageToggle": {
@@ -569,7 +570,8 @@
     "notFound": "no encontrado",
     "item": "artículo",
     "user": "usuario",
-    "itemCategory": "categoría de item"
+    "itemCategory": "categoría de item",
+    "supplier": "proveedor"
   },
   "landing": {
     "nav": {
@@ -1005,5 +1007,56 @@
     "message": "Por favor contacta a tu administrador si crees que esto es un error.",
     "goHome": "Ir al Inicio",
     "goDashboard": "Ir al Dashboard"
+  },
+  "suppliers": {
+    "title": "Proveedores",
+    "description": "Gestiona los contactos y la disponibilidad de proveedores.",
+    "create": "Nuevo proveedor",
+    "createTitle": "Crear proveedor",
+    "createDescription": "Agrega un proveedor al catálogo local del proceso.",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "empty": "Ningún proveedor coincide con estos filtros.",
+    "notProvided": "No informado",
+    "columns": { "name": "Proveedor", "contact": "Contacto", "phone": "Teléfono", "status": "Estado", "created": "Creado", "actions": "Acciones" },
+    "actions": { "view": "Ver detalles", "edit": "Editar", "activate": "Activar", "deactivate": "Desactivar", "delete": "Eliminar" },
+    "filters": { "searchPlaceholder": "Buscar nombre, contacto, correo o teléfono", "status": "Estado", "active": "Activo", "inactive": "Inactivo", "sortBy": "Ordenar por", "sortName": "Nombre", "sortCreated": "Fecha de creación", "toggleSort": "Cambiar dirección del orden" },
+    "errors": { "VALIDATION_ERROR": "Revisa la información del proveedor.", "ALREADY_EXISTS": "Ya existe un proveedor con este nombre.", "NOT_FOUND": "Proveedor no encontrado.", "INTERNAL_ERROR": "No se pudo completar la operación del proveedor." },
+    "notifications": { "created": "Proveedor creado correctamente.", "updated": "Proveedor actualizado correctamente." },
+    "delete": { "title": "Eliminar proveedor", "description": "Este proveedor se eliminará permanentemente. Esta acción no se puede deshacer.", "confirm": "Eliminar", "cancel": "Cancelar", "success": "Proveedor eliminado correctamente." },
+    "toggle": { "activateTitle": "Activar proveedor", "activateDescription": "Este proveedor quedará disponible.", "deactivateTitle": "Desactivar proveedor", "deactivateDescription": "Este proveedor quedará marcado como inactivo.", "activate": "Activar", "deactivate": "Desactivar", "cancel": "Cancelar", "activated": "Proveedor activado correctamente.", "deactivated": "Proveedor desactivado correctamente." }
+  },
+  "supplierDetails": {
+    "title": "Detalles del proveedor",
+    "description": "Contacto, estado e información de auditoría.",
+    "editTitle": "Editar proveedor",
+    "editDescription": "Actualiza el contacto y la disponibilidad.",
+    "contactName": "Nombre de contacto",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "createdAt": "Creado",
+    "updatedAt": "Última actualización",
+    "notProvided": "No informado",
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "supplierForm": {
+    "basicInfo": "Información del proveedor",
+    "name": "Nombre",
+    "namePlaceholder": "Proveedor de ejemplo",
+    "contactName": "Nombre de contacto",
+    "contactNamePlaceholder": "Contacto opcional",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "contacto@ejemplo.com",
+    "phone": "Teléfono",
+    "phonePlaceholder": "Teléfono opcional",
+    "isActive": "Proveedor activo",
+    "isActiveDescription": "Los proveedores inactivos siguen visibles mediante filtros.",
+    "cancel": "Cancelar",
+    "create": "Crear proveedor",
+    "creating": "Creando...",
+    "save": "Guardar cambios",
+    "saving": "Guardando...",
+    "validation": { "nameRequired": "El nombre es obligatorio.", "nameMin": "El nombre debe tener al menos 2 caracteres.", "nameMax": "El nombre no puede superar 120 caracteres.", "emailRequired": "El correo es obligatorio.", "emailInvalid": "Ingresa un correo válido.", "emailMax": "El correo no puede superar 254 caracteres.", "contactNameMax": "El contacto no puede superar 120 caracteres.", "phoneMax": "El teléfono no puede superar 30 caracteres." }
   }
 }

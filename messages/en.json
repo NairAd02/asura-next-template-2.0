@@ -13,7 +13,8 @@
       "dashboard": "Dashboard",
       "items": "Items",
       "itemCategories": "Item Categories",
-      "users": "Users"
+      "users": "Users",
+      "suppliers": "Suppliers"
     }
   },
   "languageToggle": {
@@ -1004,6 +1005,58 @@
     "notFound": "not found",
     "item": "item",
     "user": "user",
-    "itemCategory": "item category"
+    "itemCategory": "item category",
+    "supplier": "supplier"
+  },
+  "suppliers": {
+    "title": "Suppliers",
+    "description": "Manage supplier contacts and availability.",
+    "create": "New supplier",
+    "createTitle": "Create supplier",
+    "createDescription": "Add a supplier to the process-local catalog.",
+    "active": "Active",
+    "inactive": "Inactive",
+    "empty": "No suppliers match these filters.",
+    "notProvided": "Not provided",
+    "columns": { "name": "Supplier", "contact": "Contact", "phone": "Phone", "status": "Status", "created": "Created", "actions": "Actions" },
+    "actions": { "view": "View details", "edit": "Edit", "activate": "Activate", "deactivate": "Deactivate", "delete": "Delete" },
+    "filters": { "searchPlaceholder": "Search name, contact, email, or phone", "status": "Status", "active": "Active", "inactive": "Inactive", "sortBy": "Sort by", "sortName": "Name", "sortCreated": "Creation date", "toggleSort": "Toggle sort direction" },
+    "errors": { "VALIDATION_ERROR": "Review the supplier information.", "ALREADY_EXISTS": "A supplier with this name already exists.", "NOT_FOUND": "Supplier not found.", "INTERNAL_ERROR": "The supplier operation could not be completed." },
+    "notifications": { "created": "Supplier created successfully.", "updated": "Supplier updated successfully." },
+    "delete": { "title": "Delete supplier", "description": "This supplier will be permanently removed. This action cannot be undone.", "confirm": "Delete", "cancel": "Cancel", "success": "Supplier deleted successfully." },
+    "toggle": { "activateTitle": "Activate supplier", "activateDescription": "This supplier will become available.", "deactivateTitle": "Deactivate supplier", "deactivateDescription": "This supplier will be marked inactive.", "activate": "Activate", "deactivate": "Deactivate", "cancel": "Cancel", "activated": "Supplier activated successfully.", "deactivated": "Supplier deactivated successfully." }
+  },
+  "supplierDetails": {
+    "title": "Supplier details",
+    "description": "Contact, status, and audit information.",
+    "editTitle": "Edit supplier",
+    "editDescription": "Update supplier contact and availability.",
+    "contactName": "Contact name",
+    "email": "Email",
+    "phone": "Phone",
+    "createdAt": "Created",
+    "updatedAt": "Last updated",
+    "notProvided": "Not provided",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "supplierForm": {
+    "basicInfo": "Supplier information",
+    "name": "Name",
+    "namePlaceholder": "Example Supplier",
+    "contactName": "Contact name",
+    "contactNamePlaceholder": "Optional contact",
+    "email": "Email",
+    "emailPlaceholder": "contact@example.com",
+    "phone": "Phone",
+    "phonePlaceholder": "Optional phone",
+    "isActive": "Active supplier",
+    "isActiveDescription": "Inactive suppliers remain visible when filtered.",
+    "cancel": "Cancel",
+    "create": "Create supplier",
+    "creating": "Creating...",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "validation": { "nameRequired": "Name is required.", "nameMin": "Name must have at least 2 characters.", "nameMax": "Name cannot exceed 120 characters.", "emailRequired": "Email is required.", "emailInvalid": "Enter a valid email address.", "emailMax": "Email cannot exceed 254 characters.", "contactNameMax": "Contact name cannot exceed 120 characters.", "phoneMax": "Phone cannot exceed 30 characters." }
   }
 }

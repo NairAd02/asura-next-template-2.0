@@ -139,6 +139,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const t = useTranslations('common');
   const storageKey = tableId ? `table-column-visibility-${tableId}` : null;
+  const initialVisibilityStateJson = JSON.stringify(initialVisibilityState);
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialVisibilityState);
@@ -148,11 +149,14 @@ export function DataTable<TData, TValue>({
     if (storageKey && typeof window !== "undefined") {
       try {
         const stored = localStorage.getItem(storageKey);
+        const stableInitialVisibilityState = JSON.parse(
+          initialVisibilityStateJson,
+        ) as VisibilityState;
         if (stored) {
           const parsed = JSON.parse(stored);
           // Merge with initialVisibilityState to ensure required columns are always visible
           // Stored values should override initial defaults
-          setColumnVisibility({ ...initialVisibilityState, ...parsed });
+          setColumnVisibility({ ...stableInitialVisibilityState, ...parsed });
         }
       } catch (error) {
         console.error(
@@ -161,7 +165,7 @@ export function DataTable<TData, TValue>({
         );
       }
     }
-  }, [storageKey, initialVisibilityState]);
+  }, [storageKey, initialVisibilityStateJson]);
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
   const hasBulkActions = !!bulkActionsConfig;
   const searchParams = useSearchParams();

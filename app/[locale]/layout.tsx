@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { Public_Sans, Source_Serif_4, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
@@ -8,21 +7,6 @@ import { routing } from '@/i18n/routing'
 import ProgressBar from '@/components/progress-bar/progress-bar'
 import { ThemeProvider } from '@/components/theme-provider'
 import '../globals.css'
-
-const publicSans = Public_Sans({
-  variable: '--font-public-sans',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const sourceSerif = Source_Serif_4({
-  variable: '--font-source-serif',
-  subsets: ['latin'],
-  display: 'swap',
-})
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
 
 export const viewport: Viewport = {
   themeColor: [
@@ -102,7 +86,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${publicSans.variable} ${sourceSerif.variable} ${geistMono.variable} bg-background`} suppressHydrationWarning>
+    <html lang={locale} className="bg-background" suppressHydrationWarning>
       <body className="min-h-screen font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextIntlClientProvider messages={messages} locale={locale}>
