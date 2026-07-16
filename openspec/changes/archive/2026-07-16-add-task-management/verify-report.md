@@ -7,20 +7,19 @@ PASS
 ## Conformance Summary
 
 The `add-task-management` change conforms to REQ-007, the proposal, design,
-delta spec, and tasks. The focused task behavior target passed, strict
-OpenSpec validation passed, and final repository verification passed without
-weakening checks. Tasks 4.1-4.4 are complete and `apply-progress.md` is
-reconciled to `ready-for-archive`.
+delta spec, and tasks. Native OpenSpec status passed, final repository
+verification passed without weakening checks, and fresh SHA-256 evidence was
+captured immediately after `pnpm verify` with no covered-file edits between
+the final gate and snapshot. Tasks 4.1-4.4 remain complete and
+`apply-progress.md` remains reconciled to `ready-for-archive`.
 
 ## Command Evidence
 
 | Command | Exit code | Duration | Summary |
 |---|---:|---:|---|
-| `openspec status --change add-task-management --json` | 0 | 3.1s | Native preflight succeeded; proposal, design, specs, and tasks artifacts are present. |
-| `pnpm test:unit:run -- modules/tasks/lib` | 0 | 3.6s | Focused task feedback passed: 1 test file and 6 tests. |
-| `openspec validate add-task-management --strict` | 0 | 3.8s | Change `add-task-management` is valid. |
-| `pnpm verify` | 0 | 117.9s | Aggregate gate passed: specs/harness validation, unit tests, typecheck, lint, and build. |
-| `node scripts/validate-harness.mjs --snapshot add-task-management` | 0 | 0.6s | Generated fresh SHA-256 evidence snapshot after tasks/progress reconciliation. |
+| `openspec status --change add-task-management --json` | 0 | 2.3s | Native preflight succeeded; proposal, design, specs, and tasks artifacts are present and `isComplete` is true. |
+| `pnpm verify` | 0 | 82.5s | Aggregate gate passed: specs/harness validation, unit tests, typecheck, lint, and build. |
+| `node scripts/validate-harness.mjs --snapshot add-task-management` | 0 | 0.6s | Generated fresh SHA-256 evidence snapshot after final verification and before any covered-file edit. |
 
 ## Final Gate Detail
 
@@ -99,6 +98,6 @@ the final verification command and replacing this report with fresh evidence.
     "routes/groups-routes/groups-routes.tsx",
     "routes/paths.tsx"
   ],
-  "digest": "f6c07527f735e5cbf589bef3077563773043ad01bd4aed851315c1eec3007003"
+  "digest": "b27fe355f71ead8f8e6465c9fc0573f5751505b280538676bcb16a1e69d657a3"
 }
 ```
