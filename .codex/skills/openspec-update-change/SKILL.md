@@ -10,6 +10,8 @@ metadata:
   generatedBy: "1.6.0"
 ---
 
+<!-- LOCAL_HARNESS_INTEGRATION_V1 -->
+
 Revise a change's existing planning artifacts and keep them coherent. Never edit code.
 
 **Store selection:** If the user names a store (a store is a standalone OpenSpec repo registered on this machine) or the work lives in one, run `openspec store list --json` to discover registered store ids, then pass `--store <id>` on the commands that read or write specs and changes (`new change`, `status`, `instructions`, `list`, `show`, `validate`, `archive`, `doctor`, `context`). Other commands do not take the flag. Hints printed by commands already carry the flag; keep it on follow-ups. Without a store, commands act on the nearest local `openspec/` root.
@@ -84,3 +86,14 @@ After each invocation, show:
 - Do not advance the build frontier: no new artifacts, no new files under glob artifacts - that is `/opsx:continue`'s job.
 - Confirm every edit with the user before writing.
 - If the request changes the change's *intent* rather than refining it, recommend starting fresh with `/opsx:new` (the "Update vs. Start Fresh" heuristic).
+
+## Repository Integration (Authoritative)
+
+The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guidance above.
+
+- Read `.agent/skills/spec-driven-development/SKILL.md` and `.agent/skill-registry.md` before revising planning artifacts.
+- Require an explicit or unambiguous active change and run `openspec status --change "<change-id>" --json`.
+- Edit only planning artifacts returned by `artifactPaths.<artifact>.existingOutputPaths`; never write to implementation code, generated evidence, or a glob `resolvedOutputPath`.
+- Preserve linked requirement context. If a revision changes scope, behavior, tasks, or verification, keep proposal, delta specs, design, and tasks coherent before implementation resumes.
+- If artifacts change after an Implementation Approval Packet or `approvalCheckpoint`, require a fresh approval packet before further implementation edits.
+- If PASS evidence already exists, changing covered planning artifacts invalidates the snapshot; repeat `pnpm verify`, refresh `verify-report.md`, and rerun strict archive readiness before archive.

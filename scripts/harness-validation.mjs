@@ -8,6 +8,8 @@ export const LOCAL_INTEGRATION_MARKER = "LOCAL_HARNESS_INTEGRATION_V1";
 const LOCAL_SKILLS = {
   propose: ".codex/skills/openspec-propose/SKILL.md",
   apply: ".codex/skills/openspec-apply-change/SKILL.md",
+  update: ".codex/skills/openspec-update-change/SKILL.md",
+  explore: ".codex/skills/openspec-explore/SKILL.md",
   sync: ".codex/skills/openspec-sync-specs/SKILL.md",
   archive: ".codex/skills/openspec-archive-change/SKILL.md",
 };
@@ -209,6 +211,8 @@ export async function validateLocalSkillIntegration(root) {
       "Implementation Approval Packet",
       "approvalCheckpoint",
     ],
+    update: ["planning artifacts", "openspec status", "existingOutputPaths", "approvalCheckpoint", "pnpm verify"],
+    explore: ["classification", "requirements curation", "no-change", "OpenSpec artifacts", "Implementation Approval Packet"],
     sync: ["openspec status", "delta", "active"],
     archive: ["openspec status", "validate-harness.mjs", "verify-report.md", "PASS", "snapshot", "openspec archive"],
   };

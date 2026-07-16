@@ -51,13 +51,13 @@ Por eso el harness reduce errores observables y hace los desajustes auditables, 
 - OpenSpec update puede sobrescribir skills: el marker hace fallar el gate, pero un mantenedor debe revisar y restaurar el overlay.
 - El parser Markdown es intencionalmente estrecho: tasks usan IDs numerados y progreso/reporte usan bloques JSON estables.
 - La validacion normal permite trabajo activo reconciliado; solo `--archive-ready` exige completitud terminal. Esto evita bloquear apply sin relajar archive.
-- Cualquier cambio cubierto despues de PASS hace stale el digest y obliga a repetir los cuatro gates.
+- Cualquier cambio cubierto despues de PASS hace stale el digest y obliga a repetir `pnpm verify`.
 - La calidad UI se valida adicionalmente en el piloto de proveedores mediante navegador sin introducir un framework nuevo.
 
 ## Secuencia Terminal Aceptada
 
 1. Completar implementacion y verificaciones de navegador.
-2. Ejecutar los cuatro gates.
+2. Ejecutar los gates finales de `pnpm verify`.
 3. Marcar tareas verificables completas y progreso `ready-for-archive`.
 4. Crear PASS con snapshot SHA-256.
 5. Ejecutar status y `--archive-ready`.

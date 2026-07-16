@@ -10,6 +10,8 @@ metadata:
   generatedBy: "1.6.0"
 ---
 
+<!-- LOCAL_HARNESS_INTEGRATION_V1 -->
+
 Enter explore mode. Think deeply. Visualize freely. Follow the conversation wherever it goes.
 
 **IMPORTANT: Explore mode is for thinking, not implementing.** You may read files, search code, and investigate the codebase, but you must NEVER write code or implement features. If the user asks you to implement something, remind them to exit explore mode first and create a change proposal. You MAY create OpenSpec artifacts (proposals, designs, specs) if the user asks—that's capturing thinking, not implementing.
@@ -288,3 +290,14 @@ But this summary is optional. Sometimes the thinking IS the value.
 - **Do visualize** - A good diagram is worth many paragraphs
 - **Do explore the codebase** - Ground discussions in reality
 - **Do question assumptions** - Including the user's and your own
+
+## Repository Integration (Authoritative)
+
+The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guidance above.
+
+- Read `.agent/skills/spec-driven-development/SKILL.md` and `.agent/skill-registry.md` before repository-grounded exploration.
+- Preserve entry classification: broad product intent, business rules, permissions, and flows route to requirements curation before executable OpenSpec planning.
+- For `no-change` exploration, read and discuss freely but do not create `apply-progress.md`, `verify-report.md`, or change-specific state.
+- Do not implement product code or edit implementation files from explore mode.
+- If the operator explicitly asks to capture thinking in OpenSpec artifacts, use the proposal/update flow and keep artifacts coherent; then stop before implementation so apply can present an Implementation Approval Packet.
+- When exploring an active change, run `openspec status --change "<change-id>" --json` and read concrete files from `artifactPaths` instead of assuming repository-local paths.

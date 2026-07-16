@@ -280,10 +280,38 @@ test("rejects unsafe archive skill integration", async () => {
       ".codex/skills/openspec-apply-change/SKILL.md",
       `${common}openspec instructions apply apply-progress.md phase-handoff.md approvalCheckpoint\n`,
     );
+    await write(
+      root,
+      ".codex/skills/openspec-update-change/SKILL.md",
+      `${common}planning artifacts existingOutputPaths approvalCheckpoint pnpm verify\n`,
+    );
+    await write(
+      root,
+      ".codex/skills/openspec-explore/SKILL.md",
+      `${common}requirements curation no-change OpenSpec artifacts\n`,
+    );
     await write(root, ".codex/skills/openspec-sync-specs/SKILL.md", common);
     await write(root, ".codex/skills/openspec-archive-change/SKILL.md", `${common}validate-harness.mjs verify-report.md PASS snapshot openspec archive <change-id> --yes --json\nmv \"<changeRoot>\" \"archive\"\n`);
     const errors = await validateLocalSkillIntegration(root);
     assert.ok(errors.some((error) => error.includes("manual change-directory movement")), errors.join("\n"));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("rejects missing update and explore local integration", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "harness-skills-"));
+  try {
+    const common = `<!-- ${LOCAL_INTEGRATION_MARKER} -->\nrequirement classification openspec status Implementation Approval Packet delta active validate-harness.mjs verify-report.md PASS snapshot openspec archive\n`;
+    await write(root, ".codex/skills/openspec-propose/SKILL.md", common);
+    await write(root, ".codex/skills/openspec-apply-change/SKILL.md", `${common}openspec instructions apply apply-progress.md phase-handoff.md approvalCheckpoint\n`);
+    await write(root, ".codex/skills/openspec-update-change/SKILL.md", "planning artifacts openspec status existingOutputPaths approvalCheckpoint pnpm verify\n");
+    await write(root, ".codex/skills/openspec-explore/SKILL.md", `<!-- ${LOCAL_INTEGRATION_MARKER} -->\nclassification no-change OpenSpec artifacts\n`);
+    await write(root, ".codex/skills/openspec-sync-specs/SKILL.md", common);
+    await write(root, ".codex/skills/openspec-archive-change/SKILL.md", `${common}openspec archive <change-id> --yes --json\n`);
+    const errors = await validateLocalSkillIntegration(root);
+    assert.ok(errors.some((error) => error.includes("openspec-update-change") && error.includes(LOCAL_INTEGRATION_MARKER)), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("openspec-explore") && error.includes("requirements curation")), errors.join("\n"));
   } finally {
     await rm(root, { recursive: true, force: true });
   }
