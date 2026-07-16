@@ -23,7 +23,7 @@ Load exact paths:
 ## Work
 
 1. Inspect native status, proposal, specs, design, tasks, progress, and linked requirement.
-2. Check tasks/progress reconciliation and expected file paths.
+2. Check tasks/progress reconciliation, approvalCheckpoint evidence, and expected file paths.
 3. Run pnpm verify.
 4. Finalize verification task IDs and progress before writing the report.
 5. Write verify-report.md with conformance, gate durations, exit codes, warnings, PASS or FAIL, and the generated SHA-256 Evidence Snapshot.

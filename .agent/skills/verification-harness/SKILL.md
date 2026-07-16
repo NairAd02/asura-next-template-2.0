@@ -13,7 +13,7 @@ openspec status --change <change-id> --json
 
 Current OpenSpec versions do not expose instructions verify. Status is the native authority; do not create a second state file.
 
-Read proposal, specs, design, tasks, apply-progress.md, and the linked requirement brief when one applies. Reconcile progress with tasks.md before running gates.
+Read proposal, specs, design, tasks, apply-progress.md, and the linked requirement brief when one applies. Reconcile progress with tasks.md and confirm `approvalCheckpoint` exists for started implementation before running gates.
 
 For work explicitly classified `no-change`, skip change status and do not create `apply-progress.md` or `verify-report.md`. Run only applicable checks and return command evidence in the handoff/final result.
 
@@ -61,6 +61,7 @@ Archive is blocked when any condition is true:
 
 - tasks.md has unchecked tasks
 - apply-progress.md is absent or disagrees with tasks.md
+- approvalCheckpoint is absent or malformed for started implementation
 - verify-report.md is missing or verdict is not PASS
 - implementation or change artifacts changed after the report
 - a linked requirement brief or requirements index cannot be updated coherently

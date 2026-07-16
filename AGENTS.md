@@ -27,4 +27,6 @@ Before implementation, create a delegation plan for every implemented OpenSpec c
 
 Do not apply until the required proposal, specs, design, tasks, and requirement brief when applicable have been reread and shown to be coherent, reachable, and free of blocking questions.
 
+Before the first implementation edit for an OpenSpec change, present an Implementation Approval Packet that includes the change ID, linked requirement status, readiness summary, intended scope, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. Stop after presenting it. Continue only after explicit operator approval for that packet, or update the planning artifacts when the operator requests adjustments. Record the approval as `approvalCheckpoint` in apply-progress.md before or with the first implementation edit.
+
 Archive is fail-closed: finalize tasks/progress, run the four gates, create PASS evidence with a fresh SHA-256 snapshot, run strict readiness, invoke `openspec archive <id> --yes --json`, update the linked requirement/index, and validate accepted specs. Confirmation and pre-existing failures never bypass readiness.

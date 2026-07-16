@@ -23,9 +23,11 @@ Before apply, also run openspec instructions apply --change <id> --json. Before 
 
 Before authorizing implementation, reread the requirement brief when applicable, proposal, specs, design, and tasks. Confirm existence, coherent scope, valid referenced paths, and no blocking question.
 
+After readiness review and before the first implementation edit, present an Implementation Approval Packet with the change ID, linked requirement status, readiness summary, intended scope, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. Stop and wait for explicit operator approval. If the operator asks for adjustments, update the relevant planning artifacts and present the packet again before apply proceeds.
+
 ## Delegation
 
-Before implementation, create a delegation plan in apply-progress.md for every implemented OpenSpec change. The plan lists required roles, owner-tagged task IDs, allowed roots, exact skills, resolution method, and fallback reason when inline fallback is used.
+Before implementation, create a delegation plan in apply-progress.md for every implemented OpenSpec change. The plan lists required roles, owner-tagged task IDs, allowed roots, exact skills, resolution method, and fallback reason when inline fallback is used. The same progress snapshot records `approvalCheckpoint` evidence for the approved Implementation Approval Packet before or with the first implementation edit.
 
 Delegate through bounded handoffs when tasks touch more than one registry owner, both data and UI roots, visible text plus behavior, a module route/list/form/filter/modal workflow, or final verification. Every handoff includes role, bounded task, change ID, native state context, editable roots, exact skills, and skill-resolution method. Executors cannot redelegate.
 

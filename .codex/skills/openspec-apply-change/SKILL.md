@@ -167,6 +167,9 @@ The local overlay takes precedence over generated guidance above.
 
 - Before any implementation edit, run both `openspec status --change "<change-id>" --json` and `openspec instructions apply --change "<change-id>" --json`.
 - Read every returned context file and the linked requirement brief. Block apply until proposal, delta specs, design, and tasks are coherent, paths are reachable or planned, and no blocking question remains.
+- Present an Implementation Approval Packet with change ID, linked requirement status, readiness summary, intended scope, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. Stop after presenting it unless the operator has explicitly approved that packet for the current artifacts.
+- If the operator requests adjustments, update the applicable planning artifacts before implementation and present the packet again.
+- Record `Current Snapshot.approvalCheckpoint` in `apply-progress.md` before or with the first implementation edit.
 - Resolve only exact paths from `.agent/skill-registry.md`. Every specialized role uses `.agent/contracts/phase-handoff.md`, explicit editable roots, and no redelegation.
 - Load `.agent/skills/implementation-progress/SKILL.md`; create or update `apply-progress.md` before or with the first implementation edit.
 - Reconcile each task checkbox with the `Current Snapshot` completed/remaining IDs and append every phase handoff cumulatively.

@@ -46,12 +46,13 @@ Para un change activo, el agente debe:
 5. Crear un plan de delegacion para cambios OpenSpec implementados.
 6. Cargar solo las skills necesarias.
 
-Este es el momento de aprobacion ligera. Revisa que proposal, specs, design y tasks representen lo que quieres antes de pedir implementacion.
+Despues de esa revision, el agente debe presentar un Implementation Approval Packet y detenerse antes de editar implementacion. Ese paquete resume change ID, requirement vinculado, readiness, scope, diseno, plan de tareas, delegacion, raices editables, familias de archivos esperadas, riesgos, preguntas abiertas y verificacion. Si apruebas explicitamente, el agente registra `approvalCheckpoint` en apply-progress.md y puede implementar. Si pides ajustes, actualiza los artifacts y vuelve a presentar el paquete.
 
 ## Durante la Implementacion
 
 - tasks.md es la autoridad para saber que esta terminado.
 - apply-progress.md es acumulativo: guarda tareas completas, archivos, decisiones, problemas, tareas restantes y skills cargadas.
+- apply-progress.md registra `approvalCheckpoint` antes o junto al primer edit de implementacion. Esta evidencia hace auditable que se presento y aprobo el paquete; el validador comprueba la forma del registro, no prueba criptograficamente el chat humano.
 - Si las tasks mapean a roles especializados, tasks.md usa owner tags como `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u `[orchestrator]`.
 - apply-progress.md registra `delegationPlan`: roles requeridos, task IDs, roots permitidos, skills exactas, metodo de resolucion y motivo si se usa inline fallback.
 - Si tasks.md y apply-progress.md no coinciden, se reconcilian antes de seguir.
@@ -85,6 +86,7 @@ Un change no se archiva si:
 
 - quedan tareas sin marcar;
 - falta apply-progress.md o no coincide con tasks.md;
+- falta approvalCheckpoint valido para la implementacion iniciada;
 - faltan delegationPlan o handoffs para tareas owner-tagged ya completadas;
 - falta verify-report.md PASS;
 - el snapshot SHA-256 esta incompleto o stale;
@@ -144,7 +146,7 @@ Crear o continuar un change:
 
 ~~~text
 Usa el harness SDD. Recupera el estado de <change-id> con OpenSpec,
-tasks.md y apply-progress.md. No implementes hasta comprobar readiness.
+tasks.md y apply-progress.md. Presenta el Implementation Approval Packet y no implementes hasta mi aprobacion explicita.
 ~~~
 
 Evaluar una tarea:

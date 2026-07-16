@@ -48,15 +48,18 @@ Before approving implementation:
 6. Resolve blocking questions before apply.
 7. Select only exact skills from the registry.
 8. Create a delegation plan for implemented OpenSpec work before the first implementation edit.
+9. Present an Implementation Approval Packet and stop until the operator explicitly approves it.
 
 A requirement brief is needed for broad product intent, business rules, permissions, flows, or behavior changes. It is not mandatory for an internal technical task with no contract change.
+
+The Implementation Approval Packet includes change ID, linked requirement status, readiness summary, intended scope and non-goals, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. If the operator requests adjustments, update proposal, specs, design, or tasks first, then present the packet again.
 
 ## Implementation
 
 - Follow tasks.md; update its checkboxes as tasks complete.
 - Owner-tag tasks that map to specialized roles, using tags such as `[orchestrator]`, `[agent-data]`, `[agent-ui]`, `[agent-architect]`, or `[agent-verifier]`.
 - Load the implementation-progress skill for every implemented change.
-- Create and update apply-progress.md cumulatively.
+- Create and update apply-progress.md cumulatively. Before or with the first implementation edit, record `approvalCheckpoint` evidence for the approved Implementation Approval Packet.
 - Keep tasks.md as the completion authority.
 - Load behavior-testing when deterministic behavior changes and make the owning executor create the smallest valuable tests with the implementation.
 - Use `pnpm verify:fast` only as provisional feedback while implementation is changing.

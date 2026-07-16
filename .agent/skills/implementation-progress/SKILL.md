@@ -32,6 +32,15 @@ Maintain one machine-readable current summary followed by durable narrative hist
   "completedTaskIds": ["1.1"],
   "remainingTaskIds": ["1.2"],
   "filesChanged": ["modules/example/index.ts"],
+  "approvalCheckpoint": {
+    "schemaVersion": 1,
+    "status": "approved",
+    "approvedBy": "human-operator",
+    "approvedAt": "2026-07-16",
+    "approvalSource": "chat",
+    "packetSummary": "Implementation Approval Packet reviewed and approved before edits.",
+    "artifactsReviewed": ["proposal.md", "design.md", "tasks.md", "specs/example/spec.md"]
+  },
   "delegationPlan": {
     "schemaVersion": 1,
     "requiredRoles": ["agent-data"],
@@ -54,6 +63,7 @@ Maintain one machine-readable current summary followed by durable narrative hist
 - `status` is `in-progress`, `blocked`, `ready-for-verification`, or `ready-for-archive`.
 - Task IDs SHALL exactly match the numbered checkbox IDs in `tasks.md`.
 - `filesChanged` SHALL contain sorted repository-relative source/artifact paths covered by verification; omit generated outputs and deleted paths.
+- `approvalCheckpoint` SHALL exist once implementation starts. It uses schema version 1, status `approved`, identifies the human operator, records the approval source, includes a concise packet summary, and lists the reviewed planning artifacts. It is evidence that the Implementation Approval Packet was presented and approved; the validator checks record shape, not cryptographic proof of the chat event.
 - `delegationPlan` SHALL exist when tasks.md contains owner-tagged tasks. It uses schema version 1, lists required roles, and gives each role task IDs, allowed roots, exact skills, resolution (`paths-injected` or `inline-fallback`), and a fallback reason when inline fallback is used.
 - Preserve `## Decisions and Deviations`, `## Problems`, and a cumulative `## Handoff History` after the snapshot.
 - Every handoff entry records the complete phase-handoff output, including allowed roots and exact skill paths.
@@ -80,6 +90,7 @@ Before archive, verify all of the following:
 
 - No unchecked tasks remain in tasks.md.
 - apply-progress.md exists and is reconciled with tasks.md.
+- approvalCheckpoint exists and is valid for started implementation.
 - verify-report.md exists with PASS.
 - Linked requirement brief and requirements index can be updated coherently, or the change explicitly records that no requirement applies.
 - Native OpenSpec status has been checked.

@@ -124,4 +124,4 @@ The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guida
 - Link the applicable `docs/requirements/<id>/brief.md` from the proposal, or explicitly record that no requirement applies.
 - Reuse a matching active change; use `openspec status --change "<change-id>" --json` and resolved artifact paths.
 - Tasks cover implementable and verifiable work. Report creation, requirement reconciliation after native archive, and archive movement are close operations, not task checkboxes.
-- Stop after artifact creation for lightweight approval. Apply performs an independent fail-closed readiness review.
+- Stop after artifact creation for approval. Tell the operator that apply will reread the artifacts, present an Implementation Approval Packet, and wait for explicit approval before implementation edits.

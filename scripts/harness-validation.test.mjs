@@ -26,9 +26,23 @@ function progress(overrides = {}) {
     remainingTaskIds: [],
     filesChanged: ["src/example.js"],
     skillsLoaded: [".agent/skills/spec-driven-development/SKILL.md"],
+    approvalCheckpoint: approvalCheckpoint(),
     ...snapshotOverrides,
   };
   return `# Apply Progress\n\n## Current Snapshot\n\n\`\`\`json\n${JSON.stringify(value, null, 2)}\n\`\`\`\n\n## Decisions and Deviations\n\nNone.\n\n## Problems\n\nNone.\n\n## Handoff History\n\n${handoffHistory}\n`;
+}
+
+function approvalCheckpoint(overrides = {}) {
+  return {
+    schemaVersion: 1,
+    status: "approved",
+    approvedBy: "human-operator",
+    approvedAt: "2026-07-16",
+    approvalSource: "chat",
+    packetSummary: "Implementation Approval Packet reviewed and approved before edits.",
+    artifactsReviewed: ["proposal.md", "design.md", "tasks.md", "specs/demo/spec.md"],
+    ...overrides,
+  };
 }
 
 function delegationPlan(overrides = {}) {
@@ -91,6 +105,34 @@ test("rejects missing progress after implementation starts", async () => {
     await rm(path.join(root, "openspec", "changes", change, "apply-progress.md"));
     const errors = await validateChangeLifecycle(root, change);
     assert.ok(errors.some((error) => error.includes("apply-progress.md is missing")), errors.join("\n"));
+  });
+});
+
+test("rejects missing approval checkpoint after implementation starts", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/apply-progress.md`, progress({ approvalCheckpoint: undefined }));
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("approvalCheckpoint")), errors.join("\n"));
+  });
+});
+
+test("rejects malformed approval checkpoint", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        approvalCheckpoint: approvalCheckpoint({
+          status: "pending",
+          packetSummary: "",
+          artifactsReviewed: ["../proposal.md"],
+        }),
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("status must be approved")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("packetSummary")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("unsafe path")), errors.join("\n"));
   });
 });
 
@@ -231,9 +273,13 @@ test("rejects completed owner-tagged role with no matching handoff history", asy
 test("rejects unsafe archive skill integration", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "harness-skills-"));
   try {
-    const common = `<!-- ${LOCAL_INTEGRATION_MARKER} -->\nopenspec status requirement classification delta active\n`;
+    const common = `<!-- ${LOCAL_INTEGRATION_MARKER} -->\nopenspec status requirement classification delta active Implementation Approval Packet\n`;
     await write(root, ".codex/skills/openspec-propose/SKILL.md", common);
-    await write(root, ".codex/skills/openspec-apply-change/SKILL.md", `${common}openspec instructions apply apply-progress.md phase-handoff.md\n`);
+    await write(
+      root,
+      ".codex/skills/openspec-apply-change/SKILL.md",
+      `${common}openspec instructions apply apply-progress.md phase-handoff.md approvalCheckpoint\n`,
+    );
     await write(root, ".codex/skills/openspec-sync-specs/SKILL.md", common);
     await write(root, ".codex/skills/openspec-archive-change/SKILL.md", `${common}validate-harness.mjs verify-report.md PASS snapshot openspec archive <change-id> --yes --json\nmv \"<changeRoot>\" \"archive\"\n`);
     const errors = await validateLocalSkillIntegration(root);

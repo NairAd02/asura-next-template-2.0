@@ -200,8 +200,15 @@ export async function validateLocalSkillIntegration(root) {
   }
 
   const requirements = {
-    propose: ["requirement", "classification", "openspec status"],
-    apply: ["openspec status", "openspec instructions apply", "apply-progress.md", "phase-handoff.md"],
+    propose: ["requirement", "classification", "openspec status", "Implementation Approval Packet"],
+    apply: [
+      "openspec status",
+      "openspec instructions apply",
+      "apply-progress.md",
+      "phase-handoff.md",
+      "Implementation Approval Packet",
+      "approvalCheckpoint",
+    ],
     sync: ["openspec status", "delta", "active"],
     archive: ["openspec status", "validate-harness.mjs", "verify-report.md", "PASS", "snapshot", "openspec archive"],
   };
@@ -413,6 +420,42 @@ function validateDelegationPlan(changeId, tasks, progress, progressMarkdown, err
   }
 }
 
+function validateApprovalCheckpoint(changeId, progress, errors) {
+  const checkpoint = progress.approvalCheckpoint;
+  if (!checkpoint || typeof checkpoint !== "object" || Array.isArray(checkpoint)) {
+    errors.push(`${changeId}: started implementation requires Current Snapshot approvalCheckpoint evidence.`);
+    return;
+  }
+
+  if (checkpoint.schemaVersion !== 1) errors.push(`${changeId}: approvalCheckpoint schemaVersion must be 1.`);
+  if (checkpoint.status !== "approved") errors.push(`${changeId}: approvalCheckpoint status must be approved.`);
+
+  for (const field of ["approvedBy", "approvalSource", "packetSummary"]) {
+    if (typeof checkpoint[field] !== "string" || checkpoint[field].trim().length === 0) {
+      errors.push(`${changeId}: approvalCheckpoint.${field} must be a non-empty string.`);
+    }
+  }
+
+  if (typeof checkpoint.approvedAt !== "string" || checkpoint.approvedAt.trim().length === 0) {
+    errors.push(`${changeId}: approvalCheckpoint.approvedAt must be a non-empty string.`);
+  }
+
+  if (
+    !Array.isArray(checkpoint.artifactsReviewed) ||
+    checkpoint.artifactsReviewed.length === 0 ||
+    checkpoint.artifactsReviewed.some((item) => typeof item !== "string" || item.trim().length === 0)
+  ) {
+    errors.push(`${changeId}: approvalCheckpoint.artifactsReviewed must be a non-empty array of strings.`);
+    return;
+  }
+
+  for (const item of checkpoint.artifactsReviewed) {
+    if (!isSafeRelativePath(item)) {
+      errors.push(`${changeId}: approvalCheckpoint.artifactsReviewed contains unsafe path ${item}.`);
+    }
+  }
+}
+
 export async function validateChangeLifecycle(root, changeId, { archiveReady = false } = {}) {
   const errors = [];
   const changeRelative = `openspec/changes/${changeId}`;
@@ -452,6 +495,7 @@ export async function validateChangeLifecycle(root, changeId, { archiveReady = f
     progress = parseProgress(progressMarkdown);
     compareTaskIds(progress.completedTaskIds, completed, `${changeId}: completedTaskIds`, errors);
     compareTaskIds(progress.remainingTaskIds, pending, `${changeId}: remainingTaskIds`, errors);
+    validateApprovalCheckpoint(changeId, progress, errors);
     validateDelegationPlan(changeId, tasks, progress, progressMarkdown, errors);
     if (archiveReady && progress.status !== "ready-for-archive") {
       errors.push(`${changeId}: archive readiness requires progress status ready-for-archive.`);

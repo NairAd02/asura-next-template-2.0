@@ -40,11 +40,13 @@ Para un change activo, Codex debe:
 5. Crear un plan de delegacion cuando el change se va a implementar.
 6. Cargar solo las skills exactas necesarias.
 
-Pide aprobacion ligera sobre estos artifacts antes de cambiar codigo si el trabajo modifica comportamiento o alcance.
+Despues debe mostrarte un Implementation Approval Packet y detenerse antes de cambiar codigo. El paquete debe incluir change ID, requirement vinculado, readiness, scope, resumen de diseno, plan de tareas, delegacion, raices editables, familias de archivos esperadas, riesgos, preguntas abiertas y verificacion. Puedes aprobar explicitamente o pedir ajustes; si pides ajustes, Codex actualiza los artifacts y vuelve a presentar el paquete.
 
 ## Durante implementacion
 
-Cada change implementado debe tener apply-progress.md. Es acumulativo y registra estado, tareas completas, archivos, decisiones, problemas, tareas restantes, skills y, cuando hay owner tags, `delegationPlan`.
+Cada change implementado debe tener apply-progress.md. Es acumulativo y registra estado, tareas completas, archivos, decisiones, problemas, tareas restantes, skills, `approvalCheckpoint` y, cuando hay owner tags, `delegationPlan`.
+
+`approvalCheckpoint` deja evidencia de que el paquete fue aprobado antes o junto al primer edit de implementacion. El validador comprueba que esa evidencia exista y tenga forma valida; no pretende probar criptograficamente lo ocurrido en el chat.
 
 Las tareas que pertenecen a roles especializados deben llevar exactamente un owner tag, por ejemplo `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u `[orchestrator]`. El plan de delegacion debe cubrir esos roles con task IDs, roots permitidos, skills exactas y metodo de resolucion.
 
@@ -76,6 +78,7 @@ No archives un change si:
 
 - quedan tareas sin marcar;
 - falta apply-progress.md o no coincide con tasks.md;
+- falta approvalCheckpoint valido para la implementacion iniciada;
 - faltan delegationPlan o handoffs para tareas owner-tagged completadas;
 - falta verify-report.md PASS;
 - el snapshot de evidencia falta o quedo stale;
@@ -98,7 +101,7 @@ Si se clasifica `no-change`, ejecuta checks aplicables sin status de change, app
 Crear o continuar un change:
 
 ~~~text
-Usa el harness SDD. Recupera el estado de <change-id> con OpenSpec, tasks.md y apply-progress.md. No implementes hasta comprobar readiness.
+Usa el harness SDD. Recupera el estado de <change-id> con OpenSpec, tasks.md y apply-progress.md. Presenta el Implementation Approval Packet y no implementes hasta mi aprobacion explicita.
 ~~~
 
 Trabajo interno:
