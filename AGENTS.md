@@ -10,7 +10,8 @@ Then classify the task:
 
 - Broad, ambiguous, or product intent: use the requirements curator. If a new
   product capability is absent from project context and requirements, first
-  delegate bounded documentation synchronization, then curate its brief.
+  delegate a bounded documentation review, update only material affected by the
+  documented impact, then curate its brief.
 - Ready behavior change: create or update an OpenSpec change.
 - Named active change: recover from OpenSpec status, tasks.md, and apply-progress.md.
 - Refactor, documentation, or internal work without an accepted-contract change: use .agent; OpenSpec is optional and no requirement brief is forced.
@@ -29,9 +30,10 @@ Before implementation, create a delegation plan for every implemented OpenSpec c
 
 For a product change linked to a requirement brief, tasks.md must include an
 `[agent-requirements-curator]` documentation-reconciliation task before final
-verification. It reviews `docs/documentation-inventory.md`, updates applicable
-project documentation or records why no change applies, and returns the bounded
-handoff before `pnpm verify`.
+verification. It reviews `docs/documentation-inventory.md`, updates only
+project documentation affected by the implemented scope, or records
+`no-change`/`not-applicable` with a rationale, and returns the bounded handoff
+before `pnpm verify`.
 
 Do not apply until the required proposal, specs, design, tasks, and requirement brief when applicable have been reread and shown to be coherent, reachable, and free of blocking questions.
 

@@ -24,8 +24,9 @@ Load only .agent/skills/requirements-curation/SKILL.md unless another exact skil
 ## Work
 
 - For a new product capability absent from project context and the requirements
-  index, review `docs/documentation-inventory.md` first, update applicable
-  documentation, then create or update the brief and index.
+  index, review `docs/documentation-inventory.md` first. Update only
+  documentation affected by the documented impact, then create or update the
+  brief and index as required.
 - Record every reviewed document in the brief's `Documentation Synchronization`
   ledger as `updated`, `no-change`, or `not-applicable` with a rationale.
 - Extract stable ID, source, intent, actors, scope, out of scope, flows, constraints, dependencies, questions, and suggested change.

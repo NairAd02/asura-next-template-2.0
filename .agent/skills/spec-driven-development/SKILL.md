@@ -8,7 +8,8 @@ description: Load first for every task. Defines the hybrid docs, OpenSpec, and .
 ## Principle
 
 - docs/ is project knowledge and curated requirement intent. Its maintained
-  documentation inventory bounds review work for new product capabilities.
+  documentation inventory makes review obligatory and limits edits to material
+  affected by a new product capability or scope change.
 - OpenSpec is the only executable change and accepted-behavior layer.
 - .agent is technical governance: skills, roles, contracts, and reference patterns.
 
@@ -22,7 +23,7 @@ Read .agent/skill-registry.md and .agent/agents/orchestrator.md after loading th
 
 | Incoming task | Required path |
 |---|---|
-| Broad, ambiguous, or product intent | Read project context and use requirements-curation before executable work. When a new product capability is absent from project context and requirements, delegate documentation synchronization first. |
+| Broad, ambiguous, or product intent | Read project context and use requirements-curation before executable work. When a new product capability is absent from project context and requirements, delegate mandatory documentation review first and update only impact-affected material. |
 | Clear behavior change | Create or update an OpenSpec change. Use the linked brief when it exists. |
 | Active change | Recover with OpenSpec status, tasks.md, and apply-progress.md. Do not create a duplicate change. |
 | Refactor, documentation, or internal work without accepted-contract change | Use .agent and verification. OpenSpec is optional; do not force a requirement brief. |
@@ -55,9 +56,10 @@ A requirement brief is needed for broad product intent, business rules, permissi
 
 For a new product capability absent from `docs/project-context.md` and the
 requirements index, the orchestrator sends `agent-requirements-curator` a
-bounded `no-change` handoff before OpenSpec planning. The curator reviews
-`docs/documentation-inventory.md`, synchronizes applicable source material,
-and records `updated`, `no-change`, or `not-applicable` outcomes in the brief.
+bounded documentation-review handoff before OpenSpec planning. The curator
+reviews `docs/documentation-inventory.md`, updates only source material
+affected by the documented impact, and records `updated`, `no-change`, or
+`not-applicable` outcomes with rationale in the brief.
 
 The Implementation Approval Packet includes change ID, linked requirement status, readiness summary, intended scope and non-goals, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. If the operator requests adjustments, update proposal, specs, design, or tasks first, then present the packet again.
 
@@ -70,8 +72,9 @@ The Implementation Approval Packet includes change ID, linked requirement status
 - Keep tasks.md as the completion authority.
 - Every product change linked to a requirement brief includes an
   `[agent-requirements-curator]` documentation-reconciliation task before final
-  verification. The curator's handoff is persisted in apply-progress.md and
-  any resulting edits occur before `pnpm verify`.
+  verification. The curator records the mandatory review, edits only
+  impact-affected material, and persists its handoff in apply-progress.md
+  before `pnpm verify`.
 - Load behavior-testing when deterministic behavior changes and make the owning executor create the smallest valuable tests with the implementation.
 - Use `pnpm verify:fast` only as provisional feedback while implementation is changing.
 - Update proposal, specs, design, or tasks before continuing when implementation discovers a scope or behavior change.

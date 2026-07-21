@@ -57,8 +57,10 @@ Each brief must include:
 ## Rules
 
 - Keep requirements candidate-level. Do not turn them into OpenSpec delta specs.
-- For a new product capability absent from source material, review the inventory
-  and update applicable documentation before creating the brief; send this work
+- For a new product capability absent from source material, review the
+  inventory before creating the brief. Update only documentation affected by
+  the documented impact; record `no-change` or `not-applicable` for reviewed
+  material that remains accurate or is outside the scope. Send this work
   through a bounded curator handoff with documentation-only roots.
 - For a linked product change, perform its final inventory reconciliation before
   `pnpm verify` and return the handoff for apply-progress.md.

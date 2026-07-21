@@ -17,6 +17,13 @@ docs -> OpenSpec -> .agent -> implementacion -> verificacion -> archive
 
 OpenSpec es la unica autoridad de estado ejecutable. No se crea una maquina de estados paralela.
 
+## Politica de Documentacion
+
+La revision del inventario documental es obligatoria para una capacidad nueva
+o un cambio de alcance. Un archivo se actualiza solo si ese impacto lo afecta;
+si ya es correcto, el curator registra `no-change` con su justificacion. No se
+modifican README, contexto o diagramas solo para producir un diff.
+
 ## Que Ocurre al Iniciar una Tarea
 
 El agente lee primero:
@@ -29,7 +36,7 @@ Despues clasifica la tarea.
 
 | Si la tarea es... | El harness hace... |
 |---|---|
-| Una idea amplia, regla de negocio, permiso o flujo nuevo | Si la capacidad no existe en el contexto ni en requirements, delega primero la sincronizacion documental al curator; despues crea o actualiza el brief antes de OpenSpec. |
+| Una idea amplia, regla de negocio, permiso o flujo nuevo | Si la capacidad no existe en el contexto ni en requirements, delega primero la revision documental al curator; actualiza solo el material afectado y despues crea o actualiza el brief antes de OpenSpec. |
 | Un cambio de comportamiento claro | Crea o actualiza un OpenSpec change. |
 | La continuacion de un change activo | Recupera status, tasks.md y apply-progress.md. |
 | Un refactor, documentacion o mantenimiento sin cambio de contrato | Usa .agent; OpenSpec es opcional y no exige requirement brief. |
@@ -114,8 +121,9 @@ desde configuracion y los items pueden filtrarse por etiqueta. Usa el harness SD
 
 Como modifica comportamiento, datos y UI, el flujo normal es:
 
-1. Delegar al curator la sincronizacion de `project-context.md`, el inventario y
-   el requirement cuando la funcionalidad aun no esta documentada.
+1. Delegar al curator la revision del inventario, actualizar solo el contexto,
+   requirement u otra documentacion afectados y registrar el resultado cuando
+   la funcionalidad aun no esta documentada.
 2. Crear un change, por ejemplo add-item-tags.
 3. Revisar proposal, delta specs, design y tasks.
 4. Asignar tasks con owner tags y handoffs para data, UI, filtros, i18n y verifier.

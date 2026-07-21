@@ -11,6 +11,13 @@ docs -> OpenSpec -> .agent -> implementacion -> verificacion -> archive
 - .agent conserva criterio tecnico, roles y contratos.
 - AGENTS.md activa el flujo en Codex.
 
+## Politica de documentacion
+
+Para una capacidad nueva o un cambio de alcance, revisar el inventario
+documental es obligatorio. Actualizar cada archivo no lo es: solo se edita el
+material afectado; si sigue correcto, se registra `no-change` con una
+justificacion. Esto evita modificar README, contexto o diagramas sin necesidad.
+
 ## Inicio de cualquier tarea
 
 Codex lee primero:
@@ -23,7 +30,7 @@ Luego clasifica:
 
 | Tipo de pedido | Camino |
 |---|---|
-| Idea amplia, regla, permiso o flujo de producto | Si la capacidad no existe en contexto ni requirements, delegar primero la sincronizacion documental al curator; despues curar el brief y usar OpenSpec. |
+| Idea amplia, regla, permiso o flujo de producto | Si la capacidad no existe en contexto ni requirements, delegar primero la revision documental al curator; actualizar solo el material afectado, curar el brief y usar OpenSpec. |
 | Cambio de comportamiento listo | Crear o actualizar OpenSpec. |
 | Change activo | Recuperar status, tasks.md y apply-progress.md; continuar. |
 | Refactor, documentacion o mantenimiento interno sin contrato | .agent con OpenSpec opcional; no se exige brief. |
@@ -56,8 +63,9 @@ Los roles reciben un handoff con tarea, change, estado OpenSpec, raices editable
 
 Para un change de producto vinculado a un brief, tasks.md incluye una tarea
 `[agent-requirements-curator]` antes de la verificacion final. El curator revisa
-el inventario documental, actualiza lo aplicable o registra `no-change`/`not-applicable`,
-y devuelve su handoff sin recibir trabajo de codigo, pruebas, verificacion o archive.
+el inventario documental, actualiza solo el material afectado o registra
+`no-change`/`not-applicable` con una justificacion, y devuelve su handoff sin
+recibir trabajo de codigo, pruebas, verificacion o archive.
 
 Mientras cambia el codigo, el ejecutor agrega pruebas focalizadas y usa `pnpm verify:fast`. Ese comando acelera el feedback, pero no sustituye la evidencia final.
 

@@ -37,10 +37,12 @@ Document durable rules that affect more than one feature.
 ## Functional Requirements
 
 - When a new product capability is absent from the project context and
-  requirements backlog, the requirements curator must first synchronize the
-  applicable project documentation, then curate its requirement brief.
+  requirements backlog, the requirements curator must first review the
+  documentation inventory, update only documentation affected by its impact,
+  then curate its requirement brief.
 - Requirement briefs must record the documentation reviewed, whether each
-  document changed, and why a reviewed document did not apply.
+  document was `updated`, remained accurate as `no-change`, or was
+  `not-applicable`, together with the rationale.
 - A product change must receive a final delegated documentation review before
   final verification so any documentation edits are covered by its evidence.
 - The development workflow must extract candidate requirements from
