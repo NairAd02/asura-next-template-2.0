@@ -29,7 +29,7 @@ Despues clasifica la tarea.
 
 | Si la tarea es... | El harness hace... |
 |---|---|
-| Una idea amplia, regla de negocio, permiso o flujo nuevo | Crea o actualiza un requirement brief antes de OpenSpec. |
+| Una idea amplia, regla de negocio, permiso o flujo nuevo | Si la capacidad no existe en el contexto ni en requirements, delega primero la sincronizacion documental al curator; despues crea o actualiza el brief antes de OpenSpec. |
 | Un cambio de comportamiento claro | Crea o actualiza un OpenSpec change. |
 | La continuacion de un change activo | Recupera status, tasks.md y apply-progress.md. |
 | Un refactor, documentacion o mantenimiento sin cambio de contrato | Usa .agent; OpenSpec es opcional y no exige requirement brief. |
@@ -59,6 +59,7 @@ Despues de esa revision, el agente debe presentar un Implementation Approval Pac
 - Cada rol recibe un handoff con tarea acotada, change ID, estado nativo, raices editables y paths exactos de skills.
 - Un ejecutor no redelega. Si el runtime no soporta subagentes, el rol se ejecuta en linea con los mismos limites y se registra `inline-fallback` con el motivo concreto.
 - El ejecutor crea junto al codigo las pruebas Vitest o Testing Library mas pequenas que detecten la regresion y usa `pnpm verify:fast` durante la iteracion.
+- Para un change de producto con brief, una tarea `[agent-requirements-curator]` revisa el inventario documental antes de la verificacion final. Solo recibe el intent, el inventario, el contexto documental y sus raices permitidas; no implementa, verifica ni archiva.
 
 ## Verificacion y Archive
 
@@ -79,6 +80,10 @@ El comando corre, en orden:
 La exploracion en navegador es opcional y queda fuera de tasks.md, verify-report.md, PASS y archive readiness. Puede usarse para diagnostico o confianza adicional; si revela una regresion determinista, se abre una iteracion posterior con cobertura Vitest o Testing Library focalizada.
 
 El verifier crea verify-report.md con comandos, duraciones, exit codes, warnings y veredicto PASS o FAIL.
+
+La reconciliacion documental del curator ocurre antes de `pnpm verify`; asi sus
+ediciones quedan dentro del snapshot de evidencia. Si no hay subagentes, se usa
+el fallback en linea con las mismas raices y se registra el motivo concreto.
 
 El reporte PASS incluye un bloque `Evidence Snapshot` generado con `node scripts/validate-harness.mjs --snapshot <change-id>`.
 
@@ -109,7 +114,8 @@ desde configuracion y los items pueden filtrarse por etiqueta. Usa el harness SD
 
 Como modifica comportamiento, datos y UI, el flujo normal es:
 
-1. Crear un requirement, por ejemplo REQ-003.
+1. Delegar al curator la sincronizacion de `project-context.md`, el inventario y
+   el requirement cuando la funcionalidad aun no esta documentada.
 2. Crear un change, por ejemplo add-item-tags.
 3. Revisar proposal, delta specs, design y tasks.
 4. Asignar tasks con owner tags y handoffs para data, UI, filtros, i18n y verifier.

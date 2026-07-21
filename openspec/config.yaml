@@ -5,6 +5,8 @@ context: |
 
   docs/ is project knowledge:
   - docs/project-context.md is canonical broad context.
+  - docs/documentation-inventory.md bounds the maintained documentation reviewed
+    for a new product capability.
   - docs/requirements/ contains curated requirement briefs.
 
   OpenSpec is the only executable change and accepted-spec layer:
@@ -27,6 +29,7 @@ context: |
 rules:
   proposal:
     - Cite the driving requirement brief when one exists; explicitly record no requirement when the change is requirementless technical work.
+    - For a new product capability, require a synchronized brief with a documentation ledger before executable planning.
     - State intent, scope, non-goals, dependencies, and open questions.
     - Include measurable success criteria and a rollback strategy.
     - Identify capability impact and keep changes focused.
@@ -48,4 +51,5 @@ rules:
     - Include progress creation or updates for implemented changes.
     - Include verification tasks for OpenSpec validation, non-incremental TypeScript, lint, and Next.js build.
     - Include verification commands that can finish before report creation.
+    - For a product change linked to a brief, include an `[agent-requirements-curator]` documentation-reconciliation task before verification tasks.
     - Treat verify-report creation, native archive placement, and post-archive requirement/index updates as close operations rather than task checkboxes.

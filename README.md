@@ -49,6 +49,8 @@ docs/ -> OpenSpec -> .agent -> implementation -> verification -> archive
 ~~~
 
 - docs/project-context.md is the canonical product context.
+- docs/documentation-inventory.md bounds the documentation reviewed before a
+  new product capability is proposed.
 - docs/requirements/ contains curated, stable requirement briefs for broad product intent.
 - openspec/changes/<change-id>/ contains an executable proposal, delta specs, design, tasks, implementation progress, and verification evidence.
 - openspec/specs/ contains accepted behavior after a change is archived.
@@ -60,11 +62,11 @@ OpenSpec owns change state and executable behavior. .agent supplies project-spec
 
 ## Operating the harness
 
-1. Classify the request. Broad or ambiguous product intent starts with requirement curation; behavior ready to implement starts or resumes an OpenSpec change. Internal refactors or documentation can use .agent directly when no contract changes.
+1. Classify the request. Broad or ambiguous product intent starts with requirement curation; when a new capability is absent from project context and requirements, first delegate documentation synchronization to the curator. Behavior ready to implement starts or resumes an OpenSpec change. Internal refactors or documentation can use .agent directly when no contract changes.
 2. Before apply, run openspec status --change <change-id> --json and openspec instructions apply --change <change-id> --json. Before verify/archive, use status only; OpenSpec 1.6.0 has no instructions for those phases.
 3. Implement only the unchecked tasks in tasks.md, using the smallest applicable set of skills from .agent/skill-registry.md.
 4. Keep apply-progress.md aligned with tasks.md while work is active.
-5. Finalize tasks/progress, run pnpm verify, persist a PASS verify-report.md with `node scripts/validate-harness.mjs --snapshot <change-id>`, and require `--archive-ready` before native `openspec archive <change-id> --yes --json`.
+5. For a linked product brief, complete the curator's documentation-reconciliation task before verification. Then finalize tasks/progress, run pnpm verify, persist a PASS verify-report.md with `node scripts/validate-harness.mjs --snapshot <change-id>`, and require `--archive-ready` before native `openspec archive <change-id> --yes --json`.
 
 For an internal task classified `no-change`, run applicable checks and report them directly; do not invent change status, progress, or report artifacts.
 

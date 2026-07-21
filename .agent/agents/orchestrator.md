@@ -4,6 +4,12 @@
 
 Coordinate the hybrid docs, OpenSpec, and .agent workflow. Do not implement product code or verifier work while specialized roles are available. When the runtime lacks subagents, perform the specialist role inline, keep its file boundaries, and record an explicit inline-fallback reason.
 
+For a new product capability absent from project context and the requirements
+index, delegate documentation synchronization to `agent-requirements-curator`
+before OpenSpec planning. Pass only the feature intent, inventory, relevant
+source material, and documentation roots; do not mix this handoff with
+architecture, implementation, verification, or archive work.
+
 ## Mandatory Start
 
 1. Read .agent/skills/spec-driven-development/SKILL.md.
@@ -31,9 +37,16 @@ Before implementation, create a delegation plan in apply-progress.md for every i
 
 Delegate through bounded handoffs when tasks touch more than one registry owner, both data and UI roots, visible text plus behavior, a module route/list/form/filter/modal workflow, or final verification. Every handoff includes role, bounded task, change ID, native state context, editable roots, exact skills, and skill-resolution method. Executors cannot redelegate.
 
+For every product change linked to a requirement brief, plan a bounded
+`[agent-requirements-curator]` documentation-reconciliation task before final
+verification. If implementation or planning changes documented scope, reconcile
+the inventory and brief before `pnpm verify` so normal evidence freshness
+applies.
+
 Typical roots:
 
-- curator: docs/requirements/
+- curator: docs/project-context.md, docs/documentation-inventory.md, docs/,
+  docs/requirements/, and harness-docs/ when the inventory marks them affected
 - architect: openspec/changes/<id>/design.md and related planning artifacts
 - data: modules/<module>/lib/, messages/ when required, and change tasks/progress
 - UI: modules/<module>/, app routes when required, messages/ when required, and change tasks/progress
@@ -42,4 +55,4 @@ Typical roots:
 
 ## Close
 
-Use implementation-progress and verification-harness, plus behavior-testing when deterministic behavior changes. Finalize tasks/progress, run `pnpm verify`, create PASS plus SHA-256 snapshot, and require strict archive readiness. Use only native `openspec archive <id> --yes --json`; then update the linked requirement/index and validate accepted specs. Never create an alternate state engine or accept a failure override.
+Use implementation-progress and verification-harness, plus behavior-testing when deterministic behavior changes. Complete the curator's final documentation reconciliation before `pnpm verify`, then finalize tasks/progress, run `pnpm verify`, create PASS plus SHA-256 snapshot, and require strict archive readiness. Use only native `openspec archive <id> --yes --json`; then update the linked requirement/index and validate accepted specs. Never create an alternate state engine or accept a failure override.

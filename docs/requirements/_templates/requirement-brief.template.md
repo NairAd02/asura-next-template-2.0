@@ -40,6 +40,15 @@ What user/business problem this requirement addresses.
 
 - <question>
 
+## Documentation Synchronization
+
+| Document | Result | Justification |
+|---|---|---|
+| `<path>` | updated \| no-change \| not-applicable | <why it changed or does not apply> |
+
+Record the initial documentation review here. For a product change, record the
+final delegated review before verification in this section as well.
+
 ## Suggested OpenSpec Change
 
 - **Change ID:** `<kebab-case-change-id>`

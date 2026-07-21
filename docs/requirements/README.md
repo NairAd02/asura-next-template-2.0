@@ -12,7 +12,14 @@ This folder holds curated product-intent briefs. Briefs are not executable specs
 
 ## Required Brief Content
 
-Use the template to record a stable ID, source, intent, actors, scope, out of scope, flows, constraints, dependencies, questions, and suggested change.
+Use the template to record a stable ID, source, intent, actors, scope, out of scope, flows, constraints, dependencies, questions, suggested change, and documentation synchronization ledger.
+
+For a new product capability that is not yet represented in project context or
+this index, `agent-requirements-curator` first reviews
+`docs/documentation-inventory.md` through a bounded documentation-only handoff.
+The brief records each reviewed document as `updated`, `no-change`, or
+`not-applicable` with its rationale. A linked product change repeats that review
+before final verification when its implemented scope changes.
 
 Update the brief and index coherently when a linked change archives.
 

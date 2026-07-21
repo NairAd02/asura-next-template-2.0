@@ -23,7 +23,7 @@ Luego clasifica:
 
 | Tipo de pedido | Camino |
 |---|---|
-| Idea amplia, regla, permiso o flujo de producto | Curar requirement brief, despues OpenSpec. |
+| Idea amplia, regla, permiso o flujo de producto | Si la capacidad no existe en contexto ni requirements, delegar primero la sincronizacion documental al curator; despues curar el brief y usar OpenSpec. |
 | Cambio de comportamiento listo | Crear o actualizar OpenSpec. |
 | Change activo | Recuperar status, tasks.md y apply-progress.md; continuar. |
 | Refactor, documentacion o mantenimiento interno sin contrato | .agent con OpenSpec opcional; no se exige brief. |
@@ -54,6 +54,11 @@ tasks.md sigue siendo la autoridad de completitud. Si ambos documentos difieren,
 
 Los roles reciben un handoff con tarea, change, estado OpenSpec, raices editables y skills exactas. Un ejecutor no redelega. Si el runtime no tiene subagentes, Codex ejecuta el rol en linea con los mismos limites y registra `inline-fallback` con el motivo concreto.
 
+Para un change de producto vinculado a un brief, tasks.md incluye una tarea
+`[agent-requirements-curator]` antes de la verificacion final. El curator revisa
+el inventario documental, actualiza lo aplicable o registra `no-change`/`not-applicable`,
+y devuelve su handoff sin recibir trabajo de codigo, pruebas, verificacion o archive.
+
 Mientras cambia el codigo, el ejecutor agrega pruebas focalizadas y usa `pnpm verify:fast`. Ese comando acelera el feedback, pero no sustituye la evidencia final.
 
 ## Verificacion
@@ -65,6 +70,10 @@ pnpm verify
 ~~~
 
 Esto corre OpenSpec/harness validation, pruebas unitarias y de componentes, typecheck sin cache incremental, lint completo y build. El verifier crea verify-report.md con comandos, duraciones, exit codes, resumen, warnings, conformidad y veredicto PASS o FAIL. La exploracion en navegador es opcional para diagnostico humano y no bloquea PASS ni archive readiness.
+
+La tarea documental del curator debe terminar antes de `pnpm verify`, para que
+sus cambios formen parte del snapshot SHA-256 y cualquier ajuste posterior
+invalide la evidencia segun la regla existente.
 
 Un PASS final incluye un snapshot SHA-256 generado con `node scripts/validate-harness.mjs --snapshot <change-id>`. La validacion normal permite cambios en progreso reconciliados; `node scripts/validate-harness.mjs --archive-ready <change-id>` aplica el preflight terminal estricto.
 

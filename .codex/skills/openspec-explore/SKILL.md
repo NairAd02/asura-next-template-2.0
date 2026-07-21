@@ -296,7 +296,7 @@ But this summary is optional. Sometimes the thinking IS the value.
 The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guidance above.
 
 - Read `.agent/skills/spec-driven-development/SKILL.md` and `.agent/skill-registry.md` before repository-grounded exploration.
-- Preserve entry classification: broad product intent, business rules, permissions, and flows route to requirements curation before executable OpenSpec planning.
+- Preserve entry classification: broad product intent, business rules, permissions, and flows route to requirements curation before executable OpenSpec planning. When a new product capability is absent from project context and requirements, identify the required bounded documentation-synchronization handoff to `agent-requirements-curator` before proposal work.
 - For `no-change` exploration, read and discuss freely but do not create `apply-progress.md`, `verify-report.md`, or change-specific state.
 - Do not implement product code or edit implementation files from explore mode.
 - If the operator explicitly asks to capture thinking in OpenSpec artifacts, use the proposal/update flow and keep artifacts coherent; then stop before implementation so apply can present an Implementation Approval Packet.

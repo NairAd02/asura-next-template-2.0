@@ -1,15 +1,16 @@
 ---
 name: requirements-curation
-description: Load when extracting candidate requirements from docs/project-context.md into docs/requirements/ before creating OpenSpec changes.
+description: Load when synchronizing bounded project documentation and extracting candidate requirements before creating OpenSpec changes.
 ---
 
 # Requirements Curation
 
 ## When to use
 
-Use this skill during discovery when product knowledge exists in
-`docs/project-context.md` and needs to become a clean backlog of candidate
-requirements under `docs/requirements/`.
+Use this skill during discovery when product knowledge needs to become a clean
+backlog of candidate requirements under `docs/requirements/`. When a new
+product capability is absent from `docs/project-context.md` and the
+requirements index, synchronize the applicable project documentation first.
 
 This skill does **not** write executable specs. OpenSpec owns executable changes
 and accepted behavior via `openspec/changes/` and `openspec/specs/`.
@@ -19,6 +20,7 @@ and accepted behavior via `openspec/changes/` and `openspec/specs/`.
 Always read these first:
 
 - `docs/project-context.md` - canonical source material.
+- `docs/documentation-inventory.md` - maintained documentation and review scope.
 - `docs/requirements/index.md` - existing curated requirements and IDs.
 - `docs/requirements/_templates/requirement-brief.template.md` - required brief shape.
 - `.agent/skill-registry.md` - available project skills.
@@ -49,10 +51,17 @@ Each brief must include:
 - dependencies;
 - open questions;
 - suggested OpenSpec `change-id`.
+- a `Documentation Synchronization` ledger with each reviewed document,
+  `updated`, `no-change`, or `not-applicable`, and its rationale.
 
 ## Rules
 
 - Keep requirements candidate-level. Do not turn them into OpenSpec delta specs.
+- For a new product capability absent from source material, review the inventory
+  and update applicable documentation before creating the brief; send this work
+  through a bounded curator handoff with documentation-only roots.
+- For a linked product change, perform its final inventory reconciliation before
+  `pnpm verify` and return the handoff for apply-progress.md.
 - Do not create `openspec/changes/` unless the user explicitly asks to start a change.
 - Do not copy the entire project context into every brief; cite source sections.
 - Split unrelated capabilities into separate requirement briefs.
@@ -64,9 +73,11 @@ Each brief must include:
 ## Checklist
 
 - [ ] `docs/project-context.md` was read.
+- [ ] `docs/documentation-inventory.md` was read for a new product capability.
 - [ ] Existing requirement IDs and change IDs were checked.
 - [ ] Each new requirement has one stable `REQ-<NNN>` ID.
 - [ ] `docs/requirements/index.md` was updated.
+- [ ] The brief records the documentation synchronization results and rationale.
 - [ ] No OpenSpec artifact was created unless explicitly requested.
 - [ ] Open questions were preserved instead of invented away.
 

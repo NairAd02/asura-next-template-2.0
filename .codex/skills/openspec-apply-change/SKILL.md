@@ -173,4 +173,5 @@ The local overlay takes precedence over generated guidance above.
 - Resolve only exact paths from `.agent/skill-registry.md`. Every specialized role uses `.agent/contracts/phase-handoff.md`, explicit editable roots, and no redelegation.
 - Load `.agent/skills/implementation-progress/SKILL.md`; create or update `apply-progress.md` before or with the first implementation edit.
 - Reconcile each task checkbox with the `Current Snapshot` completed/remaining IDs and append every phase handoff cumulatively.
+- For a product change linked to a brief, complete the bounded `[agent-requirements-curator]` documentation-reconciliation handoff before verification; any resulting documentation edits must precede `pnpm verify`.
 - Completing implementation is not archive readiness. Final verification, PASS evidence, SHA-256 snapshot, and strict archive preflight remain required.

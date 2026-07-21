@@ -95,5 +95,6 @@ The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guida
 - Require an explicit or unambiguous active change and run `openspec status --change "<change-id>" --json`.
 - Edit only planning artifacts returned by `artifactPaths.<artifact>.existingOutputPaths`; never write to implementation code, generated evidence, or a glob `resolvedOutputPath`.
 - Preserve linked requirement context. If a revision changes scope, behavior, tasks, or verification, keep proposal, delta specs, design, and tasks coherent before implementation resumes.
+- If the revision changes a linked product requirement's documented scope, retain or add its pre-verification `[agent-requirements-curator]` reconciliation task and require the bounded documentation review before final verification.
 - If artifacts change after an Implementation Approval Packet or `approvalCheckpoint`, require a fresh approval packet before further implementation edits.
 - If PASS evidence already exists, changing covered planning artifacts invalidates the snapshot; repeat `pnpm verify`, refresh `verify-report.md`, and rerun strict archive readiness before archive.

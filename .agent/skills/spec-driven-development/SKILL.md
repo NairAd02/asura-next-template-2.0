@@ -7,7 +7,8 @@ description: Load first for every task. Defines the hybrid docs, OpenSpec, and .
 
 ## Principle
 
-- docs/ is project knowledge and curated requirement intent.
+- docs/ is project knowledge and curated requirement intent. Its maintained
+  documentation inventory bounds review work for new product capabilities.
 - OpenSpec is the only executable change and accepted-behavior layer.
 - .agent is technical governance: skills, roles, contracts, and reference patterns.
 
@@ -21,7 +22,7 @@ Read .agent/skill-registry.md and .agent/agents/orchestrator.md after loading th
 
 | Incoming task | Required path |
 |---|---|
-| Broad, ambiguous, or product intent | Read project context and use requirements-curation before executable work. |
+| Broad, ambiguous, or product intent | Read project context and use requirements-curation before executable work. When a new product capability is absent from project context and requirements, delegate documentation synchronization first. |
 | Clear behavior change | Create or update an OpenSpec change. Use the linked brief when it exists. |
 | Active change | Recover with OpenSpec status, tasks.md, and apply-progress.md. Do not create a duplicate change. |
 | Refactor, documentation, or internal work without accepted-contract change | Use .agent and verification. OpenSpec is optional; do not force a requirement brief. |
@@ -52,6 +53,12 @@ Before approving implementation:
 
 A requirement brief is needed for broad product intent, business rules, permissions, flows, or behavior changes. It is not mandatory for an internal technical task with no contract change.
 
+For a new product capability absent from `docs/project-context.md` and the
+requirements index, the orchestrator sends `agent-requirements-curator` a
+bounded `no-change` handoff before OpenSpec planning. The curator reviews
+`docs/documentation-inventory.md`, synchronizes applicable source material,
+and records `updated`, `no-change`, or `not-applicable` outcomes in the brief.
+
 The Implementation Approval Packet includes change ID, linked requirement status, readiness summary, intended scope and non-goals, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. If the operator requests adjustments, update proposal, specs, design, or tasks first, then present the packet again.
 
 ## Implementation
@@ -61,6 +68,10 @@ The Implementation Approval Packet includes change ID, linked requirement status
 - Load the implementation-progress skill for every implemented change.
 - Create and update apply-progress.md cumulatively. Before or with the first implementation edit, record `approvalCheckpoint` evidence for the approved Implementation Approval Packet.
 - Keep tasks.md as the completion authority.
+- Every product change linked to a requirement brief includes an
+  `[agent-requirements-curator]` documentation-reconciliation task before final
+  verification. The curator's handoff is persisted in apply-progress.md and
+  any resulting edits occur before `pnpm verify`.
 - Load behavior-testing when deterministic behavior changes and make the owning executor create the smallest valuable tests with the implementation.
 - Use `pnpm verify:fast` only as provisional feedback while implementation is changing.
 - Update proposal, specs, design, or tasks before continuing when implementation discovers a scope or behavior change.

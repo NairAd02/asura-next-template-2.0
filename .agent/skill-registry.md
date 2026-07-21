@@ -7,7 +7,7 @@ When a task maps to a phase listed here, assign that phase to its owner through 
 | Skill | Trigger | Path | Owner |
 |---|---|---|---|
 | spec-driven-development | Always. Hybrid lifecycle and native OpenSpec state. | .agent/skills/spec-driven-development/SKILL.md | orchestrator |
-| requirements-curation | Broad product intent or requirement briefs. | .agent/skills/requirements-curation/SKILL.md | agent-requirements-curator |
+| requirements-curation | Broad product intent, requirement briefs, or delegated documentation synchronization for a new capability. | .agent/skills/requirements-curation/SKILL.md | agent-requirements-curator |
 | module-architecture | OpenSpec design or module structure. | .agent/skills/module-architecture/SKILL.md | agent-architect |
 | data-layer | Module services, actions, types, hooks, or mocks. | .agent/skills/data-layer/SKILL.md | agent-data |
 | ssr-data-fetching | SSR entry points, containers, Suspense, or skeletons. | .agent/skills/ssr-data-fetching/SKILL.md | agent-ui |
@@ -29,7 +29,7 @@ When a task maps to a phase listed here, assign that phase to its owner through 
 
 | Phase | Owner | Exact skills normally loaded |
 |---|---|---|
-| Requirement curation | agent-requirements-curator | requirements-curation |
+| Documentation synchronization and requirement curation | agent-requirements-curator | requirements-curation |
 | OpenSpec design | orchestrator and agent-architect | spec-driven-development, module-architecture, i18n-conventions when visible text applies |
 | Data implementation | agent-data | data-layer, behavior-testing when behavior changes, i18n-conventions when messages change, implementation-progress |
 | UI implementation | agent-ui | only applicable UI skills, behavior-testing when behavior changes, i18n-conventions, implementation-progress |

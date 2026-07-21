@@ -27,6 +27,8 @@ Document durable rules that affect more than one feature.
 ## Functional Areas
 
 - Documentation and source material live in `docs/`.
+- `docs/documentation-inventory.md` identifies the maintained documentation to
+  review for a new product capability.
 - Candidate requirements live in `docs/requirements/`.
 - Executable changes live in `openspec/changes/`.
 - Accepted executable specs live in `openspec/specs/`.
@@ -34,6 +36,13 @@ Document durable rules that affect more than one feature.
 
 ## Functional Requirements
 
+- When a new product capability is absent from the project context and
+  requirements backlog, the requirements curator must first synchronize the
+  applicable project documentation, then curate its requirement brief.
+- Requirement briefs must record the documentation reviewed, whether each
+  document changed, and why a reviewed document did not apply.
+- A product change must receive a final delegated documentation review before
+  final verification so any documentation edits are covered by its evidence.
 - The development workflow must extract candidate requirements from
   `docs/project-context.md` into `docs/requirements/`.
 - OpenSpec must create proposal, delta specs, design, and tasks for selected
@@ -77,10 +86,13 @@ Capture performance, security, accessibility, i18n, auditability, reliability, a
 Hybrid flow:
 
 ```text
-docs/project-context.md
+new product intent
+  -> delegated documentation synchronization
+  -> docs/project-context.md + documentation inventory
   -> docs/requirements/
   -> openspec/changes/<change-id>/
   -> implementation guided by .agent
+  -> delegated final documentation review
   -> openspec/specs/ after sync/archive
 ```
 
