@@ -233,7 +233,7 @@ conflating skill resolution with execution mode.
 - **AND** the repository validator SHALL reject a generated skill that has lost
   its local integration marker.
 
-#### Scenario: Runtime lacks native subagents
+#### Scenario: Subagents are unavailable
 
 - **GIVEN** a runtime does not support subagents
 - **WHEN** the task is suitable for inline execution
@@ -257,7 +257,7 @@ The workflow SHALL require the orchestrator to decide and record specialized
 role ownership and proportional execution mode before implementation starts for
 an OpenSpec change.
 
-#### Scenario: Mandatory bootstrap loads the correct role
+#### Scenario: Mandatory bootstrap loads the orchestrator role
 
 - **WHEN** a task enters the root repository harness
 - **THEN** the entry point SHALL load the root SDD, registry, and orchestrator
@@ -310,6 +310,15 @@ role ownership, execution mode, and recovery decisions auditable.
   mode, budget class, expected milestones, and exclusive artifacts
 - **AND** `Handoff History` SHALL contain the detailed phase-handoff outputs.
 
+#### Scenario: Inline fallback is used
+
+- **GIVEN** an active delegation plan or handoff uses the legacy
+  `inline-fallback` skill-resolution value
+- **WHEN** schema-v2 harness validation runs
+- **THEN** validation SHALL reject the obsolete value
+- **AND** the workflow SHALL represent deliberate inline work as execution mode
+  `inline` and a failed planned subagent as `runtime-fallback`.
+
 #### Scenario: Planned inline execution is used
 
 - **GIVEN** a role is intentionally planned as `inline`
@@ -332,7 +341,7 @@ The repository validator SHALL mechanically reject started active changes whose
 role, execution-mode, ownership, or handoff evidence is incomplete or
 internally inconsistent.
 
-#### Scenario: Owner-tagged task lacks a delegation plan
+#### Scenario: Owner-tagged task lacks delegation plan
 
 - **GIVEN** an active OpenSpec change has started implementation
 - **AND** `tasks.md` contains one or more owner-tagged tasks
@@ -366,6 +375,15 @@ internally inconsistent.
   mode, recovery attempt, or fallback reason is absent
 - **AND** validation SHALL remain independent of actual runtime tool
   availability.
+
+#### Scenario: Inline fallback lacks reason
+
+- **GIVEN** an active change contains the legacy `inline-fallback` resolution
+- **WHEN** `pnpm validate:harness` runs
+- **THEN** validation SHALL reject it as unsupported whether or not a reason is
+  present
+- **AND** the failure SHALL direct the change to planned `inline` or evidenced
+  `runtime-fallback` schema-v2 fields.
 
 #### Scenario: Root and executor bootstrap regress
 

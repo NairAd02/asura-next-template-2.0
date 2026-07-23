@@ -204,7 +204,15 @@
 
 ## Problems
 
-None.
+- 2026-07-23: the first native archive attempt failed safely with
+  `archive_spec_update_failed` because four legacy scenario headings were not
+  preserved exactly inside `MODIFIED` blocks. OpenSpec reported that no files
+  changed. The delta is being reconciled, and the prior PASS is intentionally
+  invalidated pending a fresh task 6.1 verification and snapshot.
+  Resolution on 2026-07-23: the accepted headings are now preserved as
+  compatibility scenarios with schema-v2 semantics; strict OpenSpec and
+  scenario-coverage checks passed, task 6.1 was rerun independently, and the
+  fresh PASS evidence below supersedes the invalidated report.
 
 ## Handoff History
 
@@ -228,6 +236,52 @@ None.
 - Budget class: implementation.
 - Budget outcome: completed within the planned 20-minute orchestration budget for this readiness slice.
 - Exclusive artifacts: apply-progress plan, tasks reconciliation, and schema-v2 validator entry.
+- Fallback reason: not applicable.
+- Recovery evidence: not applicable.
+
+### 2026-07-23 - agent-verifier - archive compatibility re-verification
+
+- Role: agent-verifier.
+- Status: success.
+- Summary: Independently re-verified the full harness after the archive-compatibility delta remediation. The accepted scenario headings required by the modified workflow requirements are preserved, the compatibility bodies reject obsolete `inline-fallback` semantics while retaining planned `inline` and evidenced `runtime-fallback`, and all final gates passed without implementation or planning repair.
+- Artifacts: `openspec/changes/stabilize-subagent-orchestration/verify-report.md`; `openspec/changes/stabilize-subagent-orchestration/tasks.md`; `openspec/changes/stabilize-subagent-orchestration/apply-progress.md`.
+- Files changed: `openspec/changes/stabilize-subagent-orchestration/verify-report.md`; `openspec/changes/stabilize-subagent-orchestration/tasks.md`; `openspec/changes/stabilize-subagent-orchestration/apply-progress.md`.
+- Completed tasks: 6.1.
+- Verification: `openspec status --change stabilize-subagent-orchestration --json` exited 0 and reported complete planning artifacts; accepted/delta scenario-coverage comparison exited 0 with every accepted heading preserved for modified requirements; `openspec validate stabilize-subagent-orchestration --strict` exited 0; `git diff --check` exited 0 with line-ending notices only; `pnpm verify` exited 0 in 104954 ms (OpenSpec 6/6, harness 26/26, Vitest 4 files and 19 tests, typecheck, lint, and production build all passed); supplemental exact gate timings were `pnpm validate:specs` exit 0 in 4768 ms, `pnpm test:unit:run` exit 0 in 4806 ms, `pnpm typecheck` exit 0 in 18324 ms, `pnpm lint` exit 0 in 28951 ms, and `pnpm build` exit 0 in 34548 ms; final native `openspec status --change stabilize-subagent-orchestration --json` exited 0 in 1610 ms; the first reconciled `node scripts/validate-harness.mjs --archive-ready stabilize-subagent-orchestration` exited 0 in 512 ms.
+- Risks: The remediated compatibility headings have not yet been exercised by a second native archive attempt because archive remains the root orchestrator's next phase. A Codex IDE thread opened before the custom-agent TOMLs existed may still need a new chat or extension reload for named-agent discovery. Structured validation proves internal evidence coherence, not actual provider activity.
+- Next phase: root orchestrator may retry native archive after confirming the final no-write strict readiness result; no requirement brief update applies.
+- Allowed editable roots: `openspec/changes/stabilize-subagent-orchestration/verify-report.md`; `openspec/changes/stabilize-subagent-orchestration/tasks.md`; `openspec/changes/stabilize-subagent-orchestration/apply-progress.md`.
+- Skills: `.agent/skills/verification-harness/SKILL.md`; `.agent/skills/implementation-progress/SKILL.md`.
+- Skill resolution: paths-injected.
+- Execution mode: subagent.
+- Planned mode: subagent.
+- Lifecycle milestones: started, context-loaded, artifact-written, completed.
+- Budget class: verification.
+- Budget outcome: completed successfully within the assigned 15-minute minimum observation window; no recovery was required.
+- Exclusive artifacts: `openspec/changes/stabilize-subagent-orchestration/verify-report.md`.
+- Fallback reason: not applicable.
+- Recovery evidence: not applicable.
+
+### 2026-07-23 - orchestrator - archive compatibility remediation
+
+- Role: orchestrator.
+- Status: success.
+- Summary: Diagnosed the fail-closed native archive error, compared accepted and delta scenario headings, preserved the four required compatibility names with schema-v2 semantics, and invalidated final verification for a fresh independent pass.
+- Artifacts: `openspec/changes/stabilize-subagent-orchestration/specs/workflow/spec.md`; `openspec/changes/stabilize-subagent-orchestration/tasks.md`; `openspec/changes/stabilize-subagent-orchestration/apply-progress.md`.
+- Files changed: the three artifacts above.
+- Completed tasks: none; task 6.1 was reopened because a covered delta artifact changed.
+- Verification: first `openspec archive stabilize-subagent-orchestration --yes --json` exited 1 with `archive_spec_update_failed` and explicitly reported no files changed; accepted/delta heading comparison identified exactly four missing scenario names.
+- Risks: The stale PASS report remains non-authoritative until the independent verifier reruns `pnpm verify`, regenerates the snapshot, and passes strict archive readiness.
+- Next phase: `agent-verifier` reruns task 6.1 without repairing implementation.
+- Allowed editable roots: active change delta spec, tasks, and progress.
+- Skills: `.agent/skills/spec-driven-development/SKILL.md`; `.agent/skills/implementation-progress/SKILL.md`.
+- Skill resolution: paths-injected.
+- Execution mode: inline.
+- Planned mode: inline.
+- Lifecycle milestones: started, context-loaded, artifact-written, completed.
+- Budget class: planning.
+- Budget outcome: completed within the 10-minute planning observation class; no recovery was required.
+- Exclusive artifacts: active workflow delta spec compatibility remediation.
 - Fallback reason: not applicable.
 - Recovery evidence: not applicable.
 

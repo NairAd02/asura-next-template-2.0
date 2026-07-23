@@ -16,7 +16,13 @@ governance work.
 - Workflow delta: PASS. Root and executor entry paths are distinct;
   `delegationPlan` schema v2 separates role ownership, skill resolution,
   execution mode, planned mode, budgets, milestones, exclusive artifacts, and
-  fallback evidence.
+  fallback evidence. Every accepted scenario heading under a modified
+  requirement is preserved for native archive compatibility.
+- Compatibility remediation: PASS. `Subagents are unavailable` now selects
+  planned `inline`; the legacy-named `Inline fallback is used` and
+  `Inline fallback lacks reason` scenarios explicitly reject
+  `inline-fallback`; the separate planned-inline and runtime-fallback scenarios
+  preserve schema-v2 behavior.
 - Design: PASS. Portable semantics remain under `.agent`; Codex registration
   remains a thin `.codex` adapter; architecture is advisory by default and
   bounded by exact inputs, template, stopping condition, and
@@ -24,7 +30,8 @@ governance work.
 - Tasks and progress: PASS. The approval checkpoint is present, all task IDs
   reconcile, owner-tagged tasks are covered by schema-v2 role entries and
   complete handoffs, task 6.1 is complete, and progress is
-  `ready-for-archive`.
+  `ready-for-archive`. The prior archive failure remains recorded in Problems
+  with a durable resolution entry.
 - One-writer ownership: PASS. The orchestrator and verifier entries do not
   claim the same exclusive artifact; the verifier exclusively owns this
   report.
@@ -47,19 +54,21 @@ The required aggregate command was run exactly:
 
 | Command | Exit code | Duration | Summary |
 |---|---:|---:|---|
-| `pnpm verify` | 0 | 323024 ms | PASS: OpenSpec 6/6, harness fixtures 26/26, Vitest 4 files and 19 tests, non-incremental typecheck, full lint, and production build. |
+| `pnpm verify` | 0 | 104954 ms | PASS: OpenSpec 6/6, harness fixtures 26/26, Vitest 4 files and 19 tests, non-incremental typecheck, full lint, and production build. |
 
 A supplemental no-repair pass captured exact timings for each gate:
 
 | Command | Exit code | Duration | Summary |
 |---|---:|---:|---|
-| `pnpm validate:specs` | 0 | 7032 ms | OpenSpec validated 1 active change and 5 accepted specs; harness validation passed 26/26 fixtures and repository invariants. |
-| `pnpm test:unit:run` | 0 | 3493 ms | Vitest passed 4 test files and 19 tests. |
-| `pnpm typecheck` | 0 | 12386 ms | Application and reference TypeScript checks passed with `--noEmit --incremental false`. |
-| `pnpm lint` | 0 | 16531 ms | Repository ESLint and the non-ignored reference widget lint passed. |
-| `pnpm build` | 0 | 28628 ms | Next.js 16.2.4 production build compiled, typechecked, generated 29 static pages, and finalized successfully. |
-| `node scripts/validate-harness.mjs --snapshot stabilize-subagent-orchestration` | 0 | 138 ms | Regenerated the final SHA-256 evidence snapshot below after persisting the first strict result. |
-| `openspec status --change stabilize-subagent-orchestration --json` | 0 | 1955 ms | Native status reported all planning artifacts complete. |
+| `pnpm validate:specs` | 0 | 4768 ms | OpenSpec validated 1 active change and 5 accepted specs; harness validation passed 26/26 fixtures and repository invariants. |
+| `pnpm test:unit:run` | 0 | 4806 ms | Vitest passed 4 test files and 19 tests. |
+| `pnpm typecheck` | 0 | 18324 ms | Application and reference TypeScript checks passed with `--noEmit --incremental false`. |
+| `pnpm lint` | 0 | 28951 ms | Repository ESLint and the non-ignored reference widget lint passed. |
+| `pnpm build` | 0 | 34548 ms | Next.js 16.2.4 production build compiled, typechecked, generated 29 static pages, and finalized successfully. |
+| Accepted/delta scenario-coverage comparison | 0 | not timed | Every accepted scenario heading under the five modified requirements is present in the delta. |
+| `openspec validate stabilize-subagent-orchestration --strict` | 0 | not timed | The remediated delta is valid. |
+| `node scripts/validate-harness.mjs --snapshot stabilize-subagent-orchestration` | 0 | 95 ms | Regenerated the final SHA-256 evidence snapshot after persisting the first strict result. |
+| `openspec status --change stabilize-subagent-orchestration --json` | 0 | 1610 ms | Native status reported all planning artifacts complete. |
 | `node scripts/validate-harness.mjs --archive-ready stabilize-subagent-orchestration` | 0 | 512 ms | First strict reconciliation passed before the final snapshot refresh. |
 
 ## Warnings
@@ -69,6 +78,10 @@ A supplemental no-repair pass captured exact timings for each gate:
   violate this internal harness change.
 - `git diff --check` exited 0; Git printed line-ending notices that LF will be
   converted to CRLF when it next writes the changed text files.
+- The first native archive attempt failed safely with
+  `archive_spec_update_failed` and changed no files. This report verifies the
+  subsequent compatibility remediation; a second native archive attempt
+  remains an orchestrator action.
 - A Codex IDE thread opened before the new custom-agent TOML files existed may
   require a new chat or extension reload before the names are discovered. The
   portable handoff remains usable by a native generic subagent.
@@ -135,6 +148,6 @@ snapshot, and strict archive-readiness validation again.
     "scripts/harness-validation.mjs",
     "scripts/harness-validation.test.mjs"
   ],
-  "digest": "6cd8c429b3eeee53ebcba2ed0a6b23ecc92cff1473ab5e268b7a304cdcf501d5"
+  "digest": "b07cd0d0f22456438bf6ce042dd9dd71a948923283badb302c271d4eb93d26c4"
 }
 ```
