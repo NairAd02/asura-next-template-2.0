@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowDownAZ, ArrowUpZA } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { WidgetFilters } from "../lib/types/widget.types";
+import { useWidgetUsersForSelect } from "../lib/hooks/use-widget-users-for-select";
 
 interface Props {
   filters: WidgetFilters;
@@ -14,6 +15,8 @@ interface Props {
 
 export default function WidgetFiltersPresentational({ filters, handleChangeFilters }: Props) {
   const t = useTranslations("filters");
+  const { users, isLoading: usersLoading, error: usersError } =
+    useWidgetUsersForSelect();
 
   const isActiveOptions = [
     { label: t("active"), value: "true" },
@@ -26,7 +29,7 @@ export default function WidgetFiltersPresentational({ filters, handleChangeFilte
   ];
 
   return (
-    <div className="grid gap-2 2xl:gap-3 items-center grid-cols-1 sm:grid-cols-2 2xl:grid-cols-[2fr_1fr_auto]">
+    <div className="grid gap-2 2xl:gap-3 items-center grid-cols-1 sm:grid-cols-2 2xl:grid-cols-[2fr_1fr_1fr_auto]">
       <div className="sm:col-span-2 2xl:col-span-1">
         <SearchInput
           id="widgets-search"
@@ -44,6 +47,17 @@ export default function WidgetFiltersPresentational({ filters, handleChangeFilte
           }
           options={isActiveOptions}
           clearable={{ handleClear: () => handleChangeFilters({ isActive: "" }) }}
+        />
+      </div>
+      <div>
+        <SelectInput
+          placeholder={t("user")}
+          value={filters.createdBy}
+          onValueChange={(createdBy) => handleChangeFilters({ createdBy })}
+          options={users.map((user) => ({ label: user.label, value: user.id }))}
+          loading={usersLoading}
+          emptyText={usersError ?? undefined}
+          clearable={{ handleClear: () => handleChangeFilters({ createdBy: "" }) }}
         />
       </div>
       <div className="flex items-center gap-2">

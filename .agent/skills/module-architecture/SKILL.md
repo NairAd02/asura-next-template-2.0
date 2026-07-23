@@ -71,6 +71,28 @@ modules/<module-name>/
 | Dashboard | ❌ | ❌ | ❌ | Métricas y resúmenes |
 | Wizard/proceso | ❌ | ✅ (multistep) | ❌ | Onboarding |
 
+## Integraciones con APIs externas (opcional)
+
+Los endpoints externos no pertenecen a un módulo concreto. Se organizan en la
+raíz compartida del proyecto:
+
+```
+lib/
+└── api/
+    └── routes/
+        └── <upstream>-api.routes.ts ← catálogo server-only de rutas relativas
+```
+
+Se crea un catálogo por upstream, agrupado por recurso, y los módulos lo
+importan mediante `@/lib/api/routes/<upstream>-api.routes`. El catálogo comienza
+con `import "server-only"` y contiene solo rutas relativas; el service del
+módulo conserva la lectura y validación de la base URL privada, además de
+componer la URL final. Así, añadir otra API requiere otro catálogo y otra
+configuración de servidor sin duplicar endpoints entre módulos ni mezclar hosts.
+
+Ver las reglas completas y el ejemplo de consumo en `data-layer` y
+`.agent/reference/widget/lib/api/routes/`.
+
 ## Componentes compartidos importantes
 
 Antes de crear nada nuevo, consultar:

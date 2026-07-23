@@ -132,6 +132,33 @@ export default function WidgetFiltersContainer() {
 
 ## 3. Filters Presentational
 
+Cuando un select obtiene opciones remotas, el presentational llama un hook
+cliente dedicado a ese catálogo. Cada select conserva su propio `options`,
+`loading` y `error`; no recibe un objeto agregado de catálogos cargado por un
+container servidor.
+
+```typescript
+const {
+  users,
+  isLoading: usersLoading,
+  error: usersError,
+} = useWidgetUsersForSelect();
+
+<SelectInput
+  placeholder={t("user")}
+  value={filters.createdBy}
+  onValueChange={(createdBy) => handleChangeFilters({ createdBy })}
+  options={users.map((user) => ({ label: user.label, value: user.id }))}
+  loading={usersLoading}
+  emptyText={usersError ?? undefined}
+/>
+```
+
+El hook vive en `modules/<module>/lib/hooks/`, llama a una action fina y carga
+al montar el componente. Si existen varios selects remotos independientes,
+cada uno usa su propia action/hook para que sus estados de carga no se
+acoplen.
+
 ```typescript
 // filters/widget-filters-presentational.tsx
 "use client";
@@ -264,6 +291,8 @@ export default function WidgetActiveFilters({ filters, activeFiltersCount, handl
 - [ ] `isActive` es `boolean | ""` en estado local, `boolean | undefined` en el DTO
 - [ ] `getActiveFiltersCount` con `useMemo`
 - [ ] Active filters con chip por filtro individual + botón "clear all"
+- [ ] Cada select remoto usa su propio hook y estado de carga
+- [ ] Los catálogos remotos no bloquean el render completo de filtros
 - [ ] Layout responsivo del presentational: `grid-cols-1 sm:grid-cols-2 2xl:grid-cols-[2fr_1fr_auto]`
 
 ## Referencia navegable

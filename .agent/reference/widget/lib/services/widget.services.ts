@@ -14,6 +14,7 @@ import {
   Widget,
   WidgetDetails,
   WidgetFiltersDto,
+  WidgetUserOption,
   WidgetsResponse,
 } from "../types/widget.types";
 import { widgetsStore } from "../mock/widgets.data";
@@ -38,6 +39,7 @@ export async function getAllWidgets(
     searchFields: ["name", "description"],
     filters: {
       isActive: filters.isActive,
+      createdBy: filters.createdBy,
     },
     sortBy: filters.sortBy ?? "name",
     sortOrder: filters.sortOrder ?? "asc",
@@ -47,6 +49,31 @@ export async function getAllWidgets(
     widgets: rows as unknown as Widget[],
     pagination,
   };
+}
+
+export async function getWidgetUsersForSelect(): Promise<
+  ServiceResponse<WidgetUserOption[]>
+> {
+  try {
+    const users = new Map<string, WidgetUserOption>();
+    widgetsStore.forEach((widget) => {
+      if (widget.createdByUser) {
+        users.set(widget.createdByUser.id, {
+          id: widget.createdByUser.id,
+          label: widget.createdByUser.full_name,
+        });
+      }
+    });
+    return { success: true, data: [...users.values()] };
+  } catch (error) {
+    return {
+      success: false,
+      error: {
+        code: "INTERNAL_ERROR",
+        message: `Failed to get widget users: ${error}`,
+      },
+    };
+  }
 }
 
 export async function getWidgetById(

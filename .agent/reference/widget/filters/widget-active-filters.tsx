@@ -30,6 +30,12 @@ export default function WidgetActiveFilters({ filters, activeFiltersCount, handl
           <button onClick={() => handleChangeFilters({ isActive: "" })}><X className="h-3 w-3" /></button>
         </Badge>
       )}
+      {filters.createdBy && (
+        <Badge variant="secondary" className="gap-1">
+          {t("user")}: {filters.createdBy}
+          <button onClick={() => handleChangeFilters({ createdBy: "" })}><X className="h-3 w-3" /></button>
+        </Badge>
+      )}
       <Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onClick={handleResetFilters}>
         {t("clearAll")}
       </Button>

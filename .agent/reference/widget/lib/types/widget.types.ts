@@ -19,6 +19,11 @@ export interface UserInfo {
   email: string;
 }
 
+export interface WidgetUserOption {
+  id: string;
+  label: string;
+}
+
 export interface Widget {
   id: string;
   name: string;
@@ -52,6 +57,7 @@ export interface WidgetsResponse {
 export interface WidgetFilters {
   search: string;
   isActive: boolean | ""; // "" means no filter
+  createdBy: string;
   sortBy: string;
   sortOrder: "asc" | "desc";
 }
@@ -63,11 +69,13 @@ export interface WidgetFiltersDto {
   sortOrder?: "asc" | "desc";
   search?: string;
   isActive?: boolean;
+  createdBy?: string;
 }
 
 export const convertWidgetFiltersDto = (filters: WidgetFilters): WidgetFiltersDto => ({
   search: filters.search || undefined,
   isActive: filters.isActive !== "" ? filters.isActive : undefined,
+  createdBy: filters.createdBy || undefined,
   sortBy: filters.sortBy || undefined,
   sortOrder: filters.sortOrder || undefined,
 });

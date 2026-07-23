@@ -18,6 +18,7 @@ export default function useWidgetFilters({ setPagination, urlFilters = true }: P
     search: searchParams.get("search") || "",
     isActive: searchParams.get("isActive") === "true" ? true
              : searchParams.get("isActive") === "false" ? false : "",
+    createdBy: searchParams.get("createdBy") || "",
     sortBy: searchParams.get("sortBy") || "name",
     sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "asc",
   }));
@@ -37,9 +38,9 @@ export default function useWidgetFilters({ setPagination, urlFilters = true }: P
   );
 
   const handleResetFilters = useCallback(() => {
-    setFilters({ search: "", isActive: "", sortBy: "name", sortOrder: "asc" });
+    setFilters({ search: "", isActive: "", createdBy: "", sortBy: "name", sortOrder: "asc" });
     if (urlFilters) {
-      updateFiltersInUrl({ search: undefined, isActive: undefined, sortBy: "name", sortOrder: "asc", page: 1 });
+      updateFiltersInUrl({ search: undefined, isActive: undefined, createdBy: undefined, sortBy: "name", sortOrder: "asc", page: 1 });
     }
     if (setPagination) setPagination((old) => ({ ...old, page: 1 }));
   }, [urlFilters, updateFiltersInUrl, setPagination]);
@@ -48,8 +49,9 @@ export default function useWidgetFilters({ setPagination, urlFilters = true }: P
     let count = 0;
     if (filters.search) count++;
     if (filters.isActive !== "") count++;
+    if (filters.createdBy) count++;
     return count;
-  }, [filters.search, filters.isActive]);
+  }, [filters.search, filters.isActive, filters.createdBy]);
 
   return { filters, handleChangeFilters, handleResetFilters, getActiveFiltersCount };
 }

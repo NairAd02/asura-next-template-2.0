@@ -5,6 +5,7 @@ import {
   editWidget,
   getAllWidgets,
   getWidgetById,
+  getWidgetUsersForSelect,
   deleteWidget,
   deleteWidgetsBulk,
   toggleWidgetActive,
@@ -15,6 +16,7 @@ import {
   convertEditWidgetDto,
   WidgetDetails,
   WidgetFiltersDto,
+  WidgetUserOption,
   WidgetsResponse,
 } from "../types/widget.types";
 import type { ServiceResponse } from "@/lib/api-responses";
@@ -56,6 +58,12 @@ export async function getWidgetByIdAction(
   id: string,
 ): Promise<ServiceResponse<WidgetDetails>> {
   return await getWidgetById(id);
+}
+
+export async function getWidgetUsersForSelectAction(): Promise<
+  ServiceResponse<WidgetUserOption[]>
+> {
+  return await getWidgetUsersForSelect();
 }
 
 export async function createWidgetAction(

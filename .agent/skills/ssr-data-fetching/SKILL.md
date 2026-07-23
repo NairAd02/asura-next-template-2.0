@@ -26,7 +26,6 @@ import WidgetsListLoadingSkeleton from "./list/widgets-list-loading-skeleton";
 import { WidgetFiltersDto } from "./lib/types/widget.types";
 import { Box } from "lucide-react";
 import CreateWidgetTrigger from "./form/create/create-widget-trigger";
-import FiltersSkeleton from "@/components/filters/filters-container-skeleton/filters-skeleton";
 
 interface Props {
   filters: WidgetFiltersDto;
@@ -46,9 +45,7 @@ export default async function WidgetsContent({ filters }: Props) {
         showRefresh
       />
       <div className="mt-6">
-        <Suspense fallback={<FiltersSkeleton inputCount={2} />}>
-          <WidgetsFiltersContainer />
-        </Suspense>
+        <WidgetsFiltersContainer />
       </div>
       <div className="mt-6">
         <Suspense key={`widgets-list-${filtersKey}`} fallback={<WidgetsListLoadingSkeleton />}>
@@ -65,7 +62,11 @@ export default async function WidgetsContent({ filters }: Props) {
 - `getTranslations` (no `useTranslations`) para i18n en servidor.
 - `<Suspense key={...}>` con `key` derivado de filtros usando `JSON.stringify(filters)`. Esto hace que al cambiar filtros, React remonte el Suspense y muestre el skeleton de nuevo → UX de loading correcto.
 - `ModuleHeader` con `title`, `icon` (Lucide), `actionTrigger` (botón de crear) y `description`.
-- Filters y List en Suspense separados.
+- Los filtros cliente se renderizan directamente. Si un select necesita datos
+  remotos, su propio hook cliente controla `loading` y `error`; no se bloquea
+  la tarjeta completa esperando todos los catálogos.
+- Stats, List u otros containers que sí hacen fetch servidor conservan
+  boundaries de Suspense separados.
 
 ## Patrón: Container de servidor
 
@@ -168,7 +169,9 @@ export default function EditWidgetContainer({ widgetId, onClose }: Props) {
 
 - [ ] `*-content.tsx` es `async` y usa `getTranslations` (no `useTranslations`)
 - [ ] `<Suspense key={`...-${filtersKey}`}>` para re-suspender al filtrar
-- [ ] Skeleton fallback creado para cada Suspense
+- [ ] Los filtros cliente no están envueltos en Suspense por sus catálogos
+- [ ] Cada select remoto recibe el loading de su propio hook cliente
+- [ ] Skeleton fallback creado para cada fetch servidor en Suspense
 - [ ] Container de servidor NO tiene estado ni event handlers
 - [ ] `page.tsx` parsea `searchParams` y los convierte al `FiltersDto` correcto
 

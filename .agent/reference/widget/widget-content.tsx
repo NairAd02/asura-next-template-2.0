@@ -7,7 +7,6 @@ import WidgetListLoadingSkeleton from "./list/widget-list-loading-skeleton";
 import { WidgetFiltersDto } from "./lib/types/widget.types";
 import { Box } from "lucide-react";
 import CreateWidgetTrigger from "./form/create/create-widget-trigger";
-import FiltersSkeleton from "@/components/filters/filters-container-skeleton/filters-skeleton";
 
 interface Props {
   filters: WidgetFiltersDto;
@@ -27,9 +26,7 @@ export default async function WidgetContent({ filters }: Props) {
         showRefresh
       />
       <div className="mt-6">
-        <Suspense fallback={<FiltersSkeleton inputCount={2} />}>
-          <WidgetFiltersContainer />
-        </Suspense>
+        <WidgetFiltersContainer />
       </div>
       <div className="mt-6">
         <Suspense key={`widget-list-${filtersKey}`} fallback={<WidgetListLoadingSkeleton />}>

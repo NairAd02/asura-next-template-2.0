@@ -94,6 +94,78 @@ export async function createWidget(dto: CreateWidgetDto): Promise<ServiceRespons
 - Nunca tirar excepciones: siempre devolver `ServiceResponse`.
 - Separar visualmente Queries y Mutations con comentarios `// ─── Queries` / `// ─── Mutations`.
 
+### Catálogos de rutas para APIs externas
+
+Cada API externa (upstream) tiene un catálogo propio en la raíz compartida
+`lib/api/routes/<upstream>-api.routes.ts`, no dentro de
+`modules/<module>/lib/`. El catálogo:
+
+- comienza con `import "server-only"` para impedir su importación desde bundles
+  cliente;
+- exporta un nombre específico, por ejemplo `comercialApiRoutes`;
+- agrupa las operaciones por recurso;
+- contiene solo paths relativos que comienzan por `/`, nunca hosts ni
+  `process.env`;
+- usa funciones tipadas para parámetros de path y aplica
+  `encodeURIComponent` a cada segmento dinámico;
+- termina en `as const`.
+
+```typescript
+import "server-only";
+
+const pathSegment = (value: string): string => encodeURIComponent(value);
+
+export const comercialApiRoutes = {
+  invoices: {
+    list: "/mistral/invoices",
+    statistics: "/mistral/invoices/statistics",
+    getById: (id: string) => `/mistral/invoices/${pathSegment(id)}`,
+  },
+  clients: {
+    list: "/consolidated/clients",
+  },
+} as const;
+```
+
+El catálogo es puro respecto a la configuración: no accede al entorno ni
+compone URLs absolutas al importarse. Esto evita una evaluación ansiosa de la
+base URL, mientras que `server-only` impide que el catálogo entre por accidente
+en un bundle cliente. También hace escalable consumir varias APIs: cada
+upstream mantiene su catálogo compartido y su variable de base URL
+independientes.
+
+El service importa rutas nombradas y conserva toda la responsabilidad de
+servidor: `import "server-only"` como primera línea, lectura y validación de la
+base URL privada, composición de la URL, opciones de `fetch` y traducción de
+fallos a `ServiceResponse`. La base URL no usa prefijo `NEXT_PUBLIC_`.
+
+```typescript
+import "server-only";
+
+import { comercialApiRoutes } from "@/lib/api/routes/comercial-api.routes";
+
+function getComercialApiBaseUrl(): string | null {
+  const value = process.env.COMERCIAL_API_BASE_URL?.trim();
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    return value.replace(/\/+$/, "");
+  } catch {
+    return null;
+  }
+}
+
+const pathname = comercialApiRoutes.invoices.getById(invoiceId);
+const url = `${baseUrl}${pathname}`;
+```
+
+No guardar URLs absolutas en el catálogo ni reemplazar parámetros mediante
+strings como `":id"`. Una función de ruta hace obligatorio aportar el
+parámetro, lo codifica en el punto correcto y mantiene el service libre de
+literales de endpoints.
+
 ## 2. Actions — `lib/actions/<entity>.actions.ts`
 
 ```typescript
@@ -272,6 +344,9 @@ export const widgetsStore: Widget[] = [
 ## Checklist de data layer
 
 - [ ] `"server-only"` en services, `"use server"` en actions
+- [ ] APIs externas con un catálogo `server-only` por upstream en `lib/api/routes/`
+- [ ] Base URL privada validada y compuesta dentro del service
+- [ ] Segmentos dinámicos construidos por funciones de ruta y codificados
 - [ ] `ServiceResponse<T>` en todas las mutations y queries que pueden fallar
 - [ ] Validación Zod compartida en cliente y en el límite servidor
 - [ ] Queries individuales inexistentes devuelven `NOT_FOUND`
