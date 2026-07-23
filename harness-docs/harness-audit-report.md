@@ -89,3 +89,28 @@ El harness ahora:
 La validacion mecanica prueba forma y coherencia de la evidencia. No puede
 demostrar actividad real del proveedor, tiempo transcurrido ni veracidad de un
 evento de chat.
+
+## Optimización Operacional 2026-07-23
+
+El cambio `optimize-harness-operational-cost` conserva los controles de cierre
+y reduce el costo diario:
+
+- tres assurance profiles evitan forzar artifacts de change en trabajo
+  `no-change` y añaden independencia sólo en `high-risk`;
+- approval checkpoint schema 2 queda ligado al path set y planning digest
+  SHA-256, normalizando checkboxes para no solicitar reaprobación artificial;
+- progress schema 3 separa `ownershipPlan` de `executionRecords`; inline omite
+  budgets, milestones y fallback que no aplican;
+- el handoff narrativo acumulativo deja de ser evidencia obligatoria;
+- skills de data/UI conservan reglas y checklists, pero cargan ejemplos largos
+  de `.agent/reference/widget/` sólo cuando son necesarios;
+- budgets mecánicos limitan bootstrap root, executor UI y executor data;
+- la reconciliación documental sólo es obligatoria para changes de producto
+  vinculados a un brief;
+- el preflight protege identidades aceptadas antes de gates caros;
+- `pnpm verify` invoca un runner único que transmite output, mide los cinco
+  gates, falla rápido y genera un resultado estructurado sin reejecuciones.
+
+Los gates finales, snapshot fresco, strict readiness y archive nativo continúan
+fail-closed. Archives históricos permanecen inmutables y fuera de la migración
+activa.

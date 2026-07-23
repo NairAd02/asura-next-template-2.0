@@ -1,169 +1,109 @@
-# Guia del Operador Humano
+# Guía del Operador Humano
 
-Esta guia opera el harness hibrido de Next Template.
+El harness usa controles proporcionales. Tu decisión principal es confirmar
+qué se va a cambiar, no revisar rituales repetidos.
 
-## La ruta canonica
+## Rutas
 
-docs -> OpenSpec -> .agent -> implementacion -> verificacion -> archive
-
-- docs conserva contexto e intencion.
-- OpenSpec conserva cambios ejecutables y la spec viva.
-- .agent conserva criterio tecnico, roles y contratos.
-- AGENTS.md separa la entrada raiz de la entrada del ejecutor.
-- `.agent/runtime-adapters/` traduce el contrato portable a cada runtime.
-
-## Politica de documentacion
-
-Para una capacidad nueva o un cambio de alcance, revisar el inventario
-documental es obligatorio. Actualizar cada archivo no lo es: solo se edita el
-material afectado; si sigue correcto, se registra `no-change` con una
-justificacion. Esto evita modificar README, contexto o diagramas sin necesidad.
-
-## Inicio de cualquier tarea
-
-El hilo raiz de Codex lee primero:
-
-1. .agent/skills/spec-driven-development/SKILL.md
-2. .agent/skill-registry.md
-3. .agent/agents/orchestrator.md
-
-Luego clasifica:
-
-Un subagente recibe `HARNESS_EXECUTOR_V1` y no repite ese bootstrap. Lee el
-contrato de handoff, su rol y solo las skills exactas de la asignacion. Tampoco
-reclasifica, crea otro change, repite curacion ni solicita otro Approval Packet.
-
-| Tipo de pedido | Camino |
+| Pedido | Ruta esperada |
 |---|---|
-| Idea amplia, regla, permiso o flujo de producto | Si la capacidad no existe en contexto ni requirements, delegar primero la revision documental al curator; actualizar solo el material afectado, curar el brief y usar OpenSpec. |
-| Cambio de comportamiento listo | Crear o actualizar OpenSpec. |
-| Change activo | Recuperar status, tasks.md y apply-progress.md; continuar. |
-| Refactor, documentacion o mantenimiento interno sin contrato | .agent con OpenSpec opcional; no se exige brief. |
-| Cierre | Verificar, actualizar requirement si aplica y archivar. |
+| Explicación, reparación contract-preserving, refactor/docs internos | `no-change`: citar límite y ejecutar checks afectados, sin OpenSpec artifacts. |
+| Cambio normal de producto/implementación | `standard-change`. |
+| Seguridad, permisos, datos destructivos, migración, plataforma/dependencia o sistema externo | `high-risk` con verificación independiente. |
+| Idea amplia o capacidad nueva no documentada | Curator/documentación afectada, brief, luego OpenSpec. |
+| Change activo | Recuperar status, tasks y progress; no duplicarlo. |
 
-## Antes de implementar
+## Qué aprobar
 
-Para un change activo, Codex debe:
+Antes del primer edit debes recibir un Implementation Approval Packet con:
 
-1. Ejecutar openspec status --change <id> --json.
-2. Ejecutar openspec instructions apply --change <id> --json.
-3. Reread proposal, specs, design, tasks y el brief cuando existe.
-4. Confirmar que los archivos existen, que el scope coincide, que las rutas son validas y que no hay preguntas bloqueantes.
-5. Crear un plan de delegacion cuando el change se va a implementar.
-6. Cargar solo las skills exactas necesarias.
+- change ID y perfil;
+- requirement o `not-applicable`;
+- readiness y digest SHA-256 de proposal/specs/design/tasks;
+- scope/no-goals y resumen de diseño;
+- plan de tasks, roles, roots y familias de archivos;
+- riesgos, preguntas y plan de verificación.
 
-Despues debe mostrarte un Implementation Approval Packet y detenerse antes de cambiar codigo. El paquete debe incluir change ID, requirement vinculado, readiness, scope, resumen de diseno, plan de tareas, delegacion, raices editables, familias de archivos esperadas, riesgos, preguntas abiertas y verificacion. Puedes aprobar explicitamente o pedir ajustes; si pides ajustes, Codex actualiza los artifacts y vuelve a presentar el paquete.
+Responde explícitamente si lo apruebas. Si pides un ajuste, el agente modifica
+planificación y presenta un digest nuevo. Cambiar sólo checkboxes no invalida
+la aprobación.
 
-## Durante implementacion
+## Cómo leer el progreso
 
-Cada change implementado debe tener apply-progress.md. Es acumulativo y registra estado, tareas completas, archivos, decisiones, problemas, tareas restantes, skills, `approvalCheckpoint` y, cuando hay owner tags, `delegationPlan`.
+`tasks.md` es la autoridad de completitud. `apply-progress.md` schema 3 contiene
+un snapshot legible por máquina:
 
-`approvalCheckpoint` deja evidencia de que el paquete fue aprobado antes o junto al primer edit de implementacion. El validador comprueba que esa evidencia exista y tenga forma valida; no pretende probar criptograficamente lo ocurrido en el chat.
+- perfil y tareas completas/restantes;
+- approval checkpoint ligado al digest;
+- ownership plan con un escritor por artifact;
+- execution records compactos con archivos, checks y riesgos.
 
-Las tareas que pertenecen a roles especializados deben llevar exactamente un
-owner tag, por ejemplo `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u
-`[orchestrator]`. El plan de delegacion schema v2 cubre esos roles con task IDs,
-roots, skills, `skillResolution`, modo planeado/real, budget, milestones y
-artifacts exclusivos.
+`inline` no necesita budget ni milestones. `subagent` sí los registra.
+`runtime-fallback` sólo es válido con fallo real, una recuperación acotada y
+escritor previo detenido. Esto elimina narración falsa para trabajo ejecutado
+deliberadamente inline.
 
-tasks.md sigue siendo la autoridad de completitud. Si ambos documentos difieren, Codex debe reconciliarlos antes de continuar.
+Los roles cargan sólo skills necesarias; ejemplos extensos se consultan bajo
+`.agent/reference/`. Los presupuestos 10/20/15 son ventanas mínimas para
+subagentes, no timeouts de comandos. Un polling vacío no justifica
+interrupción.
 
-Los roles reciben un handoff con tarea, change, estado OpenSpec, raices,
-artifacts exclusivos, skills, modo, budget y milestones. Un ejecutor no
-redelega.
+## Cuándo se actualiza documentación
 
-`inline` significa que el orquestador ejecuta deliberadamente un rol acotado;
-no es un fallo. `subagent` significa un hilo nativo separado.
-`runtime-fallback` solo aparece si un subagente planeado queda inutilizable tras
-una recuperacion acotada y el escritor anterior fue detenido.
+Una capacidad nueva o cambio de scope revisa el inventario. Para un brief
+vinculado, scope/impact estable y sin maintained files tocados permite
+`unchanged-scope` sin curator; impacto material exige curator. Un change
+técnico sin brief registra `not-applicable`. Estos no-ops con razón son
+evidencia válida, no una omisión.
 
-El harness prefiere subagentes para investigacion/review independiente y
-trabajo de un solo escritor con paralelismo util. Mantiene inline los artifacts
-pequenos del camino critico cuando el orquestador ya tiene el contexto. La
-arquitectura delegada es consultiva por defecto; la autoria requiere inputs,
-template, stopping condition, artifact exclusivo y maximo de 8 rondas salvo
-override.
+## Verificación y costo
 
-Los presupuestos por defecto son 10 minutos para planning/curation, 20 para
-implementacion y 15 para verificacion. No son timeouts rigidos. Los waits cortos
-sirven para observar la UI; no autorizan interrupcion. Como maximo se hace una
-recuperacion, y nunca se reemplaza un escritor sin confirmar que termino.
+Durante implementación se permite `pnpm verify:fast`. Al final se congela el
+trabajo y se ejecuta exactamente un `pnpm verify`. El runner corre una vez y
+mide:
 
-En Codex, los roles nativos viven en `.codex/agents/*.toml`. Si se agregaron
-despues de abrir el hilo, abre un chat nuevo o recarga/reinicia la extension si
-no aparecen. Esto es un problema de discovery, no de perdida de trabajo: un
-subagente nativo generico puede recibir el mismo handoff portable.
+1. specs/harness;
+2. Vitest unit/component;
+3. TypeScript no incremental;
+4. lint completo;
+5. build de producción.
 
-Para un change de producto vinculado a un brief, tasks.md incluye una tarea
-`[agent-requirements-curator]` antes de la verificacion final. El curator revisa
-el inventario documental, actualiza solo el material afectado o registra
-`no-change`/`not-applicable` con una justificacion, y devuelve su handoff sin
-recibir trabajo de codigo, pruebas, verificacion o archive.
+Falla rápido. El verifier no reejecuta gates exitosos ni repara código. Para
+`high-risk`, el verifier debe ser independiente.
 
-Mientras cambia el codigo, el ejecutor agrega pruebas focalizadas y usa `pnpm verify:fast`. Ese comando acelera el feedback, pero no sustituye la evidencia final.
+El reporte PASS contiene el resultado estructurado y un snapshot SHA-256
+fresco. Cualquier cambio posterior exige una nueva ejecución final.
 
-## Verificacion
+## Archive fail-closed
 
-Ejecuta:
+No se archiva con tasks pendientes, progreso incoherente, digest stale,
+ownership/evidence incompletos, delta incompatible, documentación pendiente,
+gate fallido o snapshot stale.
 
-~~~bash
-pnpm verify
-~~~
+Secuencia:
 
-Esto corre OpenSpec/harness validation, pruebas unitarias y de componentes, typecheck sin cache incremental, lint completo y build. El verifier crea verify-report.md con comandos, duraciones, exit codes, resumen, warnings, conformidad y veredicto PASS o FAIL. La exploracion en navegador es opcional para diagnostico humano y no bloquea PASS ni archive readiness.
+```bash
+openspec status --change <id> --json
+node scripts/validate-harness.mjs --archive-ready <id>
+openspec archive <id> --yes --json
+```
 
-La tarea documental del curator debe terminar antes de `pnpm verify`, para que
-sus cambios formen parte del snapshot SHA-256 y cualquier ajuste posterior
-invalide la evidencia segun la regla existente.
+Luego se actualiza brief/index cuando aplica y se validan specs aceptadas. Ni
+tu confirmación ni un fallo preexistente reemplazan PASS.
 
-Un PASS final incluye un snapshot SHA-256 generado con `node scripts/validate-harness.mjs --snapshot <change-id>`. La validacion normal permite cambios en progreso reconciliados; `node scripts/validate-harness.mjs --archive-ready <change-id>` aplica el preflight terminal estricto.
+## Prompts útiles
 
-Cualquier cambio posterior en implementacion o artifacts invalida el reporte y exige repetir `pnpm verify` y regenerar la evidencia.
+```text
+Clasifica esta tarea y usa el perfil proporcional. Si es no-change, no crees
+artifacts de change.
+```
 
-Nota de version: OpenSpec 1.6 tiene instructions apply, pero no instructions verify ni archive. Para verificar o archivar, Codex debe usar openspec status --change <id> --json como preflight nativo. No se crea una maquina de estados alternativa.
+```text
+Continúa <id>. Recupera OpenSpec/tasks/progress y presenta el Approval Packet
+ligado al planning digest antes de editar.
+```
 
-## Archive
-
-No archives un change si:
-
-- quedan tareas sin marcar;
-- falta apply-progress.md o no coincide con tasks.md;
-- falta approvalCheckpoint valido para la implementacion iniciada;
-- faltan delegationPlan o handoffs para tareas owner-tagged completadas;
-- faltan modos, budgets, milestones o artifacts exclusivos, hay escritores
-  duplicados, o un fallback no tiene recuperacion;
-- falta verify-report.md PASS;
-- el snapshot de evidencia falta o quedo stale;
-- el brief o indice de requirements vinculados no se puede actualizar coherentemente.
-
-Para un change con brief, marca el brief y su fila de indice como implemented con la referencia archive. Para un change tecnico sin brief, registra no requirement as applicable.
-
-El cierre es fail-closed: no hay override por confirmacion ni por fallos preexistentes. Finaliza tasks/progress, ejecuta `pnpm verify`, crea PASS + snapshot, valida readiness, usa `openspec archive <change-id> --yes --json`, actualiza brief/indice y valida las specs aceptadas. No se mueve el directorio manualmente.
-
-## Ejemplo de tarea tecnica pequena
-
-Pedido: Actualiza una guia interna para aclarar el nombre de un comando, sin cambiar comportamiento.
-
-Clasificacion: .agent + verificacion. No hace falta requirement brief. OpenSpec es opcional si se quiere trazabilidad tecnica.
-
-Si se clasifica `no-change`, ejecuta checks aplicables sin status de change, apply-progress.md ni verify-report.md; la evidencia se devuelve en el handoff o resultado final.
-
-## Prompts utiles
-
-Crear o continuar un change:
-
-~~~text
-Usa el harness SDD. Recupera el estado de <change-id> con OpenSpec, tasks.md y apply-progress.md. Presenta el Implementation Approval Packet y no implementes hasta mi aprobacion explicita.
-~~~
-
-Trabajo interno:
-
-~~~text
-Clasifica este refactor/documentacion. Si no cambia el contrato aceptado, usa .agent y verifica sin forzar requirement brief.
-~~~
-
-Cerrar:
-
-~~~text
-Verifica <change-id>, crea el verify-report.md, reconcilia progreso y tasks, actualiza el requirement si aplica y archiva solo si todos los gates son PASS.
-~~~
+```text
+Verifica <id> con una sola ejecución final; no repitas gates exitosos y no
+archives si strict readiness falla.
+```

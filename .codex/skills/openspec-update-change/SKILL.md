@@ -94,7 +94,14 @@ The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guida
 - Read `.agent/skills/spec-driven-development/SKILL.md` and `.agent/skill-registry.md` before revising planning artifacts.
 - Require an explicit or unambiguous active change and run `openspec status --change "<change-id>" --json`.
 - Edit only planning artifacts returned by `artifactPaths.<artifact>.existingOutputPaths`; never write to implementation code, generated evidence, or a glob `resolvedOutputPath`.
-- Preserve linked requirement context. If a revision changes scope, behavior, tasks, or verification, keep proposal, delta specs, design, and tasks coherent before implementation resumes.
-- If the revision changes a linked product requirement's documented scope, retain or add its pre-verification `[agent-requirements-curator]` reconciliation task and require the bounded documentation review before final verification.
-- If artifacts change after an Implementation Approval Packet or `approvalCheckpoint`, require a fresh approval packet before further implementation edits.
-- If PASS evidence already exists, changing covered planning artifacts invalidates the snapshot; repeat `pnpm verify`, refresh `verify-report.md`, and rerun strict archive readiness before archive.
+- Preserve the assurance profile and linked requirement context. If a revision
+  changes scope, behavior, tasks, or verification, keep all planning artifacts
+  coherent before implementation resumes.
+- If revision changes a linked product requirement's documented scope or
+  planned documentation impact, add/retain curator reconciliation; unchanged
+  `none` impact may retain structured no-op reconciliation.
+- Recompute the planning digest. If artifacts change after an Implementation
+  Approval Packet or `approvalCheckpoint`, require a fresh packet/checkpoint
+  before further implementation edits.
+- If PASS evidence exists, invalidate it; run the single timed `pnpm verify`
+  again only after implementation is reconciled.

@@ -25,9 +25,14 @@ Prefer a few contract-shaped cases over broad permutations. Include the regressi
 - `pnpm test:unit` is the watch-mode authoring loop.
 - `pnpm test:unit:run` is the deterministic unit/component gate.
 - `pnpm verify:fast` is provisional implementation feedback; it is not archive evidence.
-- `pnpm verify` is the final aggregate for specs/harness, unit/component tests, non-incremental typecheck, full lint, and production build.
+- `pnpm verify` is the single timed final runner for specs/harness,
+  unit/component tests, non-incremental typecheck, full lint, and production
+  build. Execute it exactly once after implementation is frozen.
 
-Record exact commands, exit codes, durations, and warnings in `verify-report.md`. Include test and configuration files in `filesChanged` and the SHA-256 snapshot; exclude caches and generated runtime artifacts.
+Persist the runner's structured commands, exit codes, durations, summaries, and
+warnings in `verify-report.md`; do not replay successful gates. Include test
+and configuration files in `filesChanged` and the SHA-256 snapshot; exclude
+caches and generated runtime artifacts.
 
 ## Optional Manual Exploration
 

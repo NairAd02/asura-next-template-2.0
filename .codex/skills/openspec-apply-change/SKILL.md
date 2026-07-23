@@ -166,12 +166,23 @@ This skill supports the "actions on a change" model:
 The local overlay takes precedence over generated guidance above.
 
 - Before any implementation edit, run both `openspec status --change "<change-id>" --json` and `openspec instructions apply --change "<change-id>" --json`.
-- Read every returned context file and the linked requirement brief. Block apply until proposal, delta specs, design, and tasks are coherent, paths are reachable or planned, and no blocking question remains.
-- Present an Implementation Approval Packet with change ID, linked requirement status, readiness summary, intended scope, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. Stop after presenting it unless the operator has explicitly approved that packet for the current artifacts.
+- Read returned context and the linked brief. Classify the assurance profile and
+  block until proposal, delta specs, design, and tasks are coherent.
+- Compute the planning digest with
+  `node scripts/validate-harness.mjs --planning-digest <change-id>`.
+  Present the complete Implementation Approval Packet and stop unless the
+  operator explicitly approved that exact artifact set/digest.
 - If the operator requests adjustments, update the applicable planning artifacts before implementation and present the packet again.
-- Record `Current Snapshot.approvalCheckpoint` in `apply-progress.md` before or with the first implementation edit.
+- Before or with the first edit, record schema-v3 `apply-progress.md`,
+  `ownershipPlan`, approvalCheckpoint schema 2, and compact
+  `executionRecords`; inline evidence omits subagent-only lifecycle fields.
 - Resolve only exact paths from `.agent/skill-registry.md`. Every specialized role uses `.agent/contracts/phase-handoff.md`, explicit editable roots, and no redelegation.
-- Load `.agent/skills/implementation-progress/SKILL.md`; create or update `apply-progress.md` before or with the first implementation edit.
-- Reconcile each task checkbox with the `Current Snapshot` completed/remaining IDs and append every phase handoff cumulatively.
-- For a product change linked to a brief, complete the bounded `[agent-requirements-curator]` documentation-reconciliation handoff before verification; any resulting documentation edits must precede `pnpm verify`.
-- Completing implementation is not archive readiness. Final verification, PASS evidence, SHA-256 snapshot, and strict archive preflight remain required.
+- Load `.agent/skills/implementation-progress/SKILL.md` and reconcile every
+  checkbox with completed/remaining IDs and successful owner records.
+- For a product change linked to a brief, compare the approved impact/digest
+  with implemented scope and maintained-file changes. Record unchanged-scope
+  evidence when safely unchanged; otherwise complete the bounded curator
+  handoff before `pnpm verify`.
+- Completing implementation is not archive readiness. Accepted/delta identity
+  compatibility, exactly one timed `pnpm verify`, PASS evidence, SHA-256
+  snapshot, and strict readiness remain required.

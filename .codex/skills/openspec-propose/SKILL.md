@@ -119,10 +119,16 @@ After completing all artifacts, summarize:
 
 The `LOCAL_HARNESS_INTEGRATION_V1` overlay takes precedence over generated guidance above.
 
-- Read `.agent/skills/spec-driven-development/SKILL.md` and `.agent/skill-registry.md` first.
-- Perform entry classification: broad product intent, business rules, permissions, and flows require requirements curation before executable planning; internal non-contract work may remain `no-change`.
+- Read root governance first. Classify the assurance profile as `no-change`,
+  `standard-change`, or `high-risk`; broad product intent, business rules,
+  permissions, and flows require requirements curation before executable
+  planning. This classification is recorded in the artifacts.
 - When a new product capability is absent from project context and the requirements index, first delegate `agent-requirements-curator` a documentation-only handoff using `docs/documentation-inventory.md`; use its synchronized brief and ledger before creating the change.
 - Link the applicable `docs/requirements/<id>/brief.md` from the proposal, or explicitly record that no requirement applies.
 - Reuse a matching active change; use `openspec status --change "<change-id>" --json` and resolved artifact paths.
-- Tasks cover implementable and verifiable work. A product change linked to a brief includes an `[agent-requirements-curator]` documentation-reconciliation task before verification. Report creation, requirement reconciliation after native archive, and archive movement are close operations, not task checkboxes.
-- Stop after artifact creation for approval. Tell the operator that apply will reread the artifacts, present an Implementation Approval Packet, and wait for explicit approval before implementation edits.
+- Tasks cover implementable/verifiable work. A linked product brief records
+  planned documentation impact; unchanged `none` impact may use structured
+  no-op evidence, while material impact includes curator reconciliation.
+- Compute the planning digest from the exact proposal/spec/design/task path set.
+  Stop after artifacts: apply will reread them, present the exact
+  `Implementation Approval Packet`, and bind explicit approval to that digest.

@@ -155,5 +155,10 @@ The local overlay takes precedence over generated guidance above.
 
 - Require an explicit or unambiguous active change and run `openspec status --change "<change-id>" --json`.
 - Use `artifactPaths.specs.existingOutputPaths` as the authoritative delta list and keep the change active after the idempotent merge.
+- Before merging `MODIFIED` content, preserve accepted requirement and scenario
+  identities; fail on an unmatched accepted identity instead of silently
+  renaming it.
 - Sync is not archive and does not complete implementation tasks.
-- If PASS evidence exists, changing live behavior invalidates its snapshot; update cumulative progress and repeat all four gates before archive.
+- If PASS evidence exists, changing live behavior invalidates its snapshot;
+  update schema-v3 progress and later rerun the single five-gate timed
+  verification runner.

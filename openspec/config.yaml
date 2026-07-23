@@ -48,8 +48,9 @@ rules:
   tasks:
     - Break work into small, independently verifiable steps traceable to proposal, specs, and design.
     - Keep checkbox tasks current; tasks.md is the completion authority.
-    - Include progress creation or updates for implemented changes.
-    - Include verification tasks for OpenSpec validation, non-incremental TypeScript, lint, and Next.js build.
-    - Include verification commands that can finish before report creation.
-    - For a product change linked to a brief, include an `[agent-requirements-curator]` documentation-reconciliation task before verification tasks.
+    - Record the assurance profile, digest-bound approval, schema-v3 ownership plan, and compact execution records for implemented changes.
+    - Inline work omits subagent-only budgets and lifecycle fields; subagent and runtime-fallback work records them conditionally.
+    - Include focused provisional checks and one final verification task that runs the timed five-gate `pnpm verify` runner exactly once.
+    - Before final verification, preserve accepted requirement/scenario identities for every MODIFIED delta.
+    - For a product change linked to a brief, plan documentation impact; allow structured unchanged-scope evidence when impact remains none, otherwise include curator reconciliation before verification.
     - Treat verify-report creation, native archive placement, and post-archive requirement/index updates as close operations rather than task checkboxes.

@@ -50,13 +50,18 @@ Archive a completed change in the experimental workflow.
 
 4. **Run fail-closed readiness**
 
-   Read the linked requirement, planning artifacts, `tasks.md`, `apply-progress.md`, and `verify-report.md`. Then run:
+   Read the assurance profile, linked requirement, planning artifacts,
+   `tasks.md`, schema-v3 `apply-progress.md`, and `verify-report.md`. Confirm
+   that the planning digest/approval checkpoint is current and the report
+   contains one structured five-gate `pnpm verify` result. Then run:
 
    ```bash
    node scripts/validate-harness.mjs --archive-ready <change-id>
    ```
 
-   Stop on any failure. Readiness requires reconciled complete tasks, progress status `ready-for-archive`, verdict PASS, a fresh SHA-256 snapshot, and safe local integration. OpenSpec 1.6.0 has no verify or archive instruction phase; status is the native preflight.
+   Stop on any failure. Readiness requires compatible accepted/delta
+   identities, complete tasks/ownership/execution records, PASS, and a fresh
+   SHA-256 snapshot. OpenSpec status is the native preflight.
 
 5. **Perform the native archive**
 

@@ -13,7 +13,7 @@
     "start": "next start",
     "lint": "eslint . && eslint .agent/reference/widget --no-ignore",
     "lint:fast": "eslint . --cache --cache-location .cache/eslint-app && eslint .agent/reference/widget --no-ignore --cache --cache-location .cache/eslint-reference",
-    "validate:harness": "node --test scripts/harness-validation.test.mjs && node scripts/validate-harness.mjs",
+    "validate:harness": "node --test scripts/harness-validation.test.mjs scripts/run-verification.test.mjs && node scripts/validate-harness.mjs",
     "validate:specs": "openspec validate --all --json && pnpm validate:harness",
     "test:unit": "vitest",
     "test:unit:run": "vitest run",
@@ -22,7 +22,7 @@
     "typecheck:reference": "tsc --project tsconfig.reference.json --noEmit --incremental false",
     "typecheck": "pnpm typecheck:app && pnpm typecheck:reference",
     "verify:fast": "pnpm test:unit:run && pnpm typecheck:fast && pnpm lint:fast",
-    "verify": "pnpm validate:specs && pnpm test:unit:run && pnpm typecheck && pnpm lint && pnpm build"
+    "verify": "node scripts/run-verification.mjs"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",

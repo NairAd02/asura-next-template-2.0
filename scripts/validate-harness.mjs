@@ -3,6 +3,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import {
+  createPlanningDigest,
   createEvidenceSnapshot,
   parseProgress,
   validateChangeLifecycle,
@@ -13,6 +14,7 @@ import path from "node:path";
 
 const execFileAsync = promisify(execFile);
 const root = process.cwd();
+const planningDigestIndex = process.argv.indexOf("--planning-digest");
 const snapshotIndex = process.argv.indexOf("--snapshot");
 const archiveReadyIndex = process.argv.indexOf("--archive-ready");
 
@@ -24,6 +26,15 @@ async function openSpecVersion() {
 }
 
 async function main() {
+  if (planningDigestIndex !== -1) {
+    const changeId = process.argv[planningDigestIndex + 1];
+    if (!changeId || changeId.startsWith("--")) {
+      throw new Error("Usage: node scripts/validate-harness.mjs --planning-digest <change-id>");
+    }
+    process.stdout.write(`${JSON.stringify(await createPlanningDigest(root, changeId), null, 2)}\n`);
+    return;
+  }
+
   if (snapshotIndex !== -1) {
     const changeId = process.argv[snapshotIndex + 1];
     if (!changeId || changeId.startsWith("--")) throw new Error("Usage: node scripts/validate-harness.mjs --snapshot <change-id>");

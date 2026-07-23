@@ -1,123 +1,107 @@
 ---
 name: spec-driven-development
-description: Load first for every task. Defines the hybrid docs, OpenSpec, and .agent protocol.
+description: Root lifecycle policy for docs, OpenSpec, .agent execution, approval, verification, and archive.
 ---
 
 # Hybrid Spec-Driven Development
 
-## Principle
+## Authorities
 
-- docs/ is project knowledge and curated requirement intent. Its maintained
-  documentation inventory makes review obligatory and limits edits to material
-  affected by a new product capability or scope change.
-- OpenSpec is the only executable change and accepted-behavior layer.
-- .agent is technical governance: skills, roles, contracts, and reference patterns.
+- `docs/`: curated project context and requirement intent.
+- OpenSpec: executable change state and accepted behavior.
+- `.agent/`: roles, skills, contracts, and reference patterns.
+- `tasks.md`: task completion; `apply-progress.md`: execution evidence;
+  `verify-report.md`: final evidence.
 
-The durable path is:
+Executors use the `HARNESS_EXECUTOR_V1` path and do not load this root skill
+unless explicitly assigned.
 
-docs -> OpenSpec -> .agent -> implementation -> verification -> archive
+## Classification and assurance
 
-## Entry Classification
-
-This skill is part of the root bootstrap. Read `.agent/skill-registry.md` and
-`.agent/agents/orchestrator.md` after loading it only in the root thread.
-Executors entering through `HARNESS_EXECUTOR_V1` use the executor bootstrap in
-`AGENTS.md` and do not repeat classification.
-
-| Incoming task | Required path |
+| Request | Route |
 |---|---|
-| Broad, ambiguous, or product intent | Read project context and use requirements-curation before executable work. When a new product capability is absent from project context and requirements, delegate mandatory documentation review first and update only impact-affected material. |
-| Clear behavior change | Create or update an OpenSpec change. Use the linked brief when it exists. |
-| Active change | Recover with OpenSpec status, tasks.md, and apply-progress.md. Do not create a duplicate change. |
-| Refactor, documentation, or internal work without accepted-contract change | Use .agent and verification. OpenSpec is optional; do not force a requirement brief. |
-| Close request | Verify, reconcile evidence, update the requirement when applicable, then archive. |
+| Broad/product intent | Requirements curator; review documentation impact before a new missing capability. |
+| Ready behavior change | Create/update OpenSpec and link a brief when applicable. |
+| Named active change | Recover status, tasks, and progress; never duplicate it. |
+| Internal refactor/docs without accepted-contract change | `.agent`; OpenSpec optional, no forced brief. |
+| Close | Verify evidence and archive readiness. |
 
-## Native State Preflights
+Choose one assurance profile:
 
-OpenSpec owns state. Never create a custom phase tracker.
+- `no-change`: accepted behavior is preserved (including a repair that restores
+  it) or work is internal/documentary; cite that boundary, run scoped checks,
+  and create no change progress/report.
+- `standard-change`: normal accepted or implementation behavior; approval,
+  schema-v3 evidence, focused tests, and final runner.
+- `high-risk`: destructive data, permissions/security, dependency/platform,
+  migration, external-system, or multi-boundary change; add applicable
+  independent architecture/implementation/documentation roles, independent
+  verification, and risk-specific evidence.
 
-- Before apply: run openspec status --change <id> --json and openspec instructions apply --change <id> --json.
-- Before verification: run openspec status --change <id> --json.
-- Before archive: run openspec status --change <id> --json.
-- Current OpenSpec 1.6 exposes no instructions verify or archive artifact. Do not emulate those unsupported phases; status remains the native authority.
+When impact/risk is uncertain, choose the more rigorous applicable profile and
+keep the uncertainty as an open question.
 
-## Research and Readiness
+## OpenSpec and readiness
 
-Before approving implementation:
+Before apply run `openspec status --change <id> --json` and `openspec
+instructions apply --change <id> --json`. Before verify/archive run status.
+OpenSpec 1.6 has no instructions verify/archive artifact.
 
-1. Read the linked requirement brief when one applies.
-2. Read proposal, delta specs, design, and tasks.
-3. Check that required artifacts exist.
-4. Check scope coherence across artifacts.
-5. Check referenced paths are valid or explicitly planned.
-6. Resolve blocking questions before apply.
-7. Select only exact skills from the registry.
-8. Create a delegation plan for implemented OpenSpec work before the first implementation edit.
-9. Present an Implementation Approval Packet and stop until the operator explicitly approves it.
+Reread the applicable brief, proposal, delta specs, design, and tasks. Confirm
+they exist, agree on scope, reference reachable paths, and contain no blocking
+question. Then present an Implementation Approval Packet: change/profile,
+requirement status, readiness, scope/non-goals, design, task/ownership plan,
+editable roots/file families, risks/questions, and verification. Stop for
+explicit approval.
 
-A requirement brief is needed for broad product intent, business rules, permissions, flows, or behavior changes. It is not mandatory for an internal technical task with no contract change.
+Record approval before or with the first implementation edit. Its checkpoint
+uses the exact sorted planning path set and SHA-256 from:
 
-For a new product capability absent from `docs/project-context.md` and the
-requirements index, the orchestrator sends `agent-requirements-curator` a
-bounded documentation-review handoff before OpenSpec planning. The curator
-reviews `docs/documentation-inventory.md`, updates only source material
-affected by the documented impact, and records `updated`, `no-change`, or
-`not-applicable` outcomes with rationale in the brief.
+`node scripts/validate-harness.mjs --planning-digest <change-id>`
 
-The Implementation Approval Packet includes change ID, linked requirement status, readiness summary, intended scope and non-goals, design summary, task execution plan, delegation plan, editable roots, expected file families, risks, open questions, and verification plan. If the operator requests adjustments, update proposal, specs, design, or tasks first, then present the packet again.
+Planning edits stale approval; task checkbox updates do not.
 
-## Implementation
+## Execution
 
-- Follow tasks.md; update its checkboxes as tasks complete.
-- Owner-tag tasks that map to specialized roles, using tags such as `[orchestrator]`, `[agent-data]`, `[agent-ui]`, `[agent-architect]`, or `[agent-verifier]`.
-- Load the implementation-progress skill for every implemented change.
-- Create and update apply-progress.md cumulatively. Before or with the first implementation edit, record `approvalCheckpoint` evidence for the approved Implementation Approval Packet.
-- Keep tasks.md as the completion authority.
-- Every product change linked to a requirement brief includes an
-  `[agent-requirements-curator]` documentation-reconciliation task before final
-  verification. The curator records the mandatory review, edits only
-  impact-affected material, and persists its handoff in apply-progress.md
-  before `pnpm verify`.
-- Load behavior-testing when deterministic behavior changes and make the owning executor create the smallest valuable tests with the implementation.
-- Use `pnpm verify:fast` only as provisional feedback while implementation is changing.
-- Update proposal, specs, design, or tasks before continuing when implementation discovers a scope or behavior change.
-- Use shared components and existing dependencies before creating new abstractions.
-- Preserve strict TypeScript and existing module conventions.
+- Create schema-v3 `ownershipPlan` before implementation and follow owner-tagged
+  tasks.
+- `inline` suits small/tightly coupled work; `subagent` suits independent
+  research or one-writer parallel work; `runtime-fallback` requires a failed
+  planned subagent and recovery evidence.
+- Use the phase-handoff contract and only exact registry skills.
+- Give each exclusive artifact one active writer. Executors never redelegate.
+- Subagent-only budgets/milestones are 10 minutes planning/curation, 20
+  implementation, and 15 verification by default. A yielded wait is not a
+  timeout; after budget exhaustion allow one recovery, stop the old writer,
+  then confirm terminal state before takeover.
+- Architect delegation is advisory by default. Authorship requires exact
+  inputs/template, exclusive artifact, `maxResearchRounds` (8 default), and
+  stopping condition.
+- Use focused behavior tests and `pnpm verify:fast` while editing.
+- For a linked product brief, compare approved documentation impact, current
+  digest, implemented scope, and maintained paths before final verification.
+  Unchanged scope with planned impact `none` records structured
+  `unchanged-scope`/`no-change`; material scope or maintained-file changes
+  require the curator. Requirementless work records `not-applicable`.
 
-## Proportional Specialized Execution
+## Verification and close
 
-Use `.agent/contracts/phase-handoff.md` for every specialized role. Role
-ownership does not force a separate thread.
+Before expensive gates, validate accepted/delta `MODIFIED` requirement and
+scenario identity. Final evidence comes from exactly one `pnpm verify`, whose
+runner executes specs/harness, unit/component, non-incremental typecheck, full
+lint, and build once in order with timings.
 
-- Before implementation, derive required roles from tasks, changed roots, and the registry.
-- Require a bounded handoff when a change touches more than one registry owner, both data and UI roots, visible text plus behavior, a module route/list/form/filter/modal workflow, or final verification.
-- Persist a schema-v2 delegation plan in apply-progress.md before or with the first implementation edit.
-- Select `inline` for small or tightly coupled critical-path work, `subagent` for independent read-heavy work or one-writer implementation with useful parallelism, and `runtime-fallback` only after a planned subagent fails.
-- Pass `HARNESS_EXECUTOR_V1`, role, bounded task, change ID, native status, allowed roots, exclusive artifacts, exact skill paths, execution mode, budget, milestones, and relevant requirement context.
-- Executors cannot redelegate.
-- If the runtime is known not to support subagents, plan `inline` from the start. If a planned subagent becomes unusable after bounded recovery, record `runtime-fallback`, its concrete trigger, and recovery evidence.
-- Use minimum observation budgets of 10 minutes for planning/curation, 20 for implementation, and 15 for verification unless the task overrides them. Polling waits are not deadlines.
-- Never interrupt a still-running agent solely because a poll returned no final result or an artifact has not appeared. Allow at most one recovery after the budget; stop and confirm the old writer before replacement.
-- Give each authoritative artifact one active writer.
-- Prefer architect subagents as bounded advisors. Delegated design authorship must include exact inputs, a template, `maxResearchRounds` (default 8), a stopping condition, and exclusive ownership.
-- A role reports the complete phase-handoff output, including skill resolution, execution mode, milestones, budget outcome, and fallback/recovery evidence when applicable.
+Finalize tasks/progress, persist structured PASS/FAIL gate output, generate a
+fresh SHA-256 evidence snapshot, and run strict archive readiness. Any covered
+edit invalidates the report. Archive only with `openspec archive <id> --yes
+--json`, then reconcile the linked requirement/index and validate accepted
+specs. No confirmation or pre-existing failure overrides PASS.
 
-## Verification and Archive
+For `no-change`, cite the accepted contract or internal boundary and select
+checks by affected roots: documentation coherence for docs-only work;
+harness fixtures/validation for governance; focused tests plus applicable
+typecheck/lint for implementation repair; build only for route, build,
+dependency, or configuration risk.
 
-- Use the verification-harness and implementation-progress skills at close, plus behavior-testing when deterministic behavior changes.
-- Run `pnpm verify` for specs/harness validation, unit/component tests, non-incremental typecheck, full lint, and build.
-- Persist verify-report.md with PASS or FAIL.
-- Any later implementation or change-artifact modification invalidates the report and requires the final command and fresh evidence again.
-- Continuous harness validation permits a reconciled in-progress change without final evidence. Strict `--archive-ready` validation requires all tasks complete, progress `ready-for-archive`, and a fresh PASS snapshot.
-- Archive only after tasks, progress, report, and linked requirement close data are coherent. No pre-existing failure or confirmation can override PASS.
-- Use only `openspec archive <change-id> --yes --json`; never move a change directory manually.
-
-For `no-change` internal work, run applicable checks and return their evidence in the handoff/final response without change status, progress, or report artifacts.
-
-Terminal order: finalize implementation and verification task definitions, run `pnpm verify`, finalize verification task IDs, generate PASS report plus SHA-256 snapshot, run status and strict archive readiness, archive natively, update requirement/index, then validate accepted specs.
-
-## Reference Material
-
-- .agent/reference/widget/ is a code-pattern reference only.
-- .agent/reference/spec-example/ is a requirement-quality reference only.
-- Executable specifications live only in openspec/specs and active changes.
+Reference implementations are lazy inputs under `.agent/reference/widget/`;
+requirement-quality examples are under `.agent/reference/spec-example/`.
