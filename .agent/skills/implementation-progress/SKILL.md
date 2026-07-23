@@ -27,7 +27,7 @@ Maintain one machine-readable current summary followed by durable narrative hist
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "status": "in-progress",
   "completedTaskIds": ["1.1"],
   "remainingTaskIds": ["1.2"],
@@ -42,7 +42,7 @@ Maintain one machine-readable current summary followed by durable narrative hist
     "artifactsReviewed": ["proposal.md", "design.md", "tasks.md", "specs/example/spec.md"]
   },
   "delegationPlan": {
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "requiredRoles": ["agent-data"],
     "roles": [
       {
@@ -50,8 +50,20 @@ Maintain one machine-readable current summary followed by durable narrative hist
         "taskIds": ["1.1"],
         "allowedRoots": ["modules/example/lib/**"],
         "skills": [".agent/skills/data-layer/SKILL.md"],
-        "resolution": "paths-injected",
-        "fallbackReason": ""
+        "skillResolution": "paths-injected",
+        "executionMode": "subagent",
+        "plannedMode": "subagent",
+        "budgetClass": "implementation",
+        "budgetMinutes": 20,
+        "expectedMilestones": [
+          "started",
+          "context-loaded",
+          "artifact-written",
+          "completed"
+        ],
+        "exclusiveArtifacts": ["modules/example/lib/example.services.ts"],
+        "fallbackReason": "",
+        "recoveryEvidence": ""
       }
     ]
   },
@@ -61,13 +73,37 @@ Maintain one machine-readable current summary followed by durable narrative hist
 ~~~
 
 - `status` is `in-progress`, `blocked`, `ready-for-verification`, or `ready-for-archive`.
+- The Current Snapshot uses schema version 2. `approvalCheckpoint` and the
+  terminal Evidence Snapshot remain independently versioned schema-1 records.
 - Task IDs SHALL exactly match the numbered checkbox IDs in `tasks.md`.
 - `filesChanged` SHALL contain sorted repository-relative source/artifact paths covered by verification; omit generated outputs and deleted paths.
 - `approvalCheckpoint` SHALL exist once implementation starts. It uses schema version 1, status `approved`, identifies the human operator, records the approval source, includes a concise packet summary, and lists the reviewed planning artifacts. It is evidence that the Implementation Approval Packet was presented and approved; the validator checks record shape, not cryptographic proof of the chat event.
-- `delegationPlan` SHALL exist when tasks.md contains owner-tagged tasks. It uses schema version 1, lists required roles, and gives each role task IDs, allowed roots, exact skills, resolution (`paths-injected` or `inline-fallback`), and a fallback reason when inline fallback is used.
+- `delegationPlan` SHALL exist when tasks.md contains owner-tagged tasks. It
+  uses schema version 2 and gives each role task IDs, allowed roots, exact
+  skills, `skillResolution` (`paths-injected` or `none`), `executionMode`
+  (`inline`, `subagent`, or `runtime-fallback`), original `plannedMode`, budget
+  class/minutes, expected milestones, exclusive artifacts, and
+  fallback/recovery evidence.
+- Planned `inline` work uses `plannedMode: inline`, empty fallback/recovery
+  strings, and requires no failure story.
+- `runtime-fallback` requires `plannedMode: subagent`, a concrete
+  `fallbackReason`, and `recoveryEvidence` that includes the bounded recovery
+  attempt and confirmation that the previous writer stopped.
+- Default minimum observation budgets are 10 minutes for planning/curation, 20
+  minutes for implementation, and 15 minutes for verification. A task may
+  override them. They are not shell timeouts or polling intervals.
+- Expected and observed milestones come from `started`, `context-loaded`,
+  `recommendation-ready`, `artifact-written`, `completed`, and `blocked`.
+- `exclusiveArtifacts` records one-writer ownership. Two concurrently
+  executable entries SHALL NOT claim the same artifact.
 - Preserve `## Decisions and Deviations`, `## Problems`, and a cumulative `## Handoff History` after the snapshot.
-- Every handoff entry records the complete phase-handoff output, including allowed roots and exact skill paths.
-- Completed owner-tagged tasks SHALL be covered by `## Handoff History`; inline fallback requires both `Skill resolution: inline-fallback` and a concrete fallback reason.
+- Every handoff entry records the complete phase-handoff output, including
+  allowed roots, exact skill paths, skill resolution, execution mode, planned
+  mode, lifecycle milestones, budget outcome, exclusive artifacts, and
+  fallback/recovery evidence when applicable.
+- Completed owner-tagged tasks SHALL be covered by `## Handoff History`.
+- The validator verifies structured evidence and internal coherence. It does
+  not prove real provider activity, elapsed time, or chat events.
 
 When progress and tasks.md disagree, stop and reconcile the discrepancy before continuing.
 

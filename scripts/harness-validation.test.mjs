@@ -8,6 +8,7 @@ import {
   createEvidenceSnapshot,
   validateChangeLifecycle,
   validateLocalSkillIntegration,
+  validateRuntimeAdapters,
   validateVerificationScripts,
 } from "./harness-validation.mjs";
 
@@ -20,7 +21,7 @@ async function write(root, relativePath, content) {
 function progress(overrides = {}) {
   const { handoffHistory = "- verifier pending.", ...snapshotOverrides } = overrides;
   const value = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: "ready-for-archive",
     completedTaskIds: ["1.1"],
     remainingTaskIds: [],
@@ -47,20 +48,58 @@ function approvalCheckpoint(overrides = {}) {
 
 function delegationPlan(overrides = {}) {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     requiredRoles: ["agent-data"],
-    roles: [
-      {
-        role: "agent-data",
-        taskIds: ["1.1"],
-        allowedRoots: ["src/**"],
-        skills: [".agent/skills/data-layer/SKILL.md"],
-        resolution: "paths-injected",
-        fallbackReason: "",
-      },
-    ],
+    roles: [delegationRole()],
     ...overrides,
   };
+}
+
+function delegationRole(overrides = {}) {
+  return {
+    role: "agent-data",
+    taskIds: ["1.1"],
+    allowedRoots: ["src/**"],
+    skills: [".agent/skills/data-layer/SKILL.md"],
+    skillResolution: "paths-injected",
+    executionMode: "subagent",
+    plannedMode: "subagent",
+    budgetClass: "implementation",
+    budgetMinutes: 20,
+    expectedMilestones: ["started", "context-loaded", "artifact-written", "completed"],
+    exclusiveArtifacts: ["src/example.js"],
+    fallbackReason: "",
+    recoveryEvidence: "",
+    ...overrides,
+  };
+}
+
+function handoff(overrides = {}) {
+  const value = {
+    role: "agent-data",
+    status: "success",
+    completedTasks: "1.1",
+    skillResolution: "paths-injected",
+    executionMode: "subagent",
+    plannedMode: "subagent",
+    milestones: "started, context-loaded, artifact-written, completed",
+    budgetOutcome: "completed within the 20-minute implementation budget",
+    fallbackReason: "not applicable",
+    recoveryEvidence: "not applicable",
+    ...overrides,
+  };
+  return `### 2026-07-16 - ${value.role}
+
+- Status: ${value.status}.
+- Completed tasks: ${value.completedTasks}.
+- Skill resolution: ${value.skillResolution}.
+- Execution mode: ${value.executionMode}.
+- Planned mode: ${value.plannedMode}.
+- Lifecycle milestones: ${value.milestones}.
+- Budget outcome: ${value.budgetOutcome}.
+- Fallback reason: ${value.fallbackReason}.
+- Recovery evidence: ${value.recoveryEvidence}.
+`;
 }
 
 async function createFixture() {
@@ -87,6 +126,49 @@ async function withFixture(callback) {
   } finally {
     await rm(fixture.root, { recursive: true, force: true });
   }
+}
+
+const runtimeAgentDefinitions = [
+  ["agent-architect", "medium"],
+  ["agent-data", "high"],
+  ["agent-requirements-curator", "medium"],
+  ["agent-ui", "high"],
+  ["agent-verifier", "high"],
+];
+
+async function createRuntimeFixture() {
+  const root = await mkdtemp(path.join(os.tmpdir(), "harness-runtime-"));
+  await write(
+    root,
+    "AGENTS.md",
+    [
+      "HARNESS_EXECUTOR_V1",
+      "non-root executor handoff",
+      ".agent/contracts/phase-handoff.md",
+      ".agent/skills/spec-driven-development/SKILL.md",
+      ".agent/skill-registry.md",
+      ".agent/agents/orchestrator.md",
+    ].join("\n"),
+  );
+  await write(root, ".codex/config.toml", "[agents]\nenabled = true\nmax_concurrent_threads_per_session = 4\n");
+  for (const [name, reasoning] of runtimeAgentDefinitions) {
+    const rolePath = `.agent/agents/${name}.md`;
+    await write(root, rolePath, `HARNESS_EXECUTOR_V1\nUse .agent/contracts/phase-handoff.md.\n`);
+    await write(
+      root,
+      `.codex/agents/${name}.toml`,
+      `name = "${name}"
+description = "Bounded ${name}."
+model_reasoning_effort = "${reasoning}"
+sandbox_mode = "workspace-write"
+developer_instructions = """
+HARNESS_EXECUTOR_V1
+Read .agent/contracts/phase-handoff.md and ${rolePath}.
+"""
+`,
+    );
+  }
+  return root;
 }
 
 test("rejects pending tasks", async () => {
@@ -164,8 +246,7 @@ test("accepts owner-tagged task with matching delegation plan and handoff", asyn
       `openspec/changes/${change}/apply-progress.md`,
       progress({
         delegationPlan: delegationPlan(),
-        handoffHistory:
-          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+        handoffHistory: handoff(),
       }),
     );
     assert.deepEqual(await validateChangeLifecycle(root, change), []);
@@ -188,8 +269,7 @@ test("rejects duplicate owner tags on one task", async () => {
       `openspec/changes/${change}/apply-progress.md`,
       progress({
         delegationPlan: delegationPlan(),
-        handoffHistory:
-          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+        handoffHistory: handoff(),
       }),
     );
     const errors = await validateChangeLifecycle(root, change);
@@ -205,19 +285,9 @@ test("rejects owner-tagged task not covered by delegationPlan task IDs", async (
       `openspec/changes/${change}/apply-progress.md`,
       progress({
         delegationPlan: delegationPlan({
-          roles: [
-            {
-              role: "agent-data",
-              taskIds: ["9.9"],
-              allowedRoots: ["src/**"],
-              skills: [".agent/skills/data-layer/SKILL.md"],
-              resolution: "paths-injected",
-              fallbackReason: "",
-            },
-          ],
+          roles: [delegationRole({ taskIds: ["9.9"] })],
         }),
-        handoffHistory:
-          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+        handoffHistory: handoff(),
       }),
     );
     const errors = await validateChangeLifecycle(root, change);
@@ -225,7 +295,24 @@ test("rejects owner-tagged task not covered by delegationPlan task IDs", async (
   });
 });
 
-test("rejects inline-fallback without fallbackReason", async () => {
+test("accepts planned inline execution without fallback evidence", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [delegationRole({ executionMode: "inline", plannedMode: "inline" })],
+        }),
+        handoffHistory: handoff({ executionMode: "inline", plannedMode: "inline" }),
+      }),
+    );
+    assert.deepEqual(await validateChangeLifecycle(root, change), []);
+  });
+});
+
+test("accepts coherent runtime fallback evidence", async () => {
   await withFixture(async ({ root, change }) => {
     await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
     await write(
@@ -234,22 +321,143 @@ test("rejects inline-fallback without fallbackReason", async () => {
       progress({
         delegationPlan: delegationPlan({
           roles: [
-            {
-              role: "agent-data",
-              taskIds: ["1.1"],
-              allowedRoots: ["src/**"],
-              skills: [".agent/skills/data-layer/SKILL.md"],
-              resolution: "inline-fallback",
-              fallbackReason: "",
-            },
+            delegationRole({
+              executionMode: "runtime-fallback",
+              fallbackReason: "The native subagent reported a terminal tool error.",
+              recoveryEvidence: "One bounded retry failed and the previous writer was confirmed stopped.",
+            }),
           ],
         }),
-        handoffHistory:
-          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: inline-fallback.\n",
+        handoffHistory: handoff({
+          executionMode: "runtime-fallback",
+          fallbackReason: "native subagent terminal tool error",
+          recoveryEvidence: "one retry failed; previous writer confirmed stopped",
+        }),
+      }),
+    );
+    assert.deepEqual(await validateChangeLifecycle(root, change), []);
+  });
+});
+
+test("rejects missing budgets and lifecycle milestones", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [delegationRole({ budgetMinutes: undefined, expectedMilestones: [] })],
+        }),
+        handoffHistory: handoff(),
       }),
     );
     const errors = await validateChangeLifecycle(root, change);
-    assert.ok(errors.some((error) => error.includes("without a fallbackReason")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("budgetMinutes")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("expectedMilestones must include started")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("expectedMilestones must include completed")), errors.join("\n"));
+  });
+});
+
+test("rejects false fallback evidence on planned inline work", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [
+            delegationRole({
+              executionMode: "inline",
+              plannedMode: "inline",
+              fallbackReason: "No subagent was attempted.",
+            }),
+          ],
+        }),
+        handoffHistory: handoff({ executionMode: "inline", plannedMode: "inline" }),
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("fallbackReason without runtime-fallback")), errors.join("\n"));
+  });
+});
+
+test("rejects malformed runtime fallback recovery", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [
+            delegationRole({
+              executionMode: "runtime-fallback",
+              plannedMode: "inline",
+              fallbackReason: "",
+              recoveryEvidence: "",
+            }),
+          ],
+        }),
+        handoffHistory: handoff({
+          executionMode: "runtime-fallback",
+          plannedMode: "inline",
+          fallbackReason: "not applicable",
+          recoveryEvidence: "none",
+        }),
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("requires plannedMode subagent")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("requires fallbackReason")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("requires recoveryEvidence")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("concrete Fallback reason")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("concrete Recovery evidence")), errors.join("\n"));
+  });
+});
+
+test("rejects duplicate exclusive artifact writers", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan({
+          roles: [
+            delegationRole(),
+            delegationRole({
+              role: "agent-ui",
+              taskIds: ["9.9"],
+              skills: [".agent/skills/client-views-modals/SKILL.md"],
+            }),
+          ],
+        }),
+        handoffHistory: handoff(),
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("assigned to both agent-data and agent-ui")), errors.join("\n"));
+  });
+});
+
+test("rejects completed handoff without execution and lifecycle evidence", async () => {
+  await withFixture(async ({ root, change }) => {
+    await write(root, `openspec/changes/${change}/tasks.md`, "- [x] 1.1 [agent-data] Implement example.\n");
+    await write(
+      root,
+      `openspec/changes/${change}/apply-progress.md`,
+      progress({
+        delegationPlan: delegationPlan(),
+        handoffHistory:
+          "### 2026-07-16 - agent-data\n\n- Status: success.\n- Completed tasks: 1.1.\n- Skill resolution: paths-injected.\n",
+      }),
+    );
+    const errors = await validateChangeLifecycle(root, change);
+    assert.ok(errors.some((error) => error.includes("lacks Execution mode evidence")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("lacks lifecycle outcome evidence")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("lacks Budget outcome evidence")), errors.join("\n"));
   });
 });
 
@@ -261,13 +469,51 @@ test("rejects completed owner-tagged role with no matching handoff history", asy
       `openspec/changes/${change}/apply-progress.md`,
       progress({
         delegationPlan: delegationPlan(),
-        handoffHistory:
-          "### 2026-07-16 - agent-ui\n\n- Status: success.\n- Completed tasks: none.\n- Skill resolution: paths-injected.\n",
+        handoffHistory: handoff({ role: "agent-ui", completedTasks: "none" }),
       }),
     );
     const errors = await validateChangeLifecycle(root, change);
     assert.ok(errors.some((error) => error.includes("lack matching Handoff History")), errors.join("\n"));
   });
+});
+
+test("accepts coherent root, executor, and Codex adapter definitions", async () => {
+  const root = await createRuntimeFixture();
+  try {
+    assert.deepEqual(await validateRuntimeAdapters(root), []);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("rejects root-to-executor bootstrap regression", async () => {
+  const root = await createRuntimeFixture();
+  try {
+    await write(root, "AGENTS.md", ".agent/skills/spec-driven-development/SKILL.md\n");
+    const errors = await validateRuntimeAdapters(root);
+    assert.ok(errors.some((error) => error.includes("HARNESS_EXECUTOR_V1")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("non-root executor entry")), errors.join("\n"));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("rejects missing and invalid Codex agent adapters", async () => {
+  const root = await createRuntimeFixture();
+  try {
+    await rm(path.join(root, ".codex", "agents", "agent-ui.toml"));
+    const architectPath = path.join(root, ".codex", "agents", "agent-architect.toml");
+    const architect = await readFile(architectPath, "utf8");
+    await writeFile(architectPath, architect.replace('model_reasoning_effort = "medium"', 'model_reasoning_effort = "high"'), "utf8");
+    const errors = await validateRuntimeAdapters(root);
+    assert.ok(errors.some((error) => error.includes("agent-ui.toml") && error.includes("file is missing")), errors.join("\n"));
+    assert.ok(
+      errors.some((error) => error.includes("agent-architect.toml") && error.includes("must be medium")),
+      errors.join("\n"),
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test("rejects unsafe archive skill integration", async () => {

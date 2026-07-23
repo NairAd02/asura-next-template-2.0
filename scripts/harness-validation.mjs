@@ -24,14 +24,66 @@ const GUIDANCE_FILES = [
   ".agent/skills/implementation-progress/SKILL.md",
   ".agent/skills/verification-harness/SKILL.md",
   ".agent/agents/orchestrator.md",
+  ".agent/agents/agent-architect.md",
+  ".agent/agents/agent-data.md",
+  ".agent/agents/agent-requirements-curator.md",
+  ".agent/agents/agent-ui.md",
   ".agent/agents/agent-verifier.md",
 ];
 
 const OWNER_TAG_PATTERN = /\[(orchestrator|agent-[a-z0-9-]+)\]/g;
-const VALID_SKILL_RESOLUTIONS = new Set(["paths-injected", "inline-fallback", "none"]);
+const VALID_SKILL_RESOLUTIONS = new Set(["paths-injected", "none"]);
+const VALID_EXECUTION_MODES = new Set(["inline", "subagent", "runtime-fallback"]);
+const VALID_PLANNED_MODES = new Set(["inline", "subagent"]);
+const VALID_BUDGET_CLASSES = new Set(["planning", "curation", "implementation", "verification"]);
+const VALID_MILESTONES = new Set([
+  "started",
+  "context-loaded",
+  "recommendation-ready",
+  "artifact-written",
+  "completed",
+  "blocked",
+]);
+const EXECUTOR_MARKER = "HARNESS_EXECUTOR_V1";
+const CODEX_AGENT_DEFINITIONS = [
+  {
+    path: ".codex/agents/agent-architect.toml",
+    name: "agent-architect",
+    rolePath: ".agent/agents/agent-architect.md",
+    reasoning: "medium",
+  },
+  {
+    path: ".codex/agents/agent-data.toml",
+    name: "agent-data",
+    rolePath: ".agent/agents/agent-data.md",
+    reasoning: "high",
+  },
+  {
+    path: ".codex/agents/agent-requirements-curator.toml",
+    name: "agent-requirements-curator",
+    rolePath: ".agent/agents/agent-requirements-curator.md",
+    reasoning: "medium",
+  },
+  {
+    path: ".codex/agents/agent-ui.toml",
+    name: "agent-ui",
+    rolePath: ".agent/agents/agent-ui.md",
+    reasoning: "high",
+  },
+  {
+    path: ".codex/agents/agent-verifier.toml",
+    name: "agent-verifier",
+    rolePath: ".agent/agents/agent-verifier.md",
+    reasoning: "high",
+  },
+];
 
 function normalizeRelativePath(value) {
   return value.replaceAll("\\", "/").replace(/^\.\//, "");
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function isSafeRelativePath(value) {
@@ -123,7 +175,7 @@ export function parseProgress(markdown) {
       throw new Error(`Current Snapshot field ${field} must be an array of strings.`);
     }
   }
-  if (snapshot.schemaVersion !== 1) throw new Error("Current Snapshot schemaVersion must be 1.");
+  if (snapshot.schemaVersion !== 2) throw new Error("Current Snapshot schemaVersion must be 2.");
   if (!["in-progress", "blocked", "ready-for-verification", "ready-for-archive"].includes(snapshot.status)) {
     throw new Error("Current Snapshot has an unsupported status.");
   }
@@ -256,6 +308,95 @@ export async function validateGuidance(root) {
   return errors;
 }
 
+function hasTomlString(content, field, value) {
+  const escapedValue = value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^\\s*${field}\\s*=\\s*["']${escapedValue}["']\\s*$`, "m").test(content);
+}
+
+export async function validateRuntimeAdapters(root) {
+  const errors = [];
+  const rootInstructions = await readRequired(root, "AGENTS.md", errors);
+  if (rootInstructions !== null) {
+    const rootTokens = [
+      ".agent/skills/spec-driven-development/SKILL.md",
+      ".agent/skill-registry.md",
+      ".agent/agents/orchestrator.md",
+    ];
+    for (const token of [
+      EXECUTOR_MARKER,
+      ".agent/contracts/phase-handoff.md",
+      ...rootTokens,
+    ]) {
+      if (!rootInstructions.includes(token)) {
+        errors.push(`AGENTS.md: root/executor bootstrap is missing ${token}.`);
+      }
+    }
+    const rootTokenIndexes = rootTokens.map((token) => rootInstructions.indexOf(token));
+    if (
+      rootTokenIndexes.every((index) => index >= 0) &&
+      !(rootTokenIndexes[0] < rootTokenIndexes[1] && rootTokenIndexes[1] < rootTokenIndexes[2])
+    ) {
+      errors.push("AGENTS.md: root bootstrap must load SDD, registry, and orchestrator in that order.");
+    }
+    if (!/non-root|executor handoff/i.test(rootInstructions)) {
+      errors.push("AGENTS.md: root/executor bootstrap must identify non-root executor entry.");
+    }
+  }
+
+  for (const definition of CODEX_AGENT_DEFINITIONS) {
+    const roleContent = await readRequired(root, definition.rolePath, errors);
+    if (roleContent !== null) {
+      for (const token of [EXECUTOR_MARKER, ".agent/contracts/phase-handoff.md"]) {
+        if (!roleContent.includes(token)) {
+          errors.push(`${definition.rolePath}: executor bootstrap is missing ${token}.`);
+        }
+      }
+      if (/read\s+\.agent\/skill-registry\.md/i.test(roleContent)) {
+        errors.push(`${definition.rolePath}: executor must not require the root skill registry bootstrap.`);
+      }
+      if (/read\s+\.agent\/agents\/orchestrator\.md/i.test(roleContent)) {
+        errors.push(`${definition.rolePath}: executor must not require the orchestrator bootstrap.`);
+      }
+    }
+  }
+
+  const config = await readRequired(root, ".codex/config.toml", errors);
+  if (config !== null) {
+    if (!/^\s*\[agents\]\s*$/m.test(config)) errors.push(".codex/config.toml: missing [agents] table.");
+    if (!/^\s*enabled\s*=\s*true\s*$/m.test(config)) errors.push(".codex/config.toml: agents.enabled must be true.");
+    if (!/^\s*max_concurrent_threads_per_session\s*=\s*4\s*$/m.test(config)) {
+      errors.push(".codex/config.toml: max_concurrent_threads_per_session must be 4.");
+    }
+  }
+
+  for (const definition of CODEX_AGENT_DEFINITIONS) {
+    const content = await readRequired(root, definition.path, errors);
+    if (content === null) continue;
+    if (!hasTomlString(content, "name", definition.name)) {
+      errors.push(`${definition.path}: name must be ${definition.name}.`);
+    }
+    for (const field of ["description", "developer_instructions"]) {
+      if (!new RegExp(`^\\s*${field}\\s*=`, "m").test(content)) {
+        errors.push(`${definition.path}: missing required ${field}.`);
+      }
+    }
+    if (!content.includes(EXECUTOR_MARKER)) {
+      errors.push(`${definition.path}: developer instructions must include ${EXECUTOR_MARKER}.`);
+    }
+    if (!content.includes(definition.rolePath)) {
+      errors.push(`${definition.path}: must reference portable role ${definition.rolePath}.`);
+    }
+    if (!hasTomlString(content, "model_reasoning_effort", definition.reasoning)) {
+      errors.push(`${definition.path}: model_reasoning_effort must be ${definition.reasoning}.`);
+    }
+    if (!hasTomlString(content, "sandbox_mode", "workspace-write")) {
+      errors.push(`${definition.path}: sandbox_mode must be workspace-write.`);
+    }
+  }
+
+  return errors;
+}
+
 export async function calculateSnapshotDigest(root, relativePaths) {
   const digest = createHash("sha256");
   digest.update("HARNESS_EVIDENCE_SNAPSHOT_V1\0");
@@ -349,7 +490,7 @@ function validateDelegationPlan(changeId, tasks, progress, progressMarkdown, err
     errors.push(`${changeId}: owner-tagged tasks require Current Snapshot delegationPlan evidence.`);
     return;
   }
-  if (delegationPlan.schemaVersion !== 1) errors.push(`${changeId}: delegationPlan schemaVersion must be 1.`);
+  if (delegationPlan.schemaVersion !== 2) errors.push(`${changeId}: delegationPlan schemaVersion must be 2.`);
   if (
     !Array.isArray(delegationPlan.requiredRoles) ||
     delegationPlan.requiredRoles.some((role) => typeof role !== "string" || role.length === 0)
@@ -362,28 +503,119 @@ function validateDelegationPlan(changeId, tasks, progress, progressMarkdown, err
   }
 
   const rolesByName = new Map();
+  const exclusiveArtifactOwners = new Map();
   for (const entry of delegationPlan.roles) {
     if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
       errors.push(`${changeId}: delegationPlan.roles entries must be objects.`);
       continue;
     }
-    const { role, taskIds, allowedRoots, skills, resolution, fallbackReason } = entry;
+    const {
+      role,
+      taskIds,
+      allowedRoots,
+      skills,
+      skillResolution,
+      executionMode,
+      plannedMode,
+      budgetClass,
+      budgetMinutes,
+      expectedMilestones,
+      exclusiveArtifacts,
+      fallbackReason,
+      recoveryEvidence,
+    } = entry;
     if (typeof role !== "string" || role.length === 0) {
       errors.push(`${changeId}: delegationPlan role entries require a role string.`);
       continue;
     }
     if (rolesByName.has(role)) errors.push(`${changeId}: delegationPlan role ${role} is duplicated.`);
     rolesByName.set(role, entry);
-    for (const [field, value] of Object.entries({ taskIds, allowedRoots, skills })) {
+    for (const [field, value] of Object.entries({
+      taskIds,
+      allowedRoots,
+      skills,
+      expectedMilestones,
+      exclusiveArtifacts,
+    })) {
       if (!Array.isArray(value) || value.some((item) => typeof item !== "string" || item.length === 0)) {
         errors.push(`${changeId}: delegationPlan role ${role} field ${field} must be an array of strings.`);
       }
     }
-    if (!VALID_SKILL_RESOLUTIONS.has(resolution)) {
-      errors.push(`${changeId}: delegationPlan role ${role} has unsupported resolution ${resolution ?? "missing"}.`);
+    for (const [field, value] of Object.entries({ taskIds, allowedRoots })) {
+      if (Array.isArray(value) && value.length === 0) {
+        errors.push(`${changeId}: delegationPlan role ${role} field ${field} must not be empty.`);
+      }
     }
-    if (resolution === "inline-fallback" && (typeof fallbackReason !== "string" || fallbackReason.trim().length === 0)) {
-      errors.push(`${changeId}: delegationPlan role ${role} uses inline-fallback without a fallbackReason.`);
+    for (const rootPath of [...(Array.isArray(allowedRoots) ? allowedRoots : []), ...(Array.isArray(exclusiveArtifacts) ? exclusiveArtifacts : [])]) {
+      if (!isSafeRelativePath(rootPath)) {
+        errors.push(`${changeId}: delegationPlan role ${role} contains unsafe owned path ${rootPath}.`);
+      }
+    }
+    if (!VALID_SKILL_RESOLUTIONS.has(skillResolution)) {
+      errors.push(
+        `${changeId}: delegationPlan role ${role} has unsupported skillResolution ${skillResolution ?? "missing"}.`,
+      );
+    }
+    if (skillResolution === "paths-injected" && (!Array.isArray(skills) || skills.length === 0)) {
+      errors.push(`${changeId}: delegationPlan role ${role} uses paths-injected without exact skills.`);
+    }
+    if (skillResolution === "none" && Array.isArray(skills) && skills.length > 0) {
+      errors.push(`${changeId}: delegationPlan role ${role} uses skillResolution none with non-empty skills.`);
+    }
+    if (!VALID_EXECUTION_MODES.has(executionMode)) {
+      errors.push(`${changeId}: delegationPlan role ${role} has unsupported executionMode ${executionMode ?? "missing"}.`);
+    }
+    if (!VALID_PLANNED_MODES.has(plannedMode)) {
+      errors.push(`${changeId}: delegationPlan role ${role} has unsupported plannedMode ${plannedMode ?? "missing"}.`);
+    }
+    if (!VALID_BUDGET_CLASSES.has(budgetClass)) {
+      errors.push(`${changeId}: delegationPlan role ${role} has unsupported budgetClass ${budgetClass ?? "missing"}.`);
+    }
+    if (!Number.isInteger(budgetMinutes) || budgetMinutes <= 0) {
+      errors.push(`${changeId}: delegationPlan role ${role} budgetMinutes must be a positive integer.`);
+    }
+    if (Array.isArray(expectedMilestones)) {
+      for (const milestone of expectedMilestones) {
+        if (!VALID_MILESTONES.has(milestone)) {
+          errors.push(`${changeId}: delegationPlan role ${role} has unsupported milestone ${milestone}.`);
+        }
+      }
+      for (const requiredMilestone of ["started", "completed"]) {
+        if (!expectedMilestones.includes(requiredMilestone)) {
+          errors.push(`${changeId}: delegationPlan role ${role} expectedMilestones must include ${requiredMilestone}.`);
+        }
+      }
+    }
+    if (executionMode === "runtime-fallback") {
+      if (plannedMode !== "subagent") {
+        errors.push(`${changeId}: delegationPlan role ${role} runtime-fallback requires plannedMode subagent.`);
+      }
+      for (const [field, value] of Object.entries({ fallbackReason, recoveryEvidence })) {
+        if (typeof value !== "string" || value.trim().length === 0) {
+          errors.push(`${changeId}: delegationPlan role ${role} runtime-fallback requires ${field}.`);
+        }
+      }
+    } else {
+      if (plannedMode !== executionMode) {
+        errors.push(`${changeId}: delegationPlan role ${role} plannedMode must equal executionMode unless runtime-fallback.`);
+      }
+      if (typeof fallbackReason !== "string" || fallbackReason.length > 0) {
+        errors.push(`${changeId}: delegationPlan role ${role} has fallbackReason without runtime-fallback.`);
+      }
+      if (typeof recoveryEvidence !== "string" || recoveryEvidence.length > 0) {
+        errors.push(`${changeId}: delegationPlan role ${role} has recoveryEvidence without runtime-fallback.`);
+      }
+    }
+    for (const artifact of Array.isArray(exclusiveArtifacts) ? exclusiveArtifacts : []) {
+      const normalized = normalizeRelativePath(artifact);
+      const previousOwner = exclusiveArtifactOwners.get(normalized);
+      if (previousOwner) {
+        errors.push(
+          `${changeId}: exclusive artifact ${normalized} is assigned to both ${previousOwner} and ${role}.`,
+        );
+      } else {
+        exclusiveArtifactOwners.set(normalized, role);
+      }
     }
   }
 
@@ -403,23 +635,56 @@ function validateDelegationPlan(changeId, tasks, progress, progressMarkdown, err
   }
 
   const handoffEntries = parseHandoffEntries(progressMarkdown);
-  const completedOwners = new Set(ownerTaggedTasks.filter((task) => task.done && task.ownerTags.length === 1).map((task) => task.ownerTag));
+  const completedOwnerTasks = ownerTaggedTasks.filter((task) => task.done && task.ownerTags.length === 1);
+  const completedOwners = new Set(completedOwnerTasks.map((task) => task.ownerTag));
 
-  for (const match of progressMarkdown.matchAll(/Skill resolution:\s*([a-z-]+)/gi)) {
-    const resolution = match[1].toLowerCase();
-    if (!VALID_SKILL_RESOLUTIONS.has(resolution)) {
-      errors.push(`${changeId}: Handoff History contains unsupported Skill resolution ${match[1]}.`);
+  for (const entry of handoffEntries) {
+    for (const match of entry.matchAll(/Skill resolution:\s*([a-z-]+)/gi)) {
+      const resolution = match[1].toLowerCase();
+      if (!VALID_SKILL_RESOLUTIONS.has(resolution)) {
+        errors.push(`${changeId}: Handoff History contains unsupported Skill resolution ${match[1]}.`);
+      }
     }
   }
 
   for (const owner of completedOwners) {
-    const matchingEntries = handoffEntries.filter((entry) => entry.includes(owner));
+    const ownerHeading = new RegExp(`^###\\s+[^\\r\\n]*\\b${escapeRegExp(owner)}\\b`, "i");
+    const matchingEntries = handoffEntries.filter((entry) => ownerHeading.test(entry));
     if (matchingEntries.length === 0) {
       errors.push(`${changeId}: completed owner-tagged tasks for ${owner} lack matching Handoff History.`);
       continue;
     }
-    if (!matchingEntries.some((entry) => /Skill resolution:\s*(?:paths-injected|inline-fallback|none)\b/i.test(entry))) {
+    for (const task of completedOwnerTasks.filter((item) => item.ownerTag === owner)) {
+      const taskPattern = new RegExp(`Completed tasks:\\s*[^\\r\\n]*\\b${escapeRegExp(task.id)}\\b`, "i");
+      if (!matchingEntries.some((entry) => taskPattern.test(entry))) {
+        errors.push(`${changeId}: completed owner-tagged task ${task.id} for ${owner} lacks handoff task coverage.`);
+      }
+    }
+    if (!matchingEntries.some((entry) => /Skill resolution:\s*(?:paths-injected|none)\b/i.test(entry))) {
       errors.push(`${changeId}: Handoff History for ${owner} lacks Skill resolution evidence.`);
+    }
+    if (!matchingEntries.some((entry) => /Execution mode:\s*(?:inline|subagent|runtime-fallback)\b/i.test(entry))) {
+      errors.push(`${changeId}: Handoff History for ${owner} lacks Execution mode evidence.`);
+    }
+    if (
+      !matchingEntries.some(
+        (entry) =>
+          /Lifecycle milestones:\s*[^\r\n]*\bstarted\b/i.test(entry) &&
+          /Lifecycle milestones:\s*[^\r\n]*\b(?:completed|blocked)\b/i.test(entry),
+      )
+    ) {
+      errors.push(`${changeId}: Handoff History for ${owner} lacks lifecycle outcome evidence.`);
+    }
+    if (!matchingEntries.some((entry) => /Budget outcome:\s*\S+/i.test(entry))) {
+      errors.push(`${changeId}: Handoff History for ${owner} lacks Budget outcome evidence.`);
+    }
+  }
+
+  for (const entry of handoffEntries.filter((item) => /Execution mode:\s*runtime-fallback\b/i.test(item))) {
+    for (const field of ["Fallback reason", "Recovery evidence"]) {
+      if (!new RegExp(`${field}:\\s*(?!none\\b|not applicable\\b)\\S+`, "i").test(entry)) {
+        errors.push(`${changeId}: runtime-fallback Handoff History requires concrete ${field}.`);
+      }
     }
   }
 }
@@ -575,6 +840,7 @@ export async function validateRepository(root, openSpecVersionOutput) {
     ...manifestErrors,
     ...(await validateLocalSkillIntegration(root)),
     ...(await validateGuidance(root)),
+    ...(await validateRuntimeAdapters(root)),
   ];
   for (const changeId of await listActiveChanges(root)) {
     errors.push(...(await validateChangeLifecycle(root, changeId)));

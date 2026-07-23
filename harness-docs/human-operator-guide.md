@@ -9,7 +9,8 @@ docs -> OpenSpec -> .agent -> implementacion -> verificacion -> archive
 - docs conserva contexto e intencion.
 - OpenSpec conserva cambios ejecutables y la spec viva.
 - .agent conserva criterio tecnico, roles y contratos.
-- AGENTS.md activa el flujo en Codex.
+- AGENTS.md separa la entrada raiz de la entrada del ejecutor.
+- `.agent/runtime-adapters/` traduce el contrato portable a cada runtime.
 
 ## Politica de documentacion
 
@@ -20,13 +21,17 @@ justificacion. Esto evita modificar README, contexto o diagramas sin necesidad.
 
 ## Inicio de cualquier tarea
 
-Codex lee primero:
+El hilo raiz de Codex lee primero:
 
 1. .agent/skills/spec-driven-development/SKILL.md
 2. .agent/skill-registry.md
 3. .agent/agents/orchestrator.md
 
 Luego clasifica:
+
+Un subagente recibe `HARNESS_EXECUTOR_V1` y no repite ese bootstrap. Lee el
+contrato de handoff, su rol y solo las skills exactas de la asignacion. Tampoco
+reclasifica, crea otro change, repite curacion ni solicita otro Approval Packet.
 
 | Tipo de pedido | Camino |
 |---|---|
@@ -55,11 +60,39 @@ Cada change implementado debe tener apply-progress.md. Es acumulativo y registra
 
 `approvalCheckpoint` deja evidencia de que el paquete fue aprobado antes o junto al primer edit de implementacion. El validador comprueba que esa evidencia exista y tenga forma valida; no pretende probar criptograficamente lo ocurrido en el chat.
 
-Las tareas que pertenecen a roles especializados deben llevar exactamente un owner tag, por ejemplo `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u `[orchestrator]`. El plan de delegacion debe cubrir esos roles con task IDs, roots permitidos, skills exactas y metodo de resolucion.
+Las tareas que pertenecen a roles especializados deben llevar exactamente un
+owner tag, por ejemplo `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u
+`[orchestrator]`. El plan de delegacion schema v2 cubre esos roles con task IDs,
+roots, skills, `skillResolution`, modo planeado/real, budget, milestones y
+artifacts exclusivos.
 
 tasks.md sigue siendo la autoridad de completitud. Si ambos documentos difieren, Codex debe reconciliarlos antes de continuar.
 
-Los roles reciben un handoff con tarea, change, estado OpenSpec, raices editables y skills exactas. Un ejecutor no redelega. Si el runtime no tiene subagentes, Codex ejecuta el rol en linea con los mismos limites y registra `inline-fallback` con el motivo concreto.
+Los roles reciben un handoff con tarea, change, estado OpenSpec, raices,
+artifacts exclusivos, skills, modo, budget y milestones. Un ejecutor no
+redelega.
+
+`inline` significa que el orquestador ejecuta deliberadamente un rol acotado;
+no es un fallo. `subagent` significa un hilo nativo separado.
+`runtime-fallback` solo aparece si un subagente planeado queda inutilizable tras
+una recuperacion acotada y el escritor anterior fue detenido.
+
+El harness prefiere subagentes para investigacion/review independiente y
+trabajo de un solo escritor con paralelismo util. Mantiene inline los artifacts
+pequenos del camino critico cuando el orquestador ya tiene el contexto. La
+arquitectura delegada es consultiva por defecto; la autoria requiere inputs,
+template, stopping condition, artifact exclusivo y maximo de 8 rondas salvo
+override.
+
+Los presupuestos por defecto son 10 minutos para planning/curation, 20 para
+implementacion y 15 para verificacion. No son timeouts rigidos. Los waits cortos
+sirven para observar la UI; no autorizan interrupcion. Como maximo se hace una
+recuperacion, y nunca se reemplaza un escritor sin confirmar que termino.
+
+En Codex, los roles nativos viven en `.codex/agents/*.toml`. Si se agregaron
+despues de abrir el hilo, abre un chat nuevo o recarga/reinicia la extension si
+no aparecen. Esto es un problema de discovery, no de perdida de trabajo: un
+subagente nativo generico puede recibir el mismo handoff portable.
 
 Para un change de producto vinculado a un brief, tasks.md incluye una tarea
 `[agent-requirements-curator]` antes de la verificacion final. El curator revisa
@@ -97,6 +130,8 @@ No archives un change si:
 - falta apply-progress.md o no coincide con tasks.md;
 - falta approvalCheckpoint valido para la implementacion iniciada;
 - faltan delegationPlan o handoffs para tareas owner-tagged completadas;
+- faltan modos, budgets, milestones o artifacts exclusivos, hay escritores
+  duplicados, o un fallback no tiene recuperacion;
 - falta verify-report.md PASS;
 - el snapshot de evidencia falta o quedo stale;
 - el brief o indice de requirements vinculados no se puede actualizar coherentemente.

@@ -19,7 +19,10 @@ docs -> OpenSpec -> .agent -> implementation -> verification -> archive
 
 ## Entry Classification
 
-Read .agent/skill-registry.md and .agent/agents/orchestrator.md after loading this skill.
+This skill is part of the root bootstrap. Read `.agent/skill-registry.md` and
+`.agent/agents/orchestrator.md` after loading it only in the root thread.
+Executors entering through `HARNESS_EXECUTOR_V1` use the executor bootstrap in
+`AGENTS.md` and do not repeat classification.
 
 | Incoming task | Required path |
 |---|---|
@@ -81,17 +84,23 @@ The Implementation Approval Packet includes change ID, linked requirement status
 - Use shared components and existing dependencies before creating new abstractions.
 - Preserve strict TypeScript and existing module conventions.
 
-## Delegation and Inline Fallback
+## Proportional Specialized Execution
 
-Use .agent/contracts/phase-handoff.md for every specialized role. Do not implement product or verification work inline in the orchestrator thread while a specialized role is available.
+Use `.agent/contracts/phase-handoff.md` for every specialized role. Role
+ownership does not force a separate thread.
 
 - Before implementation, derive required roles from tasks, changed roots, and the registry.
 - Require a bounded handoff when a change touches more than one registry owner, both data and UI roots, visible text plus behavior, a module route/list/form/filter/modal workflow, or final verification.
-- Persist the delegation plan in apply-progress.md before or with the first implementation edit.
-- Pass role, bounded task, change ID, native status, allowed roots, exact skill paths, and relevant requirement context.
+- Persist a schema-v2 delegation plan in apply-progress.md before or with the first implementation edit.
+- Select `inline` for small or tightly coupled critical-path work, `subagent` for independent read-heavy work or one-writer implementation with useful parallelism, and `runtime-fallback` only after a planned subagent fails.
+- Pass `HARNESS_EXECUTOR_V1`, role, bounded task, change ID, native status, allowed roots, exclusive artifacts, exact skill paths, execution mode, budget, milestones, and relevant requirement context.
 - Executors cannot redelegate.
-- In a runtime without subagents, execute the specialist role inline with the same responsibilities and allowed roots, record `Skill resolution: inline-fallback`, and include the concrete fallback reason in progress evidence.
-- A role reports status, summary, artifacts, files, completed tasks, risks, next phase, and skill-resolution method.
+- If the runtime is known not to support subagents, plan `inline` from the start. If a planned subagent becomes unusable after bounded recovery, record `runtime-fallback`, its concrete trigger, and recovery evidence.
+- Use minimum observation budgets of 10 minutes for planning/curation, 20 for implementation, and 15 for verification unless the task overrides them. Polling waits are not deadlines.
+- Never interrupt a still-running agent solely because a poll returned no final result or an artifact has not appeared. Allow at most one recovery after the budget; stop and confirm the old writer before replacement.
+- Give each authoritative artifact one active writer.
+- Prefer architect subagents as bounded advisors. Delegated design authorship must include exact inputs, a template, `maxResearchRounds` (default 8), a stopping condition, and exclusive ownership.
+- A role reports the complete phase-handoff output, including skill resolution, execution mode, milestones, budget outcome, and fallback/recovery evidence when applicable.
 
 ## Verification and Archive
 

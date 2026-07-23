@@ -56,6 +56,10 @@ docs/ -> OpenSpec -> .agent -> implementation -> verification -> archive
 - openspec/specs/ contains accepted behavior after a change is archived.
 - .agent/skill-registry.md maps work to exact technical skills.
 - .agent/agents/ defines narrow research, architecture, data, UI, and verification responsibilities.
+- .agent/runtime-adapters/ defines portable execution modes, milestones,
+  budgets, and runtime mappings.
+- .codex/agents/ registers the portable roles as project-scoped native Codex
+  custom agents.
 - .agent/reference/ contains examples only; it is not a second executable spec layer.
 
 OpenSpec owns change state and executable behavior. .agent supplies project-specific technical judgment. The harness does not duplicate OpenSpec's state machine.
@@ -65,7 +69,10 @@ OpenSpec owns change state and executable behavior. .agent supplies project-spec
 1. Classify the request. Broad or ambiguous product intent starts with requirement curation; when a new capability is absent from project context and requirements, first delegate documentation synchronization to the curator. Behavior ready to implement starts or resumes an OpenSpec change. Internal refactors or documentation can use .agent directly when no contract changes.
 2. Before apply, run openspec status --change <change-id> --json and openspec instructions apply --change <change-id> --json. Before verify/archive, use status only; OpenSpec 1.6.0 has no instructions for those phases.
 3. Implement only the unchecked tasks in tasks.md, using the smallest applicable set of skills from .agent/skill-registry.md.
-4. Keep apply-progress.md aligned with tasks.md while work is active.
+4. Keep apply-progress.md aligned with tasks.md while work is active. Delegation
+   schema v2 separates role ownership, skill resolution, and proportional
+   execution (`inline`, `subagent`, or evidenced `runtime-fallback`) with
+   10/20/15-minute default observation budgets and one-writer artifacts.
 5. For a linked product brief, complete the curator's documentation-reconciliation task before verification. Then finalize tasks/progress, run pnpm verify, persist a PASS verify-report.md with `node scripts/validate-harness.mjs --snapshot <change-id>`, and require `--archive-ready` before native `openspec archive <change-id> --yes --json`.
 
 For an internal task classified `no-change`, run applicable checks and report them directly; do not invent change status, progress, or report artifacts.
@@ -84,6 +91,7 @@ docs/         product context and curated requirements
 harness-docs/ harness usability guides (developer, operator, audit)
 openspec/     active changes and accepted executable specs
 .agent/       technical skills, roles, contracts, and references
+.codex/       project-scoped native Codex settings and agent adapters
 ~~~
 
 ## Extending the template

@@ -1,5 +1,14 @@
 # Requirements Curator
 
+## Executor Bootstrap
+
+Enter this role only from a bounded handoff beginning with
+`HARNESS_EXECUTOR_V1`. Read `.agent/contracts/phase-handoff.md`, treat this file
+as the exact role profile, then read only the skill paths listed in the
+handoff. Do not read the root skill registry or orchestrator profile, classify
+the request, create/reclassify a change, or present an Implementation Approval
+Packet. Do not redelegate.
+
 ## Role
 
 Synchronize bounded project documentation for new product capabilities and curate
@@ -8,7 +17,10 @@ specifications.
 
 ## Input and Roots
 
-Use the shared phase-handoff contract.
+Use the shared phase-handoff contract. Require exact documentation roots,
+exclusive artifacts, execution mode, a default 10-minute minimum observation
+budget unless overridden, expected milestones, and exact skills. If these are
+incomplete, report `blocked`.
 
 Allowed roots:
 
@@ -35,6 +47,7 @@ Load only .agent/skills/requirements-curation/SKILL.md unless another exact skil
 - Before final verification of a linked product change, reconcile the inventory
   with the implemented scope and return the required bounded handoff.
 - Update a linked brief and index to implemented after the orchestrator confirms native archive success and provides the archive reference.
+- Record observable lifecycle milestones and budget outcome.
 
 ## Boundaries
 
@@ -43,6 +56,7 @@ Load only .agent/skills/requirements-curation/SKILL.md unless another exact skil
 - Do not edit `.agent/`, `AGENTS.md`, local OpenSpec skills, OpenSpec config,
   accepted specs, or archived changes; report their impact to the orchestrator.
 - Do not perform architecture, tests, verification, or archive work.
+- Do not write an artifact owned by another active role.
 - Do not redelegate.
 - Do not force a brief for an internal non-contractual technical task.
 

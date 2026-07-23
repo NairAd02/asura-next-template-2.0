@@ -65,3 +65,27 @@ Por eso el harness reduce errores observables y hace los desajustes auditables, 
 7. Actualizar brief/indice y validar specs aceptadas.
 
 Crear el reporte, efectuar el archive nativo y reconciliar requirement/indice despues del archive son operaciones de cierre, no tareas implementables.
+
+## Actualizacion de Orquestacion 2026-07-23
+
+La investigacion de una ejecucion real en la extension de Codex encontro que
+dos arquitectos nativos fueron interrumpidos mientras seguian leyendo y
+sintetizando. Los waits vacios y la ausencia temporal de `design.md` se habian
+interpretado como fallos, aunque otros agentes exitosos necesitaron entre
+aproximadamente 4 y 13 minutos.
+
+El harness ahora:
+
+- separa el bootstrap raiz del ejecutor mediante `HARNESS_EXECUTOR_V1`;
+- separa owner, `skillResolution` y execution mode;
+- acepta `inline` planeado, `subagent` y `runtime-fallback` con evidencia;
+- usa milestones semanticos y budgets 10/20/15 que no son polling timeouts;
+- permite una sola recuperacion y exige detener al escritor anterior;
+- valida propiedad exclusiva de artifacts;
+- limita arquitectura a modo advisory/authoring con 8 rondas por defecto;
+- mantiene contratos portables bajo `.agent/runtime-adapters/`;
+- registra cinco agentes de proyecto bajo `.codex/agents/`.
+
+La validacion mecanica prueba forma y coherencia de la evidencia. No puede
+demostrar actividad real del proveedor, tiempo transcurrido ni veracidad de un
+evento de chat.

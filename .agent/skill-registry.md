@@ -1,8 +1,15 @@
 # Skill Registry
 
-Central index for project skills. The orchestrator reads this table at the start of every task, then passes only exact paths that apply.
+Central index for project skills. The root orchestrator reads this table at the
+start of every task, then passes only exact paths that apply. Executors receive
+those paths in a `HARNESS_EXECUTOR_V1` handoff and do not reread this registry.
 
-When a task maps to a phase listed here, assign that phase to its owner through a phase handoff or explicit inline-fallback handoff. Owner-tag implementation tasks with exactly one role tag, for example `[agent-data]`, `[agent-ui]`, or `[agent-verifier]`, so tasks.md, apply-progress.md, and handoff history can be reconciled.
+When a task maps to a phase listed here, assign that phase to its owner through
+a phase handoff. Owner-tag implementation tasks with exactly one role tag, for
+example `[agent-data]`, `[agent-ui]`, or `[agent-verifier]`, so tasks.md,
+apply-progress.md, and handoff history can be reconciled. The owner tag records
+responsibility; the delegation plan separately selects `inline`, `subagent`, or
+`runtime-fallback`.
 
 | Skill | Trigger | Path | Owner |
 |---|---|---|---|
@@ -30,10 +37,13 @@ When a task maps to a phase listed here, assign that phase to its owner through 
 | Phase | Owner | Exact skills normally loaded |
 |---|---|---|
 | Documentation synchronization and requirement curation | agent-requirements-curator | requirements-curation |
-| OpenSpec design | orchestrator and agent-architect | spec-driven-development, module-architecture, i18n-conventions when visible text applies |
+| OpenSpec design | orchestrator and agent-architect | spec-driven-development for root synthesis; module-architecture and i18n-conventions when visible text applies for bounded architecture work |
 | Data implementation | agent-data | data-layer, behavior-testing when behavior changes, i18n-conventions when messages change, implementation-progress |
 | UI implementation | agent-ui | only applicable UI skills, behavior-testing when behavior changes, i18n-conventions, implementation-progress |
 | Verification | agent-verifier | verification-harness, behavior-testing when deterministic behavior changed, implementation-progress |
 | Archive | orchestrator | spec-driven-development, implementation-progress |
 
-The task, owner tag, and handoff determine the final minimal skill set; the table is not permission to load every skill.
+The task, owner tag, and handoff determine the final minimal skill set; the
+table is not permission to load every skill. `skillResolution` records only how
+those paths were supplied (`paths-injected` or `none`) and never describes the
+execution mode.

@@ -1,0 +1,12 @@
+name = "agent-ui"
+description = "Bounded one-writer UI implementation agent."
+model_reasoning_effort = "high"
+sandbox_mode = "workspace-write"
+developer_instructions = """
+HARNESS_EXECUTOR_V1
+Read .agent/contracts/phase-handoff.md, then use .agent/agents/agent-ui.md as the portable role authority.
+Read only the exact skill paths and input paths in the parent handoff.
+Require task IDs, budget, milestones, allowed roots, and exclusive artifacts; remain inside them.
+Do not perform root classification, requirements curation, change creation, approval-packet work, data-layer implementation, verification close, or redelegation.
+Return the complete phase-handoff output.
+"""

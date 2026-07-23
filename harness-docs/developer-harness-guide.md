@@ -13,7 +13,9 @@ docs -> OpenSpec -> .agent -> implementacion -> verificacion -> archive
 - docs contiene contexto amplio y requirements curados.
 - OpenSpec contiene changes ejecutables y specs aceptadas.
 - .agent contiene skills, roles, contratos y patrones tecnicos.
-- AGENTS.md es el punto de entrada de Codex.
+- AGENTS.md separa la entrada del orquestador raiz y la del ejecutor.
+- `.agent/runtime-adapters/` conserva el contrato portable y su mapeo a cada
+  runtime.
 
 OpenSpec es la unica autoridad de estado ejecutable. No se crea una maquina de estados paralela.
 
@@ -26,13 +28,18 @@ modifican README, contexto o diagramas solo para producir un diff.
 
 ## Que Ocurre al Iniciar una Tarea
 
-El agente lee primero:
+El hilo raiz lee primero:
 
 1. .agent/skills/spec-driven-development/SKILL.md
 2. .agent/skill-registry.md
 3. .agent/agents/orchestrator.md
 
 Despues clasifica la tarea.
+
+Un subagente no repite esa secuencia. Su asignacion comienza con
+`HARNESS_EXECUTOR_V1`; lee el contrato de handoff, su perfil de rol exacto y
+solo las skills enumeradas. No reclasifica la tarea, no crea otro change, no
+repite curacion de requirements ni presenta otro Approval Packet.
 
 | Si la tarea es... | El harness hace... |
 |---|---|
@@ -61,12 +68,62 @@ Despues de esa revision, el agente debe presentar un Implementation Approval Pac
 - apply-progress.md es acumulativo: guarda tareas completas, archivos, decisiones, problemas, tareas restantes y skills cargadas.
 - apply-progress.md registra `approvalCheckpoint` antes o junto al primer edit de implementacion. Esta evidencia hace auditable que se presento y aprobo el paquete; el validador comprueba la forma del registro, no prueba criptograficamente el chat humano.
 - Si las tasks mapean a roles especializados, tasks.md usa owner tags como `[agent-data]`, `[agent-ui]`, `[agent-verifier]` u `[orchestrator]`.
-- apply-progress.md registra `delegationPlan`: roles requeridos, task IDs, roots permitidos, skills exactas, metodo de resolucion y motivo si se usa inline fallback.
+- apply-progress.md registra `delegationPlan` schema v2: roles, task IDs, roots,
+  skills, `skillResolution`, modo planeado/real, clase y minutos de presupuesto,
+  milestones esperados, artifacts exclusivos y evidencia de recuperacion
+  cuando aplica.
 - Si tasks.md y apply-progress.md no coinciden, se reconcilian antes de seguir.
-- Cada rol recibe un handoff con tarea acotada, change ID, estado nativo, raices editables y paths exactos de skills.
-- Un ejecutor no redelega. Si el runtime no soporta subagentes, el rol se ejecuta en linea con los mismos limites y se registra `inline-fallback` con el motivo concreto.
+- Cada rol recibe un handoff con tarea acotada, change ID, estado nativo,
+  raices editables, artifacts exclusivos, budget, milestones y paths exactos
+  de skills.
+- `skillResolution` solo indica `paths-injected` o `none`. La ejecucion se
+  registra aparte como `inline`, `subagent` o `runtime-fallback`.
+- `inline` es una decision planeada valida para trabajo pequeno o estrechamente
+  acoplado. Si el runtime ya se sabe incapaz de crear subagentes, se planea
+  `inline`; no se inventa un fallo.
+- `runtime-fallback` se usa solo cuando un `subagent` planeado queda inutilizable
+  despues de una recuperacion acotada. Debe registrar el trigger, la
+  recuperacion y que el escritor anterior termino.
+- Un ejecutor no redelega y ningun artifact autoritativo tiene dos escritores
+  activos.
 - El ejecutor crea junto al codigo las pruebas Vitest o Testing Library mas pequenas que detecten la regresion y usa `pnpm verify:fast` durante la iteracion.
 - Para un change de producto con brief, una tarea `[agent-requirements-curator]` revisa el inventario documental antes de la verificacion final. Solo recibe el intent, el inventario, el contexto documental y sus raices permitidas; no implementa, verifica ni archiva.
+
+### Decision de ejecucion
+
+| Forma del trabajo | Modo normal |
+|---|---|
+| Artifact pequeno en el camino critico y contexto ya cargado | `inline` |
+| Investigacion, triage, comparacion o review independiente | `subagent` |
+| Implementacion acotada con un solo escritor y paralelismo util | `subagent` |
+| Verificacion final independiente | `subagent` cuando esta disponible |
+| Runtime sin capacidad conocida desde el inicio | `inline` planeado |
+| Subagente planeado falla tras recuperacion acotada | `runtime-fallback` |
+
+Los budgets por defecto son 10 minutos para planning/curation, 20 para
+implementacion y 15 para verificacion. Son ventanas minimas de observacion, no
+timeouts de comandos ni frecuencia de polling. Un wait de 30 o 60 segundos sin
+resultado final no demuestra que el agente este colgado. Solo un `blocked`,
+error terminal, violacion de roots o cancelacion permite interrumpir antes; al
+agotarse el budget hay como maximo una recuperacion.
+
+El arquitecto trabaja como asesor read-heavy por defecto y devuelve seams,
+alternativas, recomendacion, archivos afectados, riesgos y verificacion. El
+orquestador sintetiza `design.md`. Si el arquitecto recibe autoria, el handoff
+incluye inputs exactos, template, artifact exclusivo, stopping condition y
+`maxResearchRounds` (8 por defecto).
+
+### Adaptador Codex
+
+Codex registra los roles del proyecto en `.codex/agents/*.toml` y limita la
+concurrencia desde `.codex/config.toml`. En la extension de VS Code se usan los
+subagentes nativos; no se ejecuta `codex exec` como supervisor hijo.
+
+Si la extension o el hilo ya estaban abiertos cuando se crearon los TOML, puede
+ser necesario abrir un chat nuevo o recargar/reiniciar la extension para que
+los nombres aparezcan. Mientras tanto, el mismo handoff portable puede
+ejecutarse con un subagente nativo generico; no se pierde estado ni es necesario
+cambiar a la CLI.
 
 ## Verificacion y Archive
 
@@ -89,8 +146,8 @@ La exploracion en navegador es opcional y queda fuera de tasks.md, verify-report
 El verifier crea verify-report.md con comandos, duraciones, exit codes, warnings y veredicto PASS o FAIL.
 
 La reconciliacion documental del curator ocurre antes de `pnpm verify`; asi sus
-ediciones quedan dentro del snapshot de evidencia. Si no hay subagentes, se usa
-el fallback en linea con las mismas raices y se registra el motivo concreto.
+ediciones quedan dentro del snapshot de evidencia. Si la falta de subagentes se
+conoce al planificar, se usa `inline` deliberadamente con las mismas raices.
 
 El reporte PASS incluye un bloque `Evidence Snapshot` generado con `node scripts/validate-harness.mjs --snapshot <change-id>`.
 
@@ -100,6 +157,8 @@ Un change no se archiva si:
 - falta apply-progress.md o no coincide con tasks.md;
 - falta approvalCheckpoint valido para la implementacion iniciada;
 - faltan delegationPlan o handoffs para tareas owner-tagged ya completadas;
+- falta modo, budget, milestones o propiedad exclusiva, hay dos escritores, o
+  un `runtime-fallback` carece de recuperacion concreta;
 - falta verify-report.md PASS;
 - el snapshot SHA-256 esta incompleto o stale;
 - el requirement vinculado y su indice no se pueden actualizar.
@@ -127,7 +186,8 @@ Como modifica comportamiento, datos y UI, el flujo normal es:
 2. Crear un change, por ejemplo add-item-tags.
 3. Revisar proposal, delta specs, design y tasks.
 4. Asignar tasks con owner tags y handoffs para data, UI, filtros, i18n y verifier.
-5. Mantener apply-progress.md y tasks.md.
+5. Elegir execution mode proporcional, budgets y artifacts exclusivos; mantener
+   apply-progress.md y tasks.md.
 6. Ejecutar pnpm verify.
 7. Crear verify-report.md, actualizar REQ-003 y archivar.
 
@@ -184,3 +244,4 @@ actualiza el requirement si aplica y archiva solo con todos los gates PASS.
 - .agent/contracts/phase-handoff.md: contrato entre roles.
 - .agent/skills/spec-driven-development/SKILL.md: protocolo completo.
 - .agent/skill-registry.md: resolucion de skills por path exacto.
+- .agent/runtime-adapters/: contrato portable, adaptador Codex y adaptador generico.
