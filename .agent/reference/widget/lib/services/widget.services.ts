@@ -15,6 +15,8 @@ import {
   WidgetDetails,
   WidgetFiltersDto,
   WidgetUserOption,
+  WidgetUsersForSelectQuery,
+  WidgetUsersForSelectResponse,
   WidgetsResponse,
 } from "../types/widget.types";
 import { widgetsStore } from "../mock/widgets.data";
@@ -51,9 +53,13 @@ export async function getAllWidgets(
   };
 }
 
-export async function getWidgetUsersForSelect(): Promise<
-  ServiceResponse<WidgetUserOption[]>
-> {
+export async function getWidgetUsersForSelect(
+  query: WidgetUsersForSelectQuery = {},
+): Promise<ServiceResponse<WidgetUsersForSelectResponse>> {
+  const page = Number.isSafeInteger(query.page) && query.page && query.page > 0 ? query.page : 1;
+  const limit = Number.isSafeInteger(query.limit) && query.limit && query.limit > 0 ? Math.min(query.limit, 100) : 25;
+  const search = query.search?.trim().toLowerCase();
+
   try {
     const users = new Map<string, WidgetUserOption>();
     widgetsStore.forEach((widget) => {
@@ -64,7 +70,20 @@ export async function getWidgetUsersForSelect(): Promise<
         });
       }
     });
-    return { success: true, data: [...users.values()] };
+    const filteredUsers = [...users.values()].filter(
+      (user) => !search || user.label.toLowerCase().includes(search),
+    );
+    const total = filteredUsers.length;
+    const totalPages = Math.max(1, Math.ceil(total / limit));
+    const currentPage = Math.min(page, totalPages);
+    const start = (currentPage - 1) * limit;
+    return {
+      success: true,
+      data: {
+        users: filteredUsers.slice(start, start + limit),
+        pagination: { page: currentPage, limit, total, totalPages },
+      },
+    };
   } catch (error) {
     return {
       success: false,

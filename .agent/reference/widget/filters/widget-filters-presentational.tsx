@@ -15,8 +15,16 @@ interface Props {
 
 export default function WidgetFiltersPresentational({ filters, handleChangeFilters }: Props) {
   const t = useTranslations("filters");
-  const { users, isLoading: usersLoading, error: usersError } =
-    useWidgetUsersForSelect();
+  const {
+    users,
+    isLoading: usersLoading,
+    error: usersError,
+    filterValue: usersFilterValue,
+    setFilterValue: setUsersFilterValue,
+    hasNextPage: usersHasNextPage,
+    isFetchingNextPage: usersFetchingNextPage,
+    loadNextPage: loadNextUsersPage,
+  } = useWidgetUsersForSelect();
 
   const isActiveOptions = [
     { label: t("active"), value: "true" },
@@ -57,6 +65,12 @@ export default function WidgetFiltersPresentational({ filters, handleChangeFilte
           options={users.map((user) => ({ label: user.label, value: user.id }))}
           loading={usersLoading}
           emptyText={usersError ?? undefined}
+          filterValue={usersFilterValue}
+          onFilterChange={setUsersFilterValue}
+          filterPlaceholder={t("searchByNameDescription")}
+          hasNextPage={usersHasNextPage}
+          isFetchingNextPage={usersFetchingNextPage}
+          onLoadNextPage={loadNextUsersPage}
           clearable={{ handleClear: () => handleChangeFilters({ createdBy: "" }) }}
         />
       </div>

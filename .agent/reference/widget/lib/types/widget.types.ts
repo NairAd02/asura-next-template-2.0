@@ -24,6 +24,17 @@ export interface WidgetUserOption {
   label: string;
 }
 
+export interface WidgetUsersForSelectQuery {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+export interface WidgetUsersForSelectResponse {
+  users: WidgetUserOption[];
+  pagination: WidgetsResponse["pagination"];
+}
+
 export interface Widget {
   id: string;
   name: string;

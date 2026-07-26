@@ -37,6 +37,25 @@ muestra su estado de carga. Cada selector con datos remotos debe repetir este
 patrón con su propia action y hook; no se deben agrupar todos los catálogos en
 un container servidor ni bloquear la tarjeta completa con `Suspense`.
 
+### Selectores remotos paginados
+
+`use-widget-users-for-select.tsx` demuestra el flujo completo para un catálogo
+grande. En este ejemplo la action recibe `{ page, limit, search }`, el service
+devuelve opciones y metadatos de paginación, y el hook mantiene búsqueda con
+debounce, resultados acumulados, `hasNextPage`, `isFetchingNextPage` y
+`loadNextPage`. Esos nombres pertenecen al contrato hipotético del widget; en
+un módulo real, la action/service debe adaptar los nombres, cursores, límites y
+metadatos que exponga su API antes de entregar estado estable al hook.
+
+Los controles compartidos aceptan las props opcionales `filterValue`,
+`onFilterChange`, `filterPlaceholder`, `loading`, `emptyText`, `hasNextPage`,
+`isFetchingNextPage` y `onLoadNextPage`. Al pasar `onFilterChange`, la búsqueda
+es responsabilidad del upstream; el input no filtra otra vez su página local.
+Al omitirla, los consumidores existentes mantienen la búsqueda local. Antes de
+copiar el ejemplo, revisa el contrato del endpoint: puede usar paginación por
+página, cursor u offset; puede nombrar distinto `limit`/`search`; y puede no
+soportar búsqueda remota.
+
 ## APIs externas
 
 `lib/api/routes/widget-api.routes.ts` muestra el catálogo de endpoints de un

@@ -49,6 +49,16 @@ Client hooks begin `"use client"` and expose operation, `isLoading`, translated
 loading in `finally`. Translate `errors.<code>` with `t.has`, falling back to
 the server message.
 
+For a remote select backed by a paginated endpoint, keep the upstream contract
+at the service/action boundary. Query names, pagination shape, and search
+capability come from the API contract (`page`/`limit`/`search` is only the
+widget example; cursor, offset, localized names, or no server search are valid
+when the API says so). Normalize that contract into typed response data the
+client hook can consume without knowing upstream field names. The hook owns
+debounced search when supported, accumulated unique options, `hasNextPage`,
+`isFetchingNextPage` and a guarded `loadNextPage`; it invalidates stale
+searches. Do not replace this flow with an eager loop that downloads every page.
+
 Mock stores use stable IDs/ISO dates and enough representative records for
 meaningful filters and tests. Tests reset mutable stores via a module helper.
 
@@ -61,6 +71,7 @@ meaningful filters and tests. Tests reset mutable stores via a module helper.
 - [ ] External route catalog is relative, encoded, server-only, and pure.
 - [ ] Private base URL is validated inside the service.
 - [ ] Hook exposes loading/error/result/reset and clears loading in `finally`.
+- [ ] Remote select pagination/search is adapted from the real API contract.
 - [ ] Focused tests cover success plus meaningful validation/failure branches.
 
 Exact examples:

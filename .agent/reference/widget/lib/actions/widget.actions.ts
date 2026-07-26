@@ -16,7 +16,8 @@ import {
   convertEditWidgetDto,
   WidgetDetails,
   WidgetFiltersDto,
-  WidgetUserOption,
+  WidgetUsersForSelectQuery,
+  WidgetUsersForSelectResponse,
   WidgetsResponse,
 } from "../types/widget.types";
 import type { ServiceResponse } from "@/lib/api-responses";
@@ -60,10 +61,10 @@ export async function getWidgetByIdAction(
   return await getWidgetById(id);
 }
 
-export async function getWidgetUsersForSelectAction(): Promise<
-  ServiceResponse<WidgetUserOption[]>
-> {
-  return await getWidgetUsersForSelect();
+export async function getWidgetUsersForSelectAction(
+  query: WidgetUsersForSelectQuery = {},
+): Promise<ServiceResponse<WidgetUsersForSelectResponse>> {
+  return await getWidgetUsersForSelect(query);
 }
 
 export async function createWidgetAction(
