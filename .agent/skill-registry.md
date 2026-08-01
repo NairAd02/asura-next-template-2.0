@@ -9,6 +9,7 @@ The root resolves only exact applicable paths and injects them into a
 | Requirements/docs synchronization | `.agent/skills/requirements-curation/SKILL.md` | agent-requirements-curator |
 | Module/OpenSpec architecture | `.agent/skills/module-architecture/SKILL.md` | agent-architect |
 | Services/actions/types/hooks/mocks | `.agent/skills/data-layer/SKILL.md` | agent-data |
+| Prisma configuration, schema, migration, seed, or client-backed service (only when requested or evidenced) | `.agent/skills/prisma-orm/SKILL.md` | agent-data |
 | SSR/container/Suspense | `.agent/skills/ssr-data-fetching/SKILL.md` | agent-ui |
 | Lists/modals/actions | `.agent/skills/client-views-modals/SKILL.md` | agent-ui |
 | RHF/Zod forms | `.agent/skills/forms-rhf-zod/SKILL.md` | agent-ui |
@@ -24,9 +25,11 @@ or `subagent`. `skillResolution` is `paths-injected` or `none`.
 Typical minimal bundles:
 
 - data: data-layer + progress; add behavior/i18n only when triggered.
+- prisma: data-layer + prisma-orm + progress; use only for the optional Prisma profile.
 - UI: only affected UI skills + progress; add behavior/i18n when triggered.
 - verifier: verification + progress; add behavior when relevant.
 - curator/architect: their single domain skill unless visible text applies.
 
-Lazy code examples live under `.agent/reference/widget/`. Spec examples live
-under `.agent/reference/spec-example/`; neither is executable specification.
+Lazy module examples live under `.agent/reference/widget/`; optional stack examples live
+under `.agent/reference/prisma-postgresql/`. Profiles compose those addons under
+`.agent/profiles/`. None is executable specification.

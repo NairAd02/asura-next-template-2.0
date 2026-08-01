@@ -1,0 +1,17 @@
+﻿import "dotenv/config";
+
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient, WidgetType } from "../lib/generated/prisma/client";
+
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) throw new Error("DATABASE_URL is required for seeding.");
+const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
+
+async function main() {
+  const admin = await prisma.user.upsert({ where: { email: "admin@template.dev" }, update: { fullName: "Template Admin" }, create: { email: "admin@template.dev", fullName: "Template Admin" } });
+  const editor = await prisma.user.upsert({ where: { email: "editor@template.dev" }, update: { fullName: "Editor User" }, create: { email: "editor@template.dev", fullName: "Editor User" } });
+  await prisma.widget.upsert({ where: { createdById_name: { createdById: admin.id, name: "Alpha Widget" } }, update: { description: "A representative seeded widget.", type: WidgetType.TYPE_A }, create: { name: "Alpha Widget", description: "A representative seeded widget.", type: WidgetType.TYPE_A, createdById: admin.id } });
+  await prisma.widget.upsert({ where: { createdById_name: { createdById: editor.id, name: "Beta Widget" } }, update: { description: "A second seeded widget.", type: WidgetType.TYPE_B }, create: { name: "Beta Widget", description: "A second seeded widget.", type: WidgetType.TYPE_B, createdById: editor.id } });
+}
+
+main().finally(async () => prisma.$disconnect());

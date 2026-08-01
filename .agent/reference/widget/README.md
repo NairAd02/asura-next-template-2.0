@@ -37,7 +37,12 @@ muestra su estado de carga. Cada selector con datos remotos debe repetir este
 patrón con su propia action y hook; no se deben agrupar todos los catálogos en
 un container servidor ni bloquear la tarjeta completa con `Suspense`.
 
-### Selectores remotos paginados
+### Fuente de datos del service
+
+El service de un módulo conserva el contrato tipado del módulo y escoge una fuente concreta: `widget.services.ts` muestra un mock; `widget-api.services.ts` muestra consumo de API externa; y `widget.prisma.services.ts.example` ilustra la variante Prisma con las mismas operaciones. En un módulo real se copia una sola variante; no se conmutan fuentes ni se mantiene un fallback entre ellas.
+
+Prisma es configuración de aplicación, no de un módulo: schema, migraciones, seed, cliente y scripts se consultan en `.agent/reference/prisma-postgresql/` mediante la skill opcional `prisma-orm`.
+## Selectores remotos paginados
 
 `use-widget-users-for-select.tsx` demuestra el flujo completo para un catálogo
 grande. En este ejemplo la action recibe `{ page, limit, search }`, el service
@@ -81,6 +86,7 @@ global.
 |---|---|
 | `widget-content.tsx` | `ssr-data-fetching` |
 | `lib/services/` | `data-layer` |
+| `lib/services/widget.prisma.services.ts.example` | `data-layer`, `prisma-orm` (solo perfil Prisma) |
 | `lib/api/routes/` | `data-layer`, `module-architecture` |
 | `lib/actions/` | `data-layer` |
 | `lib/types/` | `data-layer` |

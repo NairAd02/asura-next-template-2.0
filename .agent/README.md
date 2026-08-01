@@ -16,6 +16,7 @@ Core sources:
 - `skill-registry.md`: lazy exact skill routing.
 - `contracts/phase-handoff.md`: portable bounded input/output.
 - `agents/`: role boundaries.
+- `profiles/`: optional stack compositions; inactive unless selected or evidenced.
 - `runtime-adapters/`: native lifecycle mappings.
 - `reference/`: lazy examples, never executable specs.
 
