@@ -489,21 +489,13 @@ export async function validateContextBudgets(root) {
   return errors;
 }
 
-const PRISMA_STATIC_REFERENCE_FILES = [
+const PRISMA_SERVICE_REFERENCE_FILES = [
   ".agent/profiles/README.md",
   ".agent/profiles/nextjs-prisma-postgresql.md",
   ".agent/skills/prisma-orm/SKILL.md",
   ".agent/skills/prisma-orm/references/adoption.md",
   ".agent/skills/prisma-orm/references/service-patterns.md",
-  ".agent/reference/prisma-postgresql/README.md",
-  ".agent/reference/prisma-postgresql/COMPATIBILITY.md",
-  ".agent/reference/prisma-postgresql/AUTHORIZATION.md",
-  ".agent/reference/prisma-postgresql/STATIC-VALIDATION.md",
-  ".agent/reference/prisma-postgresql/.gitignore.prisma.example",
-  ".agent/reference/prisma-postgresql/schema.prisma.example",
-  ".agent/reference/prisma-postgresql/prisma.config.ts.example",
-  ".agent/reference/prisma-postgresql/lib/prisma.ts.example",
-  ".agent/reference/prisma-postgresql/package.prisma-scripts.example.json",
+  ".agent/reference/widget/README.md",
   ".agent/reference/widget/lib/services/widget.prisma.services.ts.example",
 ];
 
@@ -517,8 +509,12 @@ function requireReferenceTokens(errors, relativePath, content, tokens) {
 export async function validatePrismaStaticReference(root) {
   const errors = [];
   const contents = {};
-  for (const relativePath of PRISMA_STATIC_REFERENCE_FILES) {
+  for (const relativePath of PRISMA_SERVICE_REFERENCE_FILES) {
     contents[relativePath] = await readRequired(root, relativePath, errors);
+  }
+
+  if (await pathExists(path.join(root, ".agent", "reference", "prisma-postgresql"))) {
+    errors.push(".agent/reference/prisma-postgresql: local Prisma setup mirror must be absent.");
   }
 
   requireReferenceTokens(errors, ".agent/profiles/README.md", contents[".agent/profiles/README.md"], [
@@ -528,72 +524,47 @@ export async function validatePrismaStaticReference(root) {
   ]);
   requireReferenceTokens(errors, ".agent/profiles/nextjs-prisma-postgresql.md", contents[".agent/profiles/nextjs-prisma-postgresql.md"], [
     "Capability ID: `prisma-postgresql`",
-    "db:validate",
+    "current official Prisma",
+    "service architecture",
     "does not add dependencies",
   ]);
   requireReferenceTokens(errors, ".agent/skills/prisma-orm/SKILL.md", contents[".agent/skills/prisma-orm/SKILL.md"], [
-    "prisma-postgresql",
-    "STATIC-VALIDATION.md",
+    "current official Prisma documentation",
+    "project-owned persistence boundary",
     "Middleware",
     "Edge runtime",
     "canonical service",
   ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/schema.prisma.example", contents[".agent/reference/prisma-postgresql/schema.prisma.example"], [
-    'provider = "prisma-client"',
-    'output   = "../lib/generated/prisma"',
-    'provider = "postgresql"',
+  requireReferenceTokens(errors, ".agent/skills/prisma-orm/references/adoption.md", contents[".agent/skills/prisma-orm/references/adoption.md"], [
+    "current official Prisma documentation",
+    "does not provide",
+    "project-owned persistence boundary",
   ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/prisma.config.ts.example", contents[".agent/reference/prisma-postgresql/prisma.config.ts.example"], [
-    'schema: "prisma/schema.prisma"',
-    'url: env("DATABASE_URL")',
+  requireReferenceTokens(errors, ".agent/skills/prisma-orm/references/service-patterns.md", contents[".agent/skills/prisma-orm/references/service-patterns.md"], [
+    "@/lib/persistence/prisma",
+    "current-actor",
+    "authorization policy",
+    "$transaction",
   ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/lib/prisma.ts.example", contents[".agent/reference/prisma-postgresql/lib/prisma.ts.example"], [
-    'import "server-only"',
-    "Node-runtime server code only",
-    "Middleware",
-    "Edge runtime",
-    "PrismaPg",
+  requireReferenceTokens(errors, ".agent/reference/widget/README.md", contents[".agent/reference/widget/README.md"], [
+    "documentación oficial vigente de Prisma",
+    "boundary de persistencia",
+    "service-patterns.md",
   ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/.gitignore.prisma.example", contents[".agent/reference/prisma-postgresql/.gitignore.prisma.example"], [
-    "/lib/generated/prisma/",
-  ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/COMPATIBILITY.md", contents[".agent/reference/prisma-postgresql/COMPATIBILITY.md"], [
-    "Prisma ORM 7",
-    "aligned major",
-    "pnpm db:validate",
-  ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/AUTHORIZATION.md", contents[".agent/reference/prisma-postgresql/AUTHORIZATION.md"], [
-    "@/lib/auth/current-actor",
-    "There is no default fallback",
-    "where",
-  ]);
-  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/STATIC-VALIDATION.md", contents[".agent/reference/prisma-postgresql/STATIC-VALIDATION.md"], [
-    "does not install Prisma",
-    "does not require `DATABASE_URL`",
-    "does not issue database queries",
-  ]);
-
-  const scriptsPath = ".agent/reference/prisma-postgresql/package.prisma-scripts.example.json";
-  const scriptsContent = contents[scriptsPath];
-  if (scriptsContent !== null) {
-    try {
-      const scripts = JSON.parse(scriptsContent.replace(/^\uFEFF/, ""));
-      if (scripts["db:validate"] !== "prisma validate && prisma generate") {
-        errors.push(`${scriptsPath}: db:validate must run only prisma validate and prisma generate.`);
-      }
-    } catch (error) {
-      errors.push(`${scriptsPath}: invalid JSON: ${error.message}.`);
-    }
-  }
 
   const servicePath = ".agent/reference/widget/lib/services/widget.prisma.services.ts.example";
   const service = contents[servicePath];
   requireReferenceTokens(errors, servicePath, service, [
+    'import "server-only"',
+    'from "@/lib/persistence/prisma"',
     'import { requireCurrentActor } from "@/lib/auth/current-actor"',
-    "AUTHORIZATION.md",
+    "service-patterns.md",
     "updatedById: actor.id",
   ]);
   if (service !== null) {
+    if (service.includes("generated/prisma")) {
+      errors.push(`${servicePath}: generated-client output paths are prohibited in the service architecture reference.`);
+    }
     if (/\bdeclare\s+function\s+resolveCurrentActorId\b/.test(service)) {
       errors.push(`${servicePath}: erased resolveCurrentActorId declaration is prohibited.`);
     }

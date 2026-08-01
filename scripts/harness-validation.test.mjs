@@ -23,24 +23,16 @@ async function write(root, relativePath, content) {
   await writeFile(absolute, content, "utf8");
 }
 
-async function createPrismaStaticFixture() {
-  const root = await mkdtemp(path.join(os.tmpdir(), "harness-prisma-static-"));
+async function createPrismaServiceFixture() {
+  const root = await mkdtemp(path.join(os.tmpdir(), "harness-prisma-service-"));
   const files = {
     ".agent/profiles/README.md": "# Stack capability profiles\nassurance profiles\ncomposition\n",
-    ".agent/profiles/nextjs-prisma-postgresql.md": "Capability ID: `prisma-postgresql`\ndb:validate\ndoes not add dependencies\n",
-    ".agent/skills/prisma-orm/SKILL.md": "prisma-postgresql\nSTATIC-VALIDATION.md\nMiddleware\nEdge runtime\ncanonical service\n",
-    ".agent/skills/prisma-orm/references/adoption.md": "adoption\n",
-    ".agent/skills/prisma-orm/references/service-patterns.md": "patterns\n",
-    ".agent/reference/prisma-postgresql/README.md": "reference\n",
-    ".agent/reference/prisma-postgresql/COMPATIBILITY.md": "Prisma ORM 7\naligned major\npnpm db:validate\n",
-    ".agent/reference/prisma-postgresql/AUTHORIZATION.md": "@/lib/auth/current-actor\nThere is no default fallback\nwhere\n",
-    ".agent/reference/prisma-postgresql/STATIC-VALIDATION.md": "does not install Prisma\ndoes not require `DATABASE_URL`\ndoes not issue database queries\n",
-    ".agent/reference/prisma-postgresql/.gitignore.prisma.example": "/lib/generated/prisma/\n",
-    ".agent/reference/prisma-postgresql/schema.prisma.example": 'provider = "prisma-client"\noutput   = "../lib/generated/prisma"\nprovider = "postgresql"\n',
-    ".agent/reference/prisma-postgresql/prisma.config.ts.example": 'schema: "prisma/schema.prisma"\nurl: env("DATABASE_URL")\n',
-    ".agent/reference/prisma-postgresql/lib/prisma.ts.example": 'import "server-only"\nNode-runtime server code only\nMiddleware\nEdge runtime\nPrismaPg\n',
-    ".agent/reference/prisma-postgresql/package.prisma-scripts.example.json": '{ "db:validate": "prisma validate && prisma generate" }\n',
-    ".agent/reference/widget/lib/services/widget.prisma.services.ts.example": 'import { requireCurrentActor } from "@/lib/auth/current-actor";\nAUTHORIZATION.md\nupdatedById: actor.id\nprisma.$transaction(async (tx) => {});\nprisma.$transaction(async (tx) => {});\n',
+    ".agent/profiles/nextjs-prisma-postgresql.md": "Capability ID: `prisma-postgresql`\ncurrent official Prisma\nservice architecture\ndoes not add dependencies\n",
+    ".agent/skills/prisma-orm/SKILL.md": "current official Prisma documentation\nproject-owned persistence boundary\nMiddleware\nEdge runtime\ncanonical service\n",
+    ".agent/skills/prisma-orm/references/adoption.md": "current official Prisma documentation\ndoes not provide\nproject-owned persistence boundary\n",
+    ".agent/skills/prisma-orm/references/service-patterns.md": "@/lib/persistence/prisma\ncurrent-actor\nauthorization policy\n$transaction\n",
+    ".agent/reference/widget/README.md": "documentación oficial vigente de Prisma\nboundary de persistencia\nservice-patterns.md\n",
+    ".agent/reference/widget/lib/services/widget.prisma.services.ts.example": 'import "server-only";\nimport prisma from "@/lib/persistence/prisma";\nimport { requireCurrentActor } from "@/lib/auth/current-actor";\nservice-patterns.md\nupdatedById: actor.id\nprisma.$transaction(async (tx) => {});\nprisma.$transaction(async (tx) => {});\n',
     "package.json": '{ "dependencies": {}, "devDependencies": {}, "scripts": {} }\n',
   };
   for (const [relativePath, content] of Object.entries(files)) await write(root, relativePath, content);
@@ -644,8 +636,8 @@ test("accepts coherent root, executor, and Codex adapter definitions", async () 
   }
 });
 
-test("accepts the dependency-free static Prisma reference contract", async () => {
-  const root = await createPrismaStaticFixture();
+test("accepts the dependency-free Prisma service architecture contract", async () => {
+  const root = await createPrismaServiceFixture();
   try {
     assert.deepEqual(await validatePrismaStaticReference(root), []);
   } finally {
@@ -653,14 +645,15 @@ test("accepts the dependency-free static Prisma reference contract", async () =>
   }
 });
 
-test("rejects Prisma static references that activate the base or restore an erased auth placeholder", async () => {
-  const root = await createPrismaStaticFixture();
+test("rejects Prisma setup mirrors, generated paths, and erased auth placeholders", async () => {
+  const root = await createPrismaServiceFixture();
   try {
-    await write(root, ".agent/reference/prisma-postgresql/package.prisma-scripts.example.json", "{}\n");
-    await write(root, ".agent/reference/widget/lib/services/widget.prisma.services.ts.example", "declare function resolveCurrentActorId(): Promise<string>;\n");
-    await write(root, "package.json", '{ "dependencies": { "prisma": "^7.0.0" }, "scripts": { "db:validate": "prisma validate" } }\n');
+    await write(root, ".agent/reference/prisma-postgresql/schema.prisma.example", 'generator client { provider = "prisma-client" }\n');
+    await write(root, ".agent/reference/widget/lib/services/widget.prisma.services.ts.example", 'import "@/lib/generated/prisma/client";\ndeclare function resolveCurrentActorId(): Promise<string>;\n');
+    await write(root, "package.json", '{ "dependencies": { "prisma": "^7.0.0" }, "scripts": {} }\n');
     const errors = await validatePrismaStaticReference(root);
-    assert.ok(errors.some((error) => error.includes("db:validate must run only")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("local Prisma setup mirror must be absent")), errors.join("\n"));
+    assert.ok(errors.some((error) => error.includes("generated-client output paths are prohibited")), errors.join("\n"));
     assert.ok(errors.some((error) => error.includes("erased resolveCurrentActorId declaration")), errors.join("\n"));
     assert.ok(errors.some((error) => error.includes("must remain outside the inactive base")), errors.join("\n"));
   } finally {

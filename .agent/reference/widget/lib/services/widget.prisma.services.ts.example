@@ -1,7 +1,6 @@
 import "server-only";
 
-import { Prisma, WidgetType as PrismaWidgetType } from "@/lib/generated/prisma/client";
-import prisma from "@/lib/prisma";
+import prisma, { Prisma, WidgetType as PrismaWidgetType } from "@/lib/persistence/prisma";
 import { requireCurrentActor } from "@/lib/auth/current-actor";
 import type { ServiceResponse } from "@/lib/api-responses";
 import type {
@@ -27,9 +26,11 @@ type DatabaseWidget = Prisma.WidgetGetPayload<{ select: typeof WIDGET_SELECT }>;
 const typeFromPrisma = { TYPE_A: "type_a", TYPE_B: "type_b" } as const;
 const typeToPrisma = { type_a: PrismaWidgetType.TYPE_A, type_b: PrismaWidgetType.TYPE_B } as const;
 
+// `@/lib/persistence/prisma` is a project-owned boundary supplied by its
+// official Prisma setup. This reference does not prescribe that setup.
 // This authenticates the request only. Before copying this reference, apply
 // the project's owner/role/tenant authorization scope to every query; see
-// .agent/reference/prisma-postgresql/AUTHORIZATION.md.
+// .agent/skills/prisma-orm/references/service-patterns.md.
 
 function toWidget(widget: DatabaseWidget): Widget {
   return {

@@ -41,13 +41,18 @@ un container servidor ni bloquear la tarjeta completa con `Suspense`.
 
 El service de un módulo conserva el contrato tipado del módulo y escoge una fuente concreta: `widget.services.ts` muestra un mock; `widget-api.services.ts` muestra consumo de API externa; y `widget.prisma.services.ts.example` ilustra la variante Prisma con las mismas operaciones. En un módulo real se copia una sola variante; no se conmutan fuentes ni se mantiene un fallback entre ellas.
 
-Prisma es configuración de aplicación, no de un módulo: schema, migraciones, seed, cliente y scripts se consultan en `.agent/reference/prisma-postgresql/` mediante la skill opcional `prisma-orm`.
+La configuración de Prisma se decide por proyecto: antes de instalarlo,
+actualizarlo o definir schema, cliente, migraciones y scripts, consulta la
+documentación oficial vigente de Prisma. El harness no aporta una receta de
+configuración; solo enseña cómo usar el boundary de persistencia ya creado en
+un service.
+
 Al adoptar el ejemplo Prisma, cópialo en la ruta canónica
 `widget.services.ts` del módulo para que las actions existentes mantengan una
 única fuente de servicio. Antes de activarlo, implementa el boundary de actor
 y autorización propio del proyecto descrito en
-`.agent/reference/prisma-postgresql/AUTHORIZATION.md`; el ejemplo no ofrece
-ningún fallback de autenticación.
+`.agent/skills/prisma-orm/references/service-patterns.md`; el ejemplo no
+ofrece ningún fallback de autenticación.
 
 ## Selectores remotos paginados
 

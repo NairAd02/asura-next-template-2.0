@@ -1,14 +1,17 @@
-﻿# Prisma service pattern
+# Prisma service pattern
 
-The shared `lib/prisma.ts` owns the only `PrismaClient` singleton. Import it
-only from a Node-runtime, `server-only` module service; do not construct a
-client per request, expose it to client components, or import it from
-Middleware or Edge runtime code.
+The project owns the Prisma client/type boundary that services import (for
+example, a project-defined `@/lib/persistence/prisma` module). This harness
+does not define how that boundary is configured or generated. Import it only
+from a Node-runtime, `server-only` module service; do not construct a client
+per request, expose it to client components, or import it from Middleware or
+Edge runtime code.
 
 Before enabling the service, implement a project-owned current-actor boundary
 and authorization policy. Actor IDs are audit data, not authorization: every
 read and mutation needs the policy's project-specific owner, role, or tenant
-scope. Do not retain an erased `declare` placeholder as a runtime fallback.
+scope. Do not retain an erased `declare` placeholder or an authentication
+fallback.
 
 Define reusable `select` objects with `satisfies Prisma.<Model>Select`, derive
 payload types from them, and map dates, enums, and relations to the module DTO.

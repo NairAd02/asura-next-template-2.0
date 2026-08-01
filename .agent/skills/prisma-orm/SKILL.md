@@ -1,48 +1,36 @@
-﻿---
+---
 name: prisma-orm
-description: Configure or use Prisma ORM with PostgreSQL in this Next.js template. Use only when the user explicitly asks to add, initialize, configure, migrate, seed, test, or use Prisma, or when the repository already contains `prisma`, `@prisma/client`, `prisma/schema.prisma`, or `prisma.config.ts`. Do not use for mock stores, external APIs, or projects without Prisma unless the user asks to introduce it.
+description: Guide Prisma use inside this template's server services. For installation or configuration, first read current official Prisma documentation for the adopting project; this skill provides no setup recipe. Use only when Prisma is requested or already evidenced.
 ---
 
-# Prisma ORM (optional addon)
+# Prisma service architecture (optional addon)
 
 Use Prisma only after the module's data source has been intentionally chosen.
 This skill is an addon to `data-layer`; it does not replace its service/action
-boundaries. It is the `prisma-postgresql` stack capability, not a lifecycle
-assurance profile.
+boundaries. It is a stack capability, not a lifecycle assurance profile.
 
 ## Workflow
 
-1. Confirm that Prisma/PostgreSQL is requested or already present. Otherwise,
-   keep the existing mock or external-API pattern.
-2. Read `.agent/reference/prisma-postgresql/README.md`, `COMPATIBILITY.md`,
-   `AUTHORIZATION.md`, and `STATIC-VALIDATION.md` before adopting it. Copy
-   shared configuration and output policy into the application root; never
-   place schema, migrations, seed, or the singleton in a business module.
-3. In an adopted project, keep the Prisma CLI, client, and PostgreSQL adapter
-   on aligned Prisma 7 majors. Run its static `db:validate` command after
-   schema or generator changes; it validates and generates only, and does not
-   replace human review of live database work.
-4. Define models, relations, field mappings, constraints, and indexes before
-   creating a migration. Migrations, seeds, resets, and deployment commands
-   are high-risk, human-operated work: they are outside this addon's static
-   verification path.
-5. Keep Prisma calls in a Node-runtime, `server-only` module service. Actions
-   validate then delegate; hooks call actions. Resolve the actor from a
-   project-owned server boundary, apply an explicit authorization scope,
-   select only needed fields, map database values to module DTOs, use
-   transactions for coupled operations, and translate stable Prisma errors
-   into `ServiceResponse` codes. Never import Prisma client code in Middleware
-   or Edge runtime code.
-6. When a module needs a concrete pattern, read
-   `.agent/reference/widget/lib/services/widget.prisma.services.ts.example`.
-   Replace the real module's canonical service implementation with one chosen
-   source; never leave mock, API, and Prisma implementations active together.
+1. Confirm that Prisma is requested or already present. Otherwise, keep the
+   existing mock or external-API pattern.
+2. If Prisma must be installed, initialized, reconfigured, migrated, seeded,
+   or upgraded, read the current official Prisma documentation first and make
+   those project-specific decisions there. This harness has no package list,
+   schema, generator, adapter, environment, script, version, or deployment
+   recipe. If the official documentation is unavailable, report that block;
+   do not invent a local setup fallback.
+3. After the project exposes a project-owned persistence boundary for Prisma, keep calls in a Node-runtime, `server-only` module service. Actions validate then delegate; hooks call actions. Never import Prisma client code in Middleware or Edge runtime code.
+4. Resolve the actor from a project-owned server boundary and apply an explicit
+   authorization scope to every query. Select only needed fields, map database
+   values to module DTOs, use transactions for coupled operations, and
+   translate stable Prisma errors into `ServiceResponse` codes.
+5. When a module needs a concrete pattern, read
+   `.agent/reference/widget/lib/services/widget.prisma.services.ts.example`
+   and `references/service-patterns.md`. Replace the real module's canonical service implementation with one chosen source; never leave mock, API, and Prisma implementations active together.
 
 ## References
 
-- Read `references/adoption.md` for installation, config, static validation,
-  migration, seed, production, and test decisions.
-- Read `references/service-patterns.md` for service boundaries and error
-  handling.
-- The reusable files in `.agent/reference/prisma-postgresql/` are templates,
-  not files to execute in this template.
+- Read `references/adoption.md` for the official-documentation handoff before
+  project-specific setup.
+- Read `references/service-patterns.md` for service boundaries, authorization,
+  transactions, and error handling.

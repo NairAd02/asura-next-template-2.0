@@ -2,32 +2,36 @@
 
 Capability ID: `prisma-postgresql`.
 
-Use this capability only when a Next.js project explicitly adopts Prisma with
-PostgreSQL, or when it already has Prisma dependencies/configuration. It
-combines the normal core conventions with:
+Use this capability only when a Next.js project explicitly adopts Prisma, or
+when it already exposes a Prisma persistence boundary. It combines the normal
+core conventions with:
 
 - `.agent/skills/data-layer/SKILL.md`
 - `.agent/skills/prisma-orm/SKILL.md`
 
 The capability is inactive by default. A request to add Prisma may activate it
-before the packages exist; ordinary mock- or API-backed modules may not. It
-does not add dependencies, a `DATABASE_URL`, or a database service to the base
-template.
+before packages exist; ordinary mock- or API-backed modules may not. It does not add dependencies, a `DATABASE_URL`, or a database service to the base template.
 
-## Shared application artifacts
+## Configuration handoff
 
-Prisma configuration is application-wide: `prisma/schema.prisma`, `prisma.config.ts`, `prisma/migrations/`, `prisma/seed.ts`, generated client, and `lib/prisma.ts` live outside `modules/`.
+Prisma installation, initialization, schema, generator, adapter, environment,
+migration, seed, deployment, and version choices belong to each adopting
+project. Before making any of those choices, read the current official Prisma
+documentation. This harness provides no configuration recipe, scripts,
+generated-client path, or fallback setup.
 
-The reference supports only static harness verification. An adopted project
-may run its own `db:validate` command to validate the schema and generate the
-client; migrations, seeds, resets, live connections, and integration testing
-remain deliberate human-operated work outside this profile's base checks.
+Once setup is complete, the project exposes a persistence boundary that its
+module services can import. The harness verifies service architecture only; it
+does not validate Prisma configuration or access external systems.
 
 ## Module rule
 
-Each module has one chosen service source for a concrete deployment: mock, external API, or Prisma. Its service exposes the existing typed module contract, while the shared Prisma client and schema remain outside the module.
+Each module has one chosen service source for a concrete deployment: mock,
+external API, or Prisma. Its service exposes the existing typed module
+contract and imports the project's persistence boundary; it does not create or
+configure Prisma itself.
 
 If an authentication capability is also selected, its composition overlay owns
-the current-actor adapter and identity-table boundary. Do not copy the example
-`User` model into an authentication provider's schema without an explicit
-domain decision.
+the current-actor adapter and identity-table boundary. The service still
+requires an explicit actor and authorization policy before persistence is
+enabled.
