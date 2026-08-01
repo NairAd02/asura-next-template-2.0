@@ -30,6 +30,8 @@ Typical minimal bundles:
 - verifier: verification + progress; add behavior when relevant.
 - curator/architect: their single domain skill unless visible text applies.
 
-Lazy module examples live under `.agent/reference/widget/`; optional stack examples live
-under `.agent/reference/prisma-postgresql/`. Profiles compose those addons under
-`.agent/profiles/`. None is executable specification.
+Lazy module examples live under `.agent/reference/widget/`; optional stack
+examples live under `.agent/reference/prisma-postgresql/`. Stack capability
+profiles compose those addons under `.agent/profiles/`; lifecycle assurance
+profiles remain the separate `no-change`/`standard-change`/`high-risk`
+classification. None is executable specification.

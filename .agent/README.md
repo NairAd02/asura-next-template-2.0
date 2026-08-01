@@ -16,15 +16,18 @@ Core sources:
 - `skill-registry.md`: lazy exact skill routing.
 - `contracts/phase-handoff.md`: portable bounded input/output.
 - `agents/`: role boundaries.
-- `profiles/`: optional stack compositions; inactive unless selected or evidenced.
+- `profiles/`: lazy stack capability compositions; inactive unless selected or evidenced.
 - `runtime-adapters/`: native lifecycle mappings.
 - `reference/`: lazy examples, never executable specs.
 
-Profiles are `no-change`, `standard-change`, and `high-risk`. No-change work
-uses scoped evidence without change artifacts. Implemented changes bind
-operator approval to a deterministic planning digest. Ownership may run
-`inline` or `subagent`; only failed planned subagents use
-`runtime-fallback`. Inline records omit subagent budgets/milestones.
+Lifecycle assurance profiles are `no-change`, `standard-change`, and
+`high-risk`. Stack capability profiles under `profiles/` are separate: they
+compose optional technologies such as Prisma/PostgreSQL and never install
+packages or activate runtime behavior by themselves. No-change work uses
+scoped evidence without change artifacts. Implemented changes bind operator
+approval to a deterministic planning digest. Ownership may run `inline` or
+`subagent`; only failed planned subagents use `runtime-fallback`. Inline
+records omit subagent budgets/milestones.
 
 Final verification is exactly one timed `pnpm verify` after files freeze.
 Archive remains fail-closed and native.

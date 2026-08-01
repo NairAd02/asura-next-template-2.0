@@ -489,6 +489,142 @@ export async function validateContextBudgets(root) {
   return errors;
 }
 
+const PRISMA_STATIC_REFERENCE_FILES = [
+  ".agent/profiles/README.md",
+  ".agent/profiles/nextjs-prisma-postgresql.md",
+  ".agent/skills/prisma-orm/SKILL.md",
+  ".agent/skills/prisma-orm/references/adoption.md",
+  ".agent/skills/prisma-orm/references/service-patterns.md",
+  ".agent/reference/prisma-postgresql/README.md",
+  ".agent/reference/prisma-postgresql/COMPATIBILITY.md",
+  ".agent/reference/prisma-postgresql/AUTHORIZATION.md",
+  ".agent/reference/prisma-postgresql/STATIC-VALIDATION.md",
+  ".agent/reference/prisma-postgresql/.gitignore.prisma.example",
+  ".agent/reference/prisma-postgresql/schema.prisma.example",
+  ".agent/reference/prisma-postgresql/prisma.config.ts.example",
+  ".agent/reference/prisma-postgresql/lib/prisma.ts.example",
+  ".agent/reference/prisma-postgresql/package.prisma-scripts.example.json",
+  ".agent/reference/widget/lib/services/widget.prisma.services.ts.example",
+];
+
+function requireReferenceTokens(errors, relativePath, content, tokens) {
+  if (content === null) return;
+  for (const token of tokens) {
+    if (!content.includes(token)) errors.push(`${relativePath}: missing required Prisma static-reference token ${token}.`);
+  }
+}
+
+export async function validatePrismaStaticReference(root) {
+  const errors = [];
+  const contents = {};
+  for (const relativePath of PRISMA_STATIC_REFERENCE_FILES) {
+    contents[relativePath] = await readRequired(root, relativePath, errors);
+  }
+
+  requireReferenceTokens(errors, ".agent/profiles/README.md", contents[".agent/profiles/README.md"], [
+    "Stack capability profiles",
+    "assurance profiles",
+    "composition",
+  ]);
+  requireReferenceTokens(errors, ".agent/profiles/nextjs-prisma-postgresql.md", contents[".agent/profiles/nextjs-prisma-postgresql.md"], [
+    "Capability ID: `prisma-postgresql`",
+    "db:validate",
+    "does not add dependencies",
+  ]);
+  requireReferenceTokens(errors, ".agent/skills/prisma-orm/SKILL.md", contents[".agent/skills/prisma-orm/SKILL.md"], [
+    "prisma-postgresql",
+    "STATIC-VALIDATION.md",
+    "Middleware",
+    "Edge runtime",
+    "canonical service",
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/schema.prisma.example", contents[".agent/reference/prisma-postgresql/schema.prisma.example"], [
+    'provider = "prisma-client"',
+    'output   = "../lib/generated/prisma"',
+    'provider = "postgresql"',
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/prisma.config.ts.example", contents[".agent/reference/prisma-postgresql/prisma.config.ts.example"], [
+    'schema: "prisma/schema.prisma"',
+    'url: env("DATABASE_URL")',
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/lib/prisma.ts.example", contents[".agent/reference/prisma-postgresql/lib/prisma.ts.example"], [
+    'import "server-only"',
+    "Node-runtime server code only",
+    "Middleware",
+    "Edge runtime",
+    "PrismaPg",
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/.gitignore.prisma.example", contents[".agent/reference/prisma-postgresql/.gitignore.prisma.example"], [
+    "/lib/generated/prisma/",
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/COMPATIBILITY.md", contents[".agent/reference/prisma-postgresql/COMPATIBILITY.md"], [
+    "Prisma ORM 7",
+    "aligned major",
+    "pnpm db:validate",
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/AUTHORIZATION.md", contents[".agent/reference/prisma-postgresql/AUTHORIZATION.md"], [
+    "@/lib/auth/current-actor",
+    "There is no default fallback",
+    "where",
+  ]);
+  requireReferenceTokens(errors, ".agent/reference/prisma-postgresql/STATIC-VALIDATION.md", contents[".agent/reference/prisma-postgresql/STATIC-VALIDATION.md"], [
+    "does not install Prisma",
+    "does not require `DATABASE_URL`",
+    "does not issue database queries",
+  ]);
+
+  const scriptsPath = ".agent/reference/prisma-postgresql/package.prisma-scripts.example.json";
+  const scriptsContent = contents[scriptsPath];
+  if (scriptsContent !== null) {
+    try {
+      const scripts = JSON.parse(scriptsContent.replace(/^\uFEFF/, ""));
+      if (scripts["db:validate"] !== "prisma validate && prisma generate") {
+        errors.push(`${scriptsPath}: db:validate must run only prisma validate and prisma generate.`);
+      }
+    } catch (error) {
+      errors.push(`${scriptsPath}: invalid JSON: ${error.message}.`);
+    }
+  }
+
+  const servicePath = ".agent/reference/widget/lib/services/widget.prisma.services.ts.example";
+  const service = contents[servicePath];
+  requireReferenceTokens(errors, servicePath, service, [
+    'import { requireCurrentActor } from "@/lib/auth/current-actor"',
+    "AUTHORIZATION.md",
+    "updatedById: actor.id",
+  ]);
+  if (service !== null) {
+    if (/\bdeclare\s+function\s+resolveCurrentActorId\b/.test(service)) {
+      errors.push(`${servicePath}: erased resolveCurrentActorId declaration is prohibited.`);
+    }
+    const coupledBulkTransactions = service.match(/\$transaction\(async\s*\(\s*tx\s*\)\s*=>/g)?.length ?? 0;
+    if (coupledBulkTransactions < 2) {
+      errors.push(`${servicePath}: coupled bulk mutations must use transaction callbacks.`);
+    }
+  }
+
+  const manifestContent = await readRequired(root, "package.json", errors);
+  if (manifestContent !== null) {
+    try {
+      const manifest = JSON.parse(manifestContent);
+      const dependencies = { ...(manifest.dependencies ?? {}), ...(manifest.devDependencies ?? {}) };
+      for (const packageName of ["prisma", "@prisma/client", "@prisma/adapter-pg"]) {
+        if (packageName in dependencies) {
+          errors.push(`package.json: ${packageName} must remain outside the inactive base Prisma capability.`);
+        }
+      }
+      for (const scriptName of ["db:validate", "db:generate", "db:migrate", "db:deploy", "db:seed", "db:reset"]) {
+        if (scriptName in (manifest.scripts ?? {})) {
+          errors.push(`package.json: ${scriptName} belongs only to an adopted Prisma project, not the base template.`);
+        }
+      }
+    } catch {
+      // validateRepository reports the manifest parsing failure with its normal diagnostic.
+    }
+  }
+  return errors;
+}
+
 function updateDigestWithPath(digest, relativePath, content) {
   digest.update(`${Buffer.byteLength(relativePath, "utf8")}:`);
   digest.update(relativePath, "utf8");
@@ -1136,6 +1272,7 @@ export async function validateRepository(root, openSpecVersionOutput) {
     ...(await validateGuidance(root)),
     ...(await validateRuntimeAdapters(root)),
     ...(await validateContextBudgets(root)),
+    ...(await validatePrismaStaticReference(root)),
   ];
   for (const changeId of await listActiveChanges(root)) {
     errors.push(...(await validateDeltaCompatibility(root, changeId)));

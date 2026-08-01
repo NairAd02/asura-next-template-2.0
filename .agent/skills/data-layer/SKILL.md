@@ -15,7 +15,12 @@ Server components may call services/actions as designed. A `"use server"`
 action validates/normalizes input and delegates. A `"use client"` hook invokes
 the action and owns loading/error/result state.
 
-Choose one concrete data source for a module service: local mock, external API, or Prisma. Do not select the source at runtime or keep fallback persistence paths. Load `prisma-orm` only when Prisma is requested or already evidenced; Prisma schema, config, migrations, seeds, and the shared client live outside the module.
+Choose one concrete data source for a module service: local mock, external API,
+or Prisma. Do not select the source at runtime or keep fallback persistence
+paths. Load `prisma-orm` only when Prisma is requested or already evidenced;
+Prisma schema, config, migrations, seeds, and the shared client live outside
+the module. When adopting its reference, replace the canonical module service
+implementation rather than leaving a second active Prisma variant beside it.
 
 ## Services and actions
 

@@ -1,5 +1,7 @@
 ﻿import "server-only";
 
+// Node-runtime server code only. Do not import this module from Middleware or
+// an Edge runtime route.
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client";
 

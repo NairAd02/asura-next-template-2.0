@@ -1,4 +1,5 @@
 ﻿{
+  "db:validate": "prisma validate && prisma generate",
   "db:generate": "prisma generate",
   "db:migrate": "prisma migrate dev",
   "db:deploy": "prisma migrate deploy",

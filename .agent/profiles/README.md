@@ -1,5 +1,17 @@
-﻿# Project profiles
+﻿# Stack capability profiles
 
-Profiles compose the core `.agent` conventions with optional stack addons. They do not install packages or activate runtime behavior. Select a profile only when its stack is requested or evidenced by the repository.
+Stack capability profiles compose core `.agent` conventions with optional
+technology addons. They do not install packages, require services, or activate
+runtime behavior. Select one only when the user requests its stack or durable
+repository evidence establishes it.
 
-`nextjs-prisma-postgresql.md` is the initial optional profile. Future addons such as authentication or payments should add their own profile composition instead of copying the core skills.
+They are distinct from lifecycle **assurance profiles** (`no-change`,
+`standard-change`, and `high-risk`), which describe the rigor of a change.
+Capability selection describes technology; it never downgrades the assurance
+profile required by a migration, dependency, permission, or other risk.
+
+`nextjs-prisma-postgresql.md` is the initial stack capability profile. Future
+addons such as Better Auth or payments add their own capability composition.
+When two capabilities have an integration concern, add a small composition
+overlay that owns only the boundary between them; do not copy either core
+skill or make it globally active.
